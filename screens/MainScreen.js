@@ -1,31 +1,63 @@
 import React from 'react'
 import { StyleSheet, Text, View, ScrollView, Button, TextInput } from 'react-native'
 import { DialogInList } from '../components/DialogInList'
+import { Navbar } from '../components/Navbar'
 
 export const MainScreen = props =>{
     return(
-        <View>
+        <View style={styles.conteiner}>
           <View style={styles.header}>
 
             <View style={styles.line1}>
               <Text style={styles.text}>Main Screen</Text>
-              <Button title='+'/>
+              <Button 
+                style={styles.button} 
+                
+                title='+'/>
             </View>
             
-            <TextInput style={styles.input} />
+            <TextInput 
+              defaultValue ='Find message...'
+              style={styles.input} />
           </View>
 
           <ScrollView>
             
               <DialogInList/>
               <DialogInList/>
-           
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+              <DialogInList/>
+                                      
+
           </ScrollView>
+
+          <Navbar/>
+
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+  conteiner:{
+    height: '100%',
+    backgroundColor: '#394944',
+
+
+  },
   header:{
     paddingTop: 35,
     //marginTop: 24,
@@ -36,14 +68,29 @@ const styles = StyleSheet.create({
   },
   line1:{
     flexDirection: 'row',
+    position: 'relative',
+    alignItems: 'center',
 
   },
   input:{
-    width: '70%'
+    
+    width: '85%',
+    borderColor: 'white',
+    borderWidth: 2,
+    borderRadius: 10,
+
 
   },
   text:{
-    color: 'white'
+    color: 'white',
+    alignItems: 'center'
+  },
+  button:{
+    position: 'absolute',
+    //alignItems: 'flex-end',
+    right: 0,
+    //alignSelf: 'flex-end,'
+    
   },
   dialog:{
 
