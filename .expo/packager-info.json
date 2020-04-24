@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 4608,
-  "expoServerNgrokUrl": "https://m5-qbj.anonymous.multichat.exp.direct",
-  "packagerNgrokUrl": "https://packager.m5-qbj.anonymous.multichat.exp.direct",
-  "ngrokPid": 8812,
+  "packagerPid": 11280,
+  "expoServerNgrokUrl": "https://4f-enc.anonymous.multichat.exp.direct",
+  "packagerNgrokUrl": "https://packager.4f-enc.anonymous.multichat.exp.direct",
+  "ngrokPid": 9416,
   "webpackServerPort": 19006
 }
