@@ -32,15 +32,7 @@ export const MainScreen = (props) => {
         <DialogInList />
         <DialogInList />
         <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
+        
       </ScrollView>
 
       <Navbar />
