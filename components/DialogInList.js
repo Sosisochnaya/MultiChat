@@ -12,7 +12,9 @@ export const DialogInList = props =>{
 
                 <View style={styles.line1}>
                     <Text style={styles.name}>Name</Text>
-                    <Text style={styles.logoMes}>TG</Text>
+                    <View style={styles.logoMes}>
+                        <Text style={styles.logoMesText}>VK</Text>
+                    </View>
                 </View>
 
 
@@ -21,17 +23,28 @@ export const DialogInList = props =>{
                 </View>
 
             </View>
+
+            <View style={styles.thirdColumn}>
+                <View >
+                    <Text style={styles.time}>00:00</Text>
+                </View>
+                <View style={styles.countUnreadMes}>
+                    <Text style={styles.countUnreadMesNumeral}>22</Text>
+                </View>
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: '#394914',
+        backgroundColor: '#111111',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        borderBottomColor: 'black',
-        borderBottomWidth: 2,
+        borderBottomColor: '#aaaaaa',
+        borderBottomWidth: 1,
+        position: 'relative',
+        
         
     },
     icon:{
@@ -45,11 +58,12 @@ const styles = StyleSheet.create({
         
         
     },
+
+    //2 часть где тескт с именем и ласт сообщением
     text:{
         //alignItems: 
         justifyContent: 'space-around',
-
-
+        
     },
     line1:{
         //alignItems: 'baseline',
@@ -63,12 +77,65 @@ const styles = StyleSheet.create({
 
     },
     name:{
+        fontStyle: 'normal', //не знает шрфиты вообще
+        fontSize: 16,
+        color: '#ffffff',
 
     },
     logoMes:{
+        marginLeft: 10,
+        marginTop: 3,
+        width: 22,//явно задал размеры , думаю тут адаптив не нужен
+        height: 16,
+        borderRadius: 5,
+        backgroundColor: '#65CAE0',
+        
+        alignItems: "center",
 
+        
+    },
+    logoMesText:{
+        marginTop: 1,
+        textAlign: "center",
+        fontSize: 10,
     },
     lastMes:{
+        marginBottom: 6,
         //color: 'white'
+        fontSize: 14,
+        color: '#c6c6c6',
+
+    },
+
+
+    //3 часть где время ласт сообщения и кол-вл непрочитанных сообщений
+    thirdColumn:{
+        position: 'absolute',
+        justifyContent: 'space-around',
+        alignItems: "center",
+        right: 0,
+        marginRight: 10,
+
+        //backgroundColor: '#5cfa31',
+
+    },
+    time:{
+        marginTop: 10,
+        fontSize: 12,
+        color: '#aaaaaa',
+    },
+    countUnreadMes:{
+        marginTop: 7,
+        height: 20,
+        width: 20,
+        borderRadius: 50,
+        backgroundColor : '#65CAE0',
+        alignItems: "center",
+        
+                
+    },
+    countUnreadMesNumeral:{
+        marginTop: 2,
+        fontSize: 12,
     }
 })

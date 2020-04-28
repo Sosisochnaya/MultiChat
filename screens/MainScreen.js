@@ -13,10 +13,15 @@ import { Navbar } from "../components/Navbar";
 export const MainScreen = (props) => {
   return (
     <View style={styles.conteiner}>
+
       <View style={styles.header}>
+
         <View style={styles.line1}>
-          <Text style={styles.text}>Main Screen</Text>
-          <Button style={styles.button} title="+" />
+          <Text style={styles.text}>Chats</Text>
+          <View style={styles.buttonView}>
+            <Button style={styles.button} title="+" color = '#ffffff' />
+          </View>
+          
         </View>
 
         <TextInput defaultValue="Find message..." style={styles.input} />
@@ -28,10 +33,7 @@ export const MainScreen = (props) => {
         <DialogInList />
         <DialogInList />
         <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
+        
         
       </ScrollView>
 
@@ -43,36 +45,58 @@ export const MainScreen = (props) => {
 const styles = StyleSheet.create({
   conteiner: {
     height: "100%",
-    backgroundColor: "#394944",
+    backgroundColor: "#111111",
+    //position: 'relative',
   },
   header: {
-    paddingTop: 35,
+    //width: "100%",
+    paddingTop: 20,
     //marginTop: 24,
-    height: 120,
+    height: 110,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#394944",
+    backgroundColor: "#272727",
+    
   },
   line1: {
-    flexDirection: "row",
+    width: '100%',
+    //flexDirection: "row",
     position: "relative",
     alignItems: "center",
+    //backgroundColor: '#111111'
+    
   },
   input: {
+    paddingLeft: 10,
+    backgroundColor: '#111111',
+    height: 30,
     width: "85%",
-    borderColor: "white",
-    borderWidth: 2,
+    borderColor: "#5e5e5e",
+    borderWidth: 1,
     borderRadius: 10,
+    color: 'white',
+    fontSize: 14,
   },
   text: {
     color: "white",
     alignItems: "center",
+    fontStyle: 'normal',
+    fontSize: 24,
   },
   button: {
-    position: "absolute",
-    //alignItems: 'flex-end',
-    right: 0,
-    //alignSelf: 'flex-end,'
+    //position: "absolute",
+    //right: 0,
+    //backgroundColor: '#111111',
+    color: '#ffffff'
+    
+  },
+  buttonView:{
+    position: 'absolute',
+    right: 10,
+    backgroundColor: '#111111',
+    width: 21,
+    height: 30,
+    color: '#ffffff',
   },
   dialog: {},
 });
