@@ -1,0 +1,10 @@
+export const THEME = {
+    BACKGROUNG_COLOR: '#111111',
+    HEADER_BACKGROUND_COLOR: '#272727',
+    NAVBAR_BACKGROUND_COLOR: '#272727',
+
+    DIALOG_BORDER_COLOR: '#aaaaaa',
+    DIALOG_NAME_COLOR: '#ffffff',
+    LASTMES_TEXT_COLOR: '#c6c6c6',
+
+}

@@ -1,13 +1,24 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, Button } from "react-native";
 import App from "../App";
+import {THEME} from "../themes/theme";
 
 export const Navbar = () => {
   return (
     <View style={styles.conteiner}>
-      <Button style={styles.button} title="Plan" />
-      <Button style={styles.button} title="mes" />
-      <Button style={styles.button} title="set" />
+
+      <View style={styles.button}>
+        <Button title="Plan" />
+      </View>
+
+      <View style={styles.button}>
+        <Button title="mes" />
+      </View>
+
+      <View style={styles.button}>
+        <Button title="set" />
+      </View>
+      
     </View>
   );
 };
@@ -18,7 +29,7 @@ const styles = StyleSheet.create({
     //flex: 1,
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "#272727",
+    backgroundColor: THEME.NAVBAR_BACKGROUND_COLOR,
     height: 80,
 
     borderTopColor: "black",

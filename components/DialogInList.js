@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
+import {THEME} from "../themes/theme";
 
 export const DialogInList = props =>{
     return(
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     name:{
         fontStyle: 'normal', //не знает шрфиты вообще
         fontSize: 16,
-        color: '#ffffff',
+        color: THEME.DIALOG_NAME_COLOR,
 
     },
     logoMes:{
@@ -89,7 +90,6 @@ const styles = StyleSheet.create({
         height: 16,
         borderRadius: 5,
         backgroundColor: '#65CAE0',
-        
         alignItems: "center",
 
         
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         marginBottom: 6,
         //color: 'white'
         fontSize: 14,
-        color: '#c6c6c6',
+        color: THEME.LASTMES_TEXT_COLOR,
 
     },
 
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     time:{
         marginTop: 10,
         fontSize: 12,
-        color: '#aaaaaa',
+        color: THEME.DIALOG_NAME_COLOR,
     },
     countUnreadMes:{
         marginTop: 7,

@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { DialogInList } from "../components/DialogInList";
 import { Navbar } from "../components/Navbar";
+import {THEME} from "../themes/theme";
+
 
 export const MainScreen = (props) => {
   return (
@@ -45,7 +47,7 @@ export const MainScreen = (props) => {
 const styles = StyleSheet.create({
   conteiner: {
     height: "100%",
-    backgroundColor: "#111111",
+    backgroundColor: THEME.BACKGROUNG_COLOR,
     //position: 'relative',
   },
   header: {
@@ -55,15 +57,13 @@ const styles = StyleSheet.create({
     height: 110,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#272727",
+    backgroundColor: THEME.HEADER_BACKGROUND_COLOR,
     
   },
   line1: {
     width: '100%',
-    //flexDirection: "row",
     position: "relative",
     alignItems: "center",
-    //backgroundColor: '#111111'
     
   },
   input: {
