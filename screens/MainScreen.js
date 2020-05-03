@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import {
   StyleSheet,
   Text,
@@ -6,11 +6,11 @@ import {
   ScrollView,
   Button,
   TextInput,
-} from "react-native";
-import { DialogInList } from "../components/DialogInList";
-import { Navbar } from "../components/Navbar";
-import {THEME} from "../themes/theme";
-
+} from "react-native"
+import { DialogInList } from "../components/DialogInList"
+import { Navbar } from "../components/Navbar"
+import { THEME } from "../themes/theme"
+import { AntDesign } from '@expo/vector-icons'
 
 export const MainScreen = (props) => {
   return (
@@ -20,16 +20,29 @@ export const MainScreen = (props) => {
 
         <View style={styles.line1}>
           <Text style={styles.text}>Chats</Text>
-          <View style={styles.buttonView}>
-            <Button style={styles.button} title="+" color = '#ffffff' />
-          </View>
           
         </View>
 
-        <TextInput defaultValue="Find message..." style={styles.input} />
+        <View style={styles.button}>
+          <AntDesign.Button
+            name = "plus"
+            size={25}
+            backgroundColor = 'transparent'
+          >
+          </AntDesign.Button>
+        </View>
+        
+        <TextInput 
+          defaultValue="Find message..." 
+          style={styles.input} 
+        />
       </View>
 
       <ScrollView>
+        <DialogInList />
+        <DialogInList />
+        <DialogInList />
+        <DialogInList />
         <DialogInList />
         <DialogInList />
         <DialogInList />
@@ -47,8 +60,9 @@ export const MainScreen = (props) => {
 const styles = StyleSheet.create({
   conteiner: {
     height: "100%",
+    width: 'auto',
     backgroundColor: THEME.BACKGROUNG_COLOR,
-    //position: 'relative',
+    position: 'relative',
   },
   header: {
     //width: "100%",
@@ -64,14 +78,15 @@ const styles = StyleSheet.create({
     width: '100%',
     position: "relative",
     alignItems: "center",
+    paddingBottom: 10,
     
   },
   input: {
     paddingLeft: 10,
-    backgroundColor: '#111111',
+    backgroundColor: THEME.BACKGROUNG_COLOR,
     height: 30,
     width: "85%",
-    borderColor: "#5e5e5e",
+    borderColor: THEME.INPUT_BORDER_COLOR,
     borderWidth: 1,
     borderRadius: 10,
     color: 'white',
@@ -83,20 +98,11 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontSize: 24,
   },
-  button: {
-    //position: "absolute",
-    //right: 0,
-    //backgroundColor: '#111111',
-    color: '#ffffff'
-    
-  },
-  buttonView:{
+  button:{
     position: 'absolute',
-    right: 10,
-    backgroundColor: '#111111',
-    width: 21,
-    height: 30,
-    color: '#ffffff',
+    right: 0,
+    top: 3,
+    paddingTop: 25,
   },
   dialog: {},
 });

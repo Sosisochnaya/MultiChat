@@ -42,8 +42,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#111111',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        borderBottomColor: '#aaaaaa',
-        borderBottomWidth: 1,
+        borderBottomColor: THEME.DIALOG_BORDER_COLOR,
+        borderBottomWidth: 0.5,
+        paddingTop: 1,
         position: 'relative',
         
         
@@ -115,9 +116,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         right: 0,
         marginRight: 10,
-
-        //backgroundColor: '#5cfa31',
-
     },
     time:{
         marginTop: 10,
