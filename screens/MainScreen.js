@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from 'react'
 import {
   StyleSheet,
   Text,
@@ -9,19 +9,24 @@ import {
 } from "react-native";
 import { DialogInList } from "../components/DialogInList";
 import { Navbar } from "../components/Navbar";
+import { EditModal } from "../components/EditModal";
 import {THEME} from "../themes/theme";
 
 
 export const MainScreen = (props) => {
+  const [modal, setModal] = useState(false)
+  
   return (
     <View style={styles.conteiner}>
+
+      <EditModal visible={modal} />
 
       <View style={styles.header}>
 
         <View style={styles.line1}>
           <Text style={styles.text}>Chats</Text>
           <View style={styles.buttonView}>
-            <Button style={styles.button} title="+" color = '#ffffff' />
+            <Button style={styles.button} title="+"  onPress={() => setModal(true)} color = '#ffffff' />
           </View>
           
         </View>

@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, MaskedViewBase } from "react-native";
 import { MainScreen } from "./screens/MainScreen";
 import { PlanScreen } from "./screens/PlanScreen";
 import { Navbar } from "./components/Navbar";
 import { InputPlane } from "./screens/InputPlane";
 import { ChoseMesser } from "./screens/AddDialog1";
+import { AddChatScreen } from "./screens/AddChatScreen";
+import { NavbarAddChat } from "./components/NavbarAddChat";
 
 export default function App() {
+  
   const [dialogs, chosemesser] = useState([]);
   const [screen, setScreen] = useState([]);
-
-  let content = <MainScreen />;
+  
+  let content = <AddChatScreen/>;
 
   switch (screen) {
     case "Plan":
@@ -26,3 +29,4 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {},
 });
+
