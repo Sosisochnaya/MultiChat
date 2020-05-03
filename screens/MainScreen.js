@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React from "react"
+=======
+import React, {useState} from 'react'
+>>>>>>> 30e9827627a78c0915b28d29f57bd349959d452b
 import {
   StyleSheet,
   Text,
@@ -6,20 +10,39 @@ import {
   ScrollView,
   Button,
   TextInput,
+<<<<<<< HEAD
 } from "react-native"
 import { DialogInList } from "../components/DialogInList"
 import { Navbar } from "../components/Navbar"
 import { THEME } from "../themes/theme"
 import { AntDesign } from '@expo/vector-icons'
+=======
+} from "react-native";
+import { DialogInList } from "../components/DialogInList";
+import { Navbar } from "../components/Navbar";
+import { EditModal } from "../components/EditModal";
+import {THEME} from "../themes/theme";
+
+>>>>>>> 30e9827627a78c0915b28d29f57bd349959d452b
 
 export const MainScreen = (props) => {
+  const [modal, setModal] = useState(false)
+  
   return (
     <View style={styles.conteiner}>
+
+      <EditModal visible={modal} />
 
       <View style={styles.header}>
 
         <View style={styles.line1}>
           <Text style={styles.text}>Chats</Text>
+<<<<<<< HEAD
+=======
+          <View style={styles.buttonView}>
+            <Button style={styles.button} title="+"  onPress={() => setModal(true)} color = '#ffffff' />
+          </View>
+>>>>>>> 30e9827627a78c0915b28d29f57bd349959d452b
           
         </View>
 
