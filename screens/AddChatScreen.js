@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -6,30 +6,33 @@ import {
   ScrollView,
   Button,
   TextInput,
-  Image
+  Image,
+  TouchableOpacity,
 } from "react-native";
-import { ContactsList } from "../components/ContactsList";
-import { NavbarAddChat } from "../components/NavbarAddChat";
+import {ContactsList} from "../components/ContactsList";
+import {NavbarAddChat} from "../components/NavbarAddChat";
 
-export const AddChatScreen = (props) => {
-  const handlePress = () => true
+export const AddChatScreen = (props, onOpen) => {
+  const handlePress = () => true;
+  //export const AddDialog = ()
+
   return (
-    
+    // <TouchableOpacity>
+    //   onPress={() => onOpen()}
+    // </TouchableOpacity>
+
     <View style={styles.conteiner}>
-
       <View style={styles.header}>
-
         <View style={styles.heading}>
           <Text style={styles.text}>Add chat</Text>
         </View>
-        
-        <View style={styles.loupe}>
 
-        <Image
-                    style={styles.imageLoupe}
-                    source={require("../assets/loupe.png")}
-                /> 
-          <TextInput defaultValue="Find dialog..." style={styles.input}  />
+        <View style={styles.loupe}>
+          <Image
+            style={styles.imageLoupe}
+            source={require("../assets/loupe.png")}
+          />
+          <TextInput defaultValue="Find dialog..." style={styles.input} />
         </View>
       </View>
 
@@ -45,6 +48,10 @@ export const AddChatScreen = (props) => {
   );
 };
 
+AddChatScreen.navigationOptions = {
+  headerTitle: "AddChatScreen",
+};
+
 const styles = StyleSheet.create({
   conteiner: {
     height: "100%",
@@ -56,28 +63,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F7F7F7",
-    borderBottomColor: '#5E5E5E',
+    borderBottomColor: "#5E5E5E",
     borderBottomWidth: 1,
-    
   },
   heading: {
-    width: '100%',
+    width: "100%",
     position: "relative",
-    alignItems: "center",  
+    alignItems: "center",
   },
-  
+
   text: {
     color: "#5E5E5E",
     alignItems: "center",
-    fontStyle: 'normal',
+    fontStyle: "normal",
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
 
-  loupe:{
-    flexDirection: 'row',
+  loupe: {
+    flexDirection: "row",
     paddingLeft: 103,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     marginTop: 15,
     height: 26,
     width: "90%",
@@ -86,14 +92,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 
-  imageLoupe:{
+  imageLoupe: {
     marginRight: 4,
     marginTop: 4,
   },
 
-  input:{
-    color: '#858585',
-    backgroundColor: '#FFFFFF',
+  input: {
+    color: "#858585",
+    backgroundColor: "#FFFFFF",
     fontSize: 18,
-  }
+  },
 });

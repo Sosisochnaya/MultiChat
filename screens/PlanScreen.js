@@ -8,7 +8,7 @@ import {
   Image,
   TextInput,
 } from "react-native";
-import { Navbar } from "../components/Navbar";
+import {Navbar} from "../components/Navbar";
 
 export const PlanScreen = (props) => {
   return (

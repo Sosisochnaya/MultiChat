@@ -40,17 +40,18 @@ export const Navbar = () => {
 
 const styles = StyleSheet.create({
   conteiner: {
-    //position: 'absolute',
+    position: 'absolute',
     //flex: 1,
     flexDirection: "row",
     justifyContent: "space-around",
     backgroundColor: THEME.NAVBAR_BACKGROUND_COLOR,
     height: 60,
+    width: '100%',
 
     borderTopColor: "black",
     borderTopWidth: 2,
 
-    //bottom: 0,
+    bottom: 0,
   },
   button: {
 

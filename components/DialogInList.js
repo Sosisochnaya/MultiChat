@@ -12,7 +12,7 @@ export const DialogInList = props =>{
             <View style={styles.text}>
 
                 <View style={styles.line1}>
-                    <Text style={styles.name}>Name</Text>
+                    <Text style={styles.name}>Name Sename</Text>
                     <View style={styles.logoMes}>
                         <Text style={styles.logoMesText}>VK</Text>
                     </View>
@@ -20,7 +20,7 @@ export const DialogInList = props =>{
 
 
                 <View style={styles.line2}>
-                    <Text style={styles.lastMes}>here last message</Text>
+                    <Text style={styles.lastMes}>Федя, блять, хули ничего не делаем</Text>
                 </View>
 
             </View>
@@ -43,9 +43,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         borderBottomColor: THEME.DIALOG_BORDER_COLOR,
-        borderBottomWidth: 0.5,
+        //borderBottomWidth: 0.5,
         paddingTop: 1,
         position: 'relative',
+        marginTop: 2,
         
         
     },
@@ -65,6 +66,9 @@ const styles = StyleSheet.create({
     text:{
         //alignItems: 
         justifyContent: 'space-around',
+        borderBottomColor: THEME.DIALOG_BORDER_COLOR,
+        borderBottomWidth: 0.5,
+        width: '100%',
         
     },
     line1:{
