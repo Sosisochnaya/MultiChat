@@ -2,9 +2,16 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
+<<<<<<< HEAD
   "packagerPid": 10344,
   "expoServerNgrokUrl": "https://qv-6r6.anonymous.multichat.exp.direct",
   "packagerNgrokUrl": "https://packager.qv-6r6.anonymous.multichat.exp.direct",
   "ngrokPid": 2436,
   "webpackServerPort": null
+=======
+  "packagerPid": 23084,
+  "expoServerNgrokUrl": "https://hj-nhv.anonymous.multichat.exp.direct",
+  "packagerNgrokUrl": "https://packager.hj-nhv.anonymous.multichat.exp.direct",
+  "ngrokPid": 9508
+>>>>>>> 0b06519a27499b3be1eacb9aa9043876e563268b
 }

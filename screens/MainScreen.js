@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React from "react";
+import {useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -7,31 +8,42 @@ import {
   Button,
   TextInput,
 } from "react-native";
-import { DialogInList } from "../components/DialogInList";
-import { Navbar } from "../components/Navbar";
-import { EditModal } from "../components/EditModal";
+import {DialogInList} from "../components/DialogInList";
+import {Navbar} from "../components/Navbar";
 import {THEME} from "../themes/theme";
+import {AntDesign} from "@expo/vector-icons";
+import {EditModal} from "../components/EditModal";
 
+export const MainScreen = ({navigation}) => {
+  const [modal, setModal] = useState(false);
+  const goToAddChatScreen = () => {
+    navigation.navigate("AddChat");
+  };
 
-export const MainScreen = (props) => {
-  const [modal, setModal] = useState(false)
-  
   return (
     <View style={styles.conteiner}>
+<<<<<<< HEAD
 
       <EditModal visible={modal} onCancel={() => setModal(false)} />
+=======
+      <EditModal visible={modal} />
+>>>>>>> 0b06519a27499b3be1eacb9aa9043876e563268b
 
       <View style={styles.header}>
-
         <View style={styles.line1}>
           <Text style={styles.text}>Chats</Text>
-          <View style={styles.buttonView}>
-            <Button style={styles.button} title="+"  onPress={() => setModal(true)} color = '#ffffff' />
-          </View>
-          
         </View>
 
-        <TextInput defaultValue="Find message..." style={styles.input} />
+        <View style={styles.button}>
+          <AntDesign.Button
+            name="plus"
+            size={25}
+            backgroundColor="transparent"
+            //onPress={goToAddChatScreen}
+          ></AntDesign.Button>
+        </View>
+
+        <TextInput placeholder="Find message..." style={styles.input} />
       </View>
 
       <ScrollView>
@@ -40,8 +52,10 @@ export const MainScreen = (props) => {
         <DialogInList />
         <DialogInList />
         <DialogInList />
-        
-        
+        <DialogInList />
+        <DialogInList />
+        <DialogInList />
+        <DialogInList />
       </ScrollView>
 
       <Navbar />
@@ -49,11 +63,17 @@ export const MainScreen = (props) => {
   );
 };
 
+MainScreen.navigationOptions = {
+  headerTitle: "dfsdfd",
+};
+
 const styles = StyleSheet.create({
   conteiner: {
     height: "100%",
+    width: "auto",
     backgroundColor: THEME.BACKGROUNG_COLOR,
-    //position: 'relative',
+    position: "relative",
+    paddingBottom: 60,
   },
   header: {
     //width: "100%",
@@ -63,45 +83,35 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: THEME.HEADER_BACKGROUND_COLOR,
-    
   },
   line1: {
-    width: '100%',
+    width: "100%",
     position: "relative",
     alignItems: "center",
-    
+    paddingBottom: 10,
   },
   input: {
     paddingLeft: 10,
-    backgroundColor: '#111111',
+    backgroundColor: THEME.BACKGROUNG_COLOR,
     height: 30,
     width: "85%",
-    borderColor: "#5e5e5e",
+    borderColor: THEME.INPUT_BORDER_COLOR,
     borderWidth: 1,
     borderRadius: 10,
-    color: 'white',
+    color: "white",
     fontSize: 14,
   },
   text: {
     color: "white",
     alignItems: "center",
-    fontStyle: 'normal',
+    fontStyle: "normal",
     fontSize: 24,
   },
   button: {
-    //position: "absolute",
-    //right: 0,
-    //backgroundColor: '#111111',
-    color: '#ffffff'
-    
-  },
-  buttonView:{
-    position: 'absolute',
-    right: 10,
-    backgroundColor: '#111111',
-    width: 21,
-    height: 30,
-    color: '#ffffff',
+    position: "absolute",
+    right: 0,
+    top: 3,
+    paddingTop: 25,
   },
   dialog: {},
 });

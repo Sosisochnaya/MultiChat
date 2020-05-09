@@ -1,0 +1,15 @@
+{
+    "extends": [
+      "react-app",
+      "plugin:prettier/recommended"
+    ],
+    // "rules": {
+    //   "jsx-quotes": [
+    //     1,
+    //     "prefer-double"
+    //   ]
+    // },
+    // "plugins": [
+    //   "prettier"
+    // ]
+  }
