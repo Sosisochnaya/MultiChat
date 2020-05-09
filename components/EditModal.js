@@ -1,19 +1,22 @@
 import React from 'react'
-import { View, StyleSheet, Button, Modal, Text, Image } from 'react-native'
-import { MainScreen } from '../screens/MainScreen'
+import { View, StyleSheet, Button, Modal, Text, Image, TouchableOpacity } from 'react-native'
 
 
-export const EditModal = ({ visible }) => {
+export const EditModal = ({ visible, onCancel }) => {
 
   return (
     <Modal visible={visible} animationType='slide' transparent={true}>
+
+    <TouchableOpacity style={styles.TouchHeader}
+        onPress={onCancel}>
+    </TouchableOpacity>
 
         <View style={styles.wrap1}>
             <Text style={styles.text}>Chosee messeger </Text>
         </View>
 
         <View style={styles.wrap2}>
-            <View style={styles.button1}> 
+             <TouchableOpacity style={styles.button1}>
                 <Image
                     style={styles.imageVk1}
                     source={require("../assets/vk.png")}
@@ -25,9 +28,9 @@ export const EditModal = ({ visible }) => {
                     style={styles.imageVk2}
                     source={require("../assets/vk.png")}
                 /> 
-            </View>
+             </TouchableOpacity>
 
-            <View style={styles.button2}>
+             <TouchableOpacity style={styles.button2}>
                 <Image
                     style={styles.imageTelegram1}
                     source={require("../assets/telegram.png")}
@@ -39,13 +42,29 @@ export const EditModal = ({ visible }) => {
                     style={styles.imageTelegram2}
                     source={require("../assets/telegram.png")}
                 /> 
-            </View>       
+            </TouchableOpacity> 
         </View>
+        
+        <TouchableOpacity style={styles.TouchFooter}
+        onPress={onCancel}>
+        </TouchableOpacity>
     </Modal>
+
+    
   )
 }
 
 const styles = StyleSheet.create({
+
+    TouchHeader:{
+        height: 210,      
+    },
+
+    TouchFooter:{
+        height: 198,
+    },
+
+
     wrap1: {
         alignItems: 'center',
         height: 60,
@@ -55,7 +74,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
         borderBottomColor: '#5E5E5E',
         borderBottomWidth: 0.5,       
-        marginTop: 200,
+        marginTop: 0,
         marginLeft: 7,
 
     },
@@ -124,3 +143,4 @@ const styles = StyleSheet.create({
         marginRight: 15,
       },
 })
+

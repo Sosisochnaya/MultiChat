@@ -19,7 +19,7 @@ export const MainScreen = (props) => {
   return (
     <View style={styles.conteiner}>
 
-      <EditModal visible={modal} />
+      <EditModal visible={modal} onCancel={() => setModal(false)} />
 
       <View style={styles.header}>
 
@@ -105,3 +105,7 @@ const styles = StyleSheet.create({
   },
   dialog: {},
 });
+
+
+
+

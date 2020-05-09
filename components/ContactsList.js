@@ -7,14 +7,17 @@ export const ContactsList = props =>{
     return(
     
         <View style={styles.container}> 
-            <Image style={styles.icon}
+
+        <View style={styles.icon}>
+            <Image style={styles.image}
             source={require("../assets/Ellipse.png")}
             /> 
+        </View>
 
+        <View style={styles.names}>
             <Button  title="Name Sename" color='black' style={styles.text} /> 
-
-      
-
+        </View>
+    
         </View>
 
            
@@ -27,14 +30,22 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        borderBottomColor: '#aaaaaa',
-        borderBottomWidth: 1,
         position: 'relative',
         alignItems: 'center',
-     
     },
-    icon:{
-        marginLeft: 13, 
+
+    names: {
+        height: 48,
+        width: 314,
+        borderBottomColor: '#aaaaaa',
+        borderBottomWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    image:{
+        marginLeft: 16, 
+        marginRight: 15.24,
         marginTop: 9,
         marginBottom: 9,
         width: 30, 

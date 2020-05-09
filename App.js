@@ -12,8 +12,9 @@ export default function App() {
   
   const [dialogs, chosemesser] = useState([]);
   const [screen, setScreen] = useState([]);
+ 
   
-  let content = <AddChatScreen/>;
+  let content = <MainScreen/>;
 
   switch (screen) {
     case "Plan":
@@ -22,6 +23,8 @@ export default function App() {
     default:
       break;
   }
+
+  
 
   return <View style={styles.container}>{content}</View>;
 }

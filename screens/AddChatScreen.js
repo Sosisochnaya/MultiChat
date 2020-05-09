@@ -12,7 +12,6 @@ import { ContactsList } from "../components/ContactsList";
 import { NavbarAddChat } from "../components/NavbarAddChat";
 
 export const AddChatScreen = (props) => {
-  const handlePress = () => true
   return (
     
     <View style={styles.conteiner}>
