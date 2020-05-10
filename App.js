@@ -17,12 +17,6 @@ export default function App() {
   const [isReedy, setIsReady] = useState(false);
   const [dialogs, chosemesser] = useState([]);
   const [screen, setScreen] = useState([]);
-<<<<<<< HEAD
- 
-  
-  let content = <MainScreen/>;
-=======
->>>>>>> 0b06519a27499b3be1eacb9aa9043876e563268b
 
   if (!isReedy) {
     return (
@@ -34,11 +28,6 @@ export default function App() {
     );
   }
 
-<<<<<<< HEAD
-  
-
-  return <View style={styles.container}>{content}</View>;
-=======
   // let content = <MainScreen />;
 
   // switch (screen) {
@@ -53,7 +42,6 @@ export default function App() {
   // }
 
   return <AppNavigation />;
->>>>>>> 0b06519a27499b3be1eacb9aa9043876e563268b
 }
 
 const styles = StyleSheet.create({

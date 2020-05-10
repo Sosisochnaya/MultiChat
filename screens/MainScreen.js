@@ -19,15 +19,9 @@ export const MainScreen = ({navigation}) => {
   const goToAddChatScreen = () => {
     navigation.navigate("AddChat");
   };
-
   return (
     <View style={styles.conteiner}>
-<<<<<<< HEAD
-
       <EditModal visible={modal} onCancel={() => setModal(false)} />
-=======
-      <EditModal visible={modal} />
->>>>>>> 0b06519a27499b3be1eacb9aa9043876e563268b
 
       <View style={styles.header}>
         <View style={styles.line1}>
@@ -39,7 +33,8 @@ export const MainScreen = ({navigation}) => {
             name="plus"
             size={25}
             backgroundColor="transparent"
-            //onPress={goToAddChatScreen}
+            //onPress={() => setModal(true)}
+            onPress={goToAddChatScreen}
           ></AntDesign.Button>
         </View>
 
@@ -115,7 +110,3 @@ const styles = StyleSheet.create({
   },
   dialog: {},
 });
-
-
-
-

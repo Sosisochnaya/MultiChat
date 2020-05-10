@@ -1,6 +1,5 @@
 import {createAppContainer} from "react-navigation";
 import {createStackNavigator} from "react-navigation-stack";
-import {createCompatNavigatorFactory} from "@react-navigation/compat";
 import {MainScreen} from "../screens/MainScreen";
 import {DialogScreen} from "../screens/DialogScreen";
 import {AddChatScreen} from "../screens/AddChatScreen";

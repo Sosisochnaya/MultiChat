@@ -16,10 +16,6 @@ export const AddChatScreen = (props, onOpen) => {
   const handlePress = () => true;
   //export const AddDialog = ()
 
-<<<<<<< HEAD
-export const AddChatScreen = (props) => {
-=======
->>>>>>> 0b06519a27499b3be1eacb9aa9043876e563268b
   return (
     // <TouchableOpacity>
     //   onPress={() => onOpen()}
