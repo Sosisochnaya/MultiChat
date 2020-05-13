@@ -15,25 +15,26 @@ import {THEME} from "../themes/theme";
 import {AntDesign} from "@expo/vector-icons";
 // import {EditModal} from "../components/EditModal";
 import {DATA} from "../data";
+import {ChooseMessangerScreen} from "../screens/ChooseMessanger";
 
 export const MainScreen = ({navigation}) => {
-  // const [modal, setModal] = useState(false);
-
-  const goToAddChatScreen = (dialog) => {
-    navigation.navigate("AddChat");
-  };
+  const [modal, setModal] = useState(false);
 
   const openDialogHendler = (dialog) => {
     navigation.navigate("Dialog", {dialogId: dialog.id});
   };
 
-  const goToChooseMessanger = (dialog) => {
-    navigation.navigate("ChooseMessangerModal");
-    //navigation.navigate("ChooseMessanger");
+  const goToChooseMessanger = () => {
+    setModal(true);
   };
+
   return (
     <View style={styles.conteiner}>
-      {/* <EditModal visible={modal} onCancel={() => setModal(false)} /> */}
+      <ChooseMessangerScreen
+        navigation={navigation}
+        visible={modal}
+        onCancel={() => setModal(false)}
+      />
 
       <View style={styles.header}>
         <View style={styles.line1}>
@@ -51,18 +52,6 @@ export const MainScreen = ({navigation}) => {
         </View>
         <TextInput placeholder="Find message..." style={styles.input} />
       </View>
-
-      {/* <ScrollView>
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-        <DialogInList />
-      </ScrollView> */}
 
       <FlatList
         data={DATA}

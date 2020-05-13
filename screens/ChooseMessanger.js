@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  Button,
   Modal,
   Text,
   Image,
@@ -10,16 +9,26 @@ import {
   Platform,
 } from "react-native";
 
-export const ChooseMessangerScreen = ({navigation}) => {
+export const ChooseMessangerScreen = ({navigation, visible, onCancel}) => {
   const goToAddChatScreen = () => {
+    // onCancel;
+    onCancel();
     navigation.navigate("AddChat");
+  };
+  const goBackHendler = () => {
+    onCancel();
   };
 
   return (
-    <View>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      transparent={true}
+      style={styles.box}
+    >
       <TouchableOpacity
         style={styles.TouchHeader}
-        onPress={() => navigation.goBack(null)}
+        onPress={goBackHendler}
       ></TouchableOpacity>
 
       <View style={styles.box}>
@@ -56,9 +65,9 @@ export const ChooseMessangerScreen = ({navigation}) => {
 
       <TouchableOpacity
         style={styles.TouchFooter}
-        onPress={() => navigation.goBack(null)}
+        onPress={goBackHendler}
       ></TouchableOpacity>
-    </View>
+    </Modal>
   );
 };
 
@@ -73,13 +82,10 @@ const styles = StyleSheet.create({
 
   TouchHeader: {
     height: 210,
-    backgroundColor: "rgba(52, 52, 52, 0.8)",
   },
 
   TouchFooter: {
-    //height: "auto",
     height: 1000,
-    backgroundColor: "rgba(52, 52, 52, 0.8)",
   },
 
   wrap1: {

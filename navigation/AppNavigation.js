@@ -5,7 +5,7 @@ import {DialogScreen} from "../screens/DialogScreen";
 import {AddChatScreen} from "../screens/AddChatScreen";
 import {InputPlane} from "../screens/InputPlane";
 import {ChooseMessangerScreen} from "../screens/ChooseMessanger";
-import {EditModal} from "../components/EditModal";
+// import {EditModal} from "../components/EditModal";
 
 const Navigation = createStackNavigator(
   {
@@ -15,7 +15,7 @@ const Navigation = createStackNavigator(
     },
     AddChat: AddChatScreen,
     ChooseMessanger: ChooseMessangerScreen,
-    ChooseMessangerModal: EditModal,
+    //ChooseMessangerModal: EditModal,
     Plan: InputPlane,
   },
   {

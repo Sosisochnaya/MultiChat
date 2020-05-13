@@ -37,10 +37,7 @@ export const EditModal = ({navigation, visible, onCancel}) => {
               style={styles.imageVk1}
               source={require("../assets/vk.png")}
             />
-            {/* <Button
-              title="VKONTAKTE"
-              color={Platform.OS === "ios" ? "white" : "transparent"}
-            /> */}
+
             <Text style={styles.label}>VKONTAKTE</Text>
             <Image
               style={styles.imageVk2}
@@ -53,11 +50,7 @@ export const EditModal = ({navigation, visible, onCancel}) => {
               style={styles.imageTelegram1}
               source={require("../assets/telegram.png")}
             />
-            {/* <Button
-              title="TELEGRAM"
-              color={Platform.OS === "ios" ? "white" : "transparent"}
-              borderBottomColor="transparent"
-            /> */}
+
             <Text style={styles.label}>TELEGRAM</Text>
             <Image
               style={styles.imageTelegram2}
