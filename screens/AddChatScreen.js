@@ -12,7 +12,7 @@ import {
 import {ContactsList} from "../components/ContactsList";
 import {NavbarAddChat} from "../components/NavbarAddChat";
 
-export const AddChatScreen = (props, onOpen) => {
+export const AddChatScreen = (props, onOpen, navigation) => {
   const handlePress = () => true;
   //export const AddDialog = ()
 
@@ -49,7 +49,7 @@ export const AddChatScreen = (props, onOpen) => {
 };
 
 AddChatScreen.navigationOptions = {
-  headerTitle: "AddChatScreen",
+  headerShown: false,
 };
 
 const styles = StyleSheet.create({

@@ -7,21 +7,33 @@ import {
   ScrollView,
   Button,
   TextInput,
+  FlatList,
 } from "react-native";
 import {DialogInList} from "../components/DialogInList";
 import {Navbar} from "../components/Navbar";
 import {THEME} from "../themes/theme";
 import {AntDesign} from "@expo/vector-icons";
-import {EditModal} from "../components/EditModal";
+// import {EditModal} from "../components/EditModal";
+import {DATA} from "../data";
 
 export const MainScreen = ({navigation}) => {
-  const [modal, setModal] = useState(false);
-  const goToAddChatScreen = () => {
+  // const [modal, setModal] = useState(false);
+
+  const goToAddChatScreen = (dialog) => {
     navigation.navigate("AddChat");
+  };
+
+  const openDialogHendler = (dialog) => {
+    navigation.navigate("Dialog", {dialogId: dialog.id});
+  };
+
+  const goToChooseMessanger = (dialog) => {
+    navigation.navigate("ChooseMessangerModal");
+    //navigation.navigate("ChooseMessanger");
   };
   return (
     <View style={styles.conteiner}>
-      <EditModal visible={modal} onCancel={() => setModal(false)} />
+      {/* <EditModal visible={modal} onCancel={() => setModal(false)} /> */}
 
       <View style={styles.header}>
         <View style={styles.line1}>
@@ -34,14 +46,13 @@ export const MainScreen = ({navigation}) => {
             size={25}
             backgroundColor="transparent"
             //onPress={() => setModal(true)}
-            onPress={goToAddChatScreen}
+            onPress={goToChooseMessanger}
           ></AntDesign.Button>
         </View>
-
         <TextInput placeholder="Find message..." style={styles.input} />
       </View>
 
-      <ScrollView>
+      {/* <ScrollView>
         <DialogInList />
         <DialogInList />
         <DialogInList />
@@ -51,7 +62,15 @@ export const MainScreen = ({navigation}) => {
         <DialogInList />
         <DialogInList />
         <DialogInList />
-      </ScrollView>
+      </ScrollView> */}
+
+      <FlatList
+        data={DATA}
+        keyExtractor={(dialog) => dialog.id.toString()}
+        renderItem={({item}) => (
+          <DialogInList dialog={item} onOpen={openDialogHendler} />
+        )}
+      />
 
       <Navbar />
     </View>
@@ -59,13 +78,13 @@ export const MainScreen = ({navigation}) => {
 };
 
 MainScreen.navigationOptions = {
-  headerTitle: "dfsdfd",
+  //headerShown: false,
 };
 
 const styles = StyleSheet.create({
   conteiner: {
     height: "100%",
-    width: "auto",
+    width: "100%",
     backgroundColor: THEME.BACKGROUNG_COLOR,
     position: "relative",
     paddingBottom: 60,
