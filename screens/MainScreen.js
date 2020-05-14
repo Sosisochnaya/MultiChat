@@ -1,5 +1,5 @@
 import React from "react";
-import {useState} from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,19 +9,19 @@ import {
   TextInput,
   FlatList,
 } from "react-native";
-import {DialogInList} from "../components/DialogInList";
-import {Navbar} from "../components/Navbar";
-import {THEME} from "../themes/theme";
-import {AntDesign} from "@expo/vector-icons";
+import { DialogInList } from "../components/DialogInList";
+import { Navbar } from "../components/Navbar";
+import { THEME } from "../themes/theme";
+import { AntDesign } from "@expo/vector-icons";
 // import {EditModal} from "../components/EditModal";
-import {DATA} from "../data";
-import {ChooseMessangerScreen} from "../screens/ChooseMessanger";
+import { DATA } from "../data";
+import { ChooseMessangerScreen } from "../screens/ChooseMessanger";
 
-export const MainScreen = ({navigation}) => {
+export const MainScreen = ({ navigation }) => {
   const [modal, setModal] = useState(false);
 
   const openDialogHendler = (dialog) => {
-    navigation.navigate("Dialog", {dialogId: dialog.id});
+    navigation.navigate("Dialog", { dialogId: dialog.id });
   };
 
   const goToChooseMessanger = () => {
@@ -56,12 +56,12 @@ export const MainScreen = ({navigation}) => {
       <FlatList
         data={DATA}
         keyExtractor={(dialog) => dialog.id.toString()}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <DialogInList dialog={item} onOpen={openDialogHendler} />
         )}
       />
 
-      <Navbar />
+      <Navbar navigation={navigation} />
     </View>
   );
 };

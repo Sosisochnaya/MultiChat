@@ -4,7 +4,7 @@ import {StyleSheet, Text, View, Image, Button} from "react-native";
 import {THEME} from "../themes/theme";
 import {AntDesign} from "@expo/vector-icons";
 
-export const Navbar = () => {
+export const Navbar = (navigation) => {
   return (
     <View style={styles.conteiner}>
       <View style={styles.button}>
@@ -12,6 +12,9 @@ export const Navbar = () => {
           name="filetext1"
           size={38}
           backgroundColor="transparent"
+          onPress={() => {
+            navigation.navigate("Plan");
+          }}
         ></AntDesign.Button>
       </View>
 
@@ -33,6 +36,8 @@ export const Navbar = () => {
     </View>
   );
 };
+
+Navbar.navigationOptions = ({ navigation }) => {};
 
 const styles = StyleSheet.create({
   conteiner: {

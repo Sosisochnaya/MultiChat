@@ -9,11 +9,16 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^10.1.0",
+<<<<<<< HEAD
     "@mtproto/core": "3.1.1",
     "@react-native-community/masked-view": "^0.1.5",
+=======
+    "@react-native-community/masked-view": "^0.1.10",
+>>>>>>> 605386dbe81c8106837281e8ab33dadae8cff6c1
     "@react-navigation/compat": "^5.1.17",
-    "@react-navigation/native": "^5.2.6",
+    "@react-navigation/native": "^5.3.0",
     "@react-navigation/stack": "^5.3.1",
+    "eslint": "^7.0.0",
     "expo": "^36.0.2",
     "install": "^0.13.0",
     "react": "~16.9.0",

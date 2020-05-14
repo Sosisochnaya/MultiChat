@@ -1,8 +1,8 @@
-import React, {useState} from "react";
-import {StyleSheet, Text, View, MaskedViewBase} from "react-native";
-import {Provider} from "react-redux";
-import {AppLoading} from "expo";
-import {AppNavigation} from "./navigation/AppNavigation";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, MaskedViewBase } from "react-native";
+import { Provider } from "react-redux";
+import { AppLoading } from "expo";
+import { AppNavigation } from "./navigation/AppNavigation";
 
 import {MainScreen} from "./screens/MainScreen";
 import {PlanScreen} from "./screens/PlanScreen";
@@ -12,38 +12,12 @@ import {ChoseMesser} from "./screens/AddDialog1";
 import {AddChatScreen} from "./screens/AddChatScreen";
 import {NavbarAddChat} from "./components/NavbarAddChat";
 import {bootstrap} from "./bootstrap";
-// import {telegramApi} from "telegram-api-js";
+
 
 export default function App() {
   const [isReedy, setIsReady] = useState(false);
-  const [dialogs, chosemesser] = useState([]);
-  const [screen, setScreen] = useState([]);
 
-  const SetConfig = () => {
-    telegramApi.setConfig({
-      app: {
-        id: 1312361 /* App ID */,
-        hash: "61066cf4e9fe9d8c9704171f38ff40ba" /* App hash */,
-        version: "0.0.1" /* App version */,
-      },
-      server: {
-        test: [
-          {
-            id: 2 /* DC ID */,
-            host: "149.154.167.40:443",
-            port: 443,
-          },
-        ],
-        production: [
-          {
-            id: 2 /* DC ID */,
-            host: "149.154.167.50:443",
-            port: 123,
-          },
-        ],
-      },
-    });
-  };
+
 
   if (!isReedy) {
     return (
