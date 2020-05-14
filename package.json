@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^10.1.0",
+    "@mtproto/core": "3.1.1",
     "@react-native-community/masked-view": "^0.1.5",
     "@react-navigation/compat": "^5.1.17",
     "@react-navigation/native": "^5.2.6",
@@ -26,7 +27,8 @@
     "react-navigation": "^4.3.9",
     "react-navigation-stack": "^2.4.0",
     "react-redux": "^7.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "telegram-api-js": "^1.2.9"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
