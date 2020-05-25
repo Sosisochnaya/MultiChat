@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -8,25 +7,61 @@ import {
   Button,
   TextInput,
   FlatList,
+  AsyncStorage,
+  ActivityIndicator,
 } from "react-native";
-import { DialogInList } from "../components/DialogInList";
-import { Navbar } from "../components/Navbar";
-import { THEME } from "../themes/theme";
-import { AntDesign } from "@expo/vector-icons";
+import {DialogInList} from "../components/DialogInList";
+import {Navbar} from "../components/Navbar";
+import {THEME} from "../themes/theme";
+import {AntDesign} from "@expo/vector-icons";
 // import {EditModal} from "../components/EditModal";
-import { DATA } from "../data";
-import { ChooseMessangerScreen } from "../screens/ChooseMessanger";
+import {DATA} from "../data";
+// import {items} from "../data/listDialogs";
+import {ChooseMessangerScreen} from "../screens/ChooseMessanger";
+import * as FileSystem from "expo-file-system";
 
-export const MainScreen = ({ navigation }) => {
+const token =
+  "641e87ef1bf4531c92d165b454b232e7db1cc69fd3537a0b8203df29bb4ba16ebd8a87e2b7bdb0670c644";
+
+// var fileString;
+
+export const MainScreen = ({navigation}) => {
+  const [isLoading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
+  const [vk_list, setVKlist] = useState([]);
+  const [data, setData] = useState([]);
 
   const openDialogHendler = (dialog) => {
-    navigation.navigate("Dialog", { dialogId: dialog.id });
+    navigation.navigate("Dialog", {dialogId: dialog.id});
   };
 
   const goToChooseMessanger = () => {
     setModal(true);
   };
+
+  function vk_dialog_list_1() {
+    // return
+    fetch(
+      "https://api.vk.com/method/messages.getConversations?count=10&v=5.103&access_token=" +
+        token
+    )
+      .then((response) => response.json())
+      .then((json) => setVKlist(json.response.items))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+
+    // fetch("https://reactnative.dev/movies.json")
+    //   .then((response) => response.json())
+    //   .then((json) => setData(json.movies))
+    //   .catch((error) => console.error(error))
+    //   .finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    setTimeout(vk_dialog_list_1, 5000);
+    setTimeout(console.log, 5000, "update");
+    // vk_dialog_list_1();
+  });
 
   return (
     <View style={styles.conteiner}>
@@ -52,14 +87,32 @@ export const MainScreen = ({ navigation }) => {
         </View>
         <TextInput placeholder="Find message..." style={styles.input} />
       </View>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={vk_list}
+          keyExtractor={(dialog) => dialog.conversation.peer.id.toString()}
+          renderItem={({item}) => (
+            // <Text>{item.last_message.text}</Text>
 
-      <FlatList
-        data={DATA}
-        keyExtractor={(dialog) => dialog.id.toString()}
-        renderItem={({ item }) => (
-          <DialogInList dialog={item} onOpen={openDialogHendler} />
-        )}
-      />
+            <DialogInList dialog={item} onOpen={openDialogHendler} />
+          )}
+        />
+      )}
+      {/* {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={data}
+          keyExtractor={({id}, index) => id}
+          renderItem={({item}) => (
+            <Text>
+              {item.title}, {item.releaseYear}
+            </Text>
+          )}
+        />
+      )} */}
 
       <Navbar navigation={navigation} />
     </View>

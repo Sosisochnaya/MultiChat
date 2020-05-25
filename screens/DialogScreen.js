@@ -33,12 +33,8 @@ export const DialogScreen = ({navigation}) => {
           />
         </View>
         <View style={styles.centerBlock}>
-          <ImageBackground
-            style={styles.icon}
-            borderRadius={50}
-            source={{uri: dialog.icon}}
-          />
-          <Text style={styles.name}>{dialog.name}</Text>
+          <ImageBackground style={styles.icon} borderRadius={50} />
+          <Text style={styles.name}>{}</Text>
         </View>
         <View style={styles.buttonPlan}>
           <AntDesign.Button
