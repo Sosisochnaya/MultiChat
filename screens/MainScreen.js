@@ -20,8 +20,8 @@ import {DATA} from "../data";
 import {ChooseMessangerScreen} from "../screens/ChooseMessanger";
 import * as FileSystem from "expo-file-system";
 
-const token =
-  "641e87ef1bf4531c92d165b454b232e7db1cc69fd3537a0b8203df29bb4ba16ebd8a87e2b7bdb0670c644";
+// токен сюда...........................................................................
+const token = "";
 
 // var fileString;
 
