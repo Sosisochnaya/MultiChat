@@ -9,15 +9,17 @@ import {
   ActivityIndicator,
 } from "react-native";
 import {THEME} from "../themes/theme";
+import config from "../config";
+import {LinearGradient} from "expo-linear-gradient";
 
-const token =
-  "641e87ef1bf4531c92d165b454b232e7db1cc69fd3537a0b8203df29bb4ba16ebd8a87e2b7bdb0670c644";
+const token = "";
 
 export const DialogInList = ({item, onOpen, dialog}) => {
   const [isLoading, setLoading] = useState(true);
   const [name, setName] = useState();
   const [icon, setIcon] = useState();
   const [isCount, setCount] = useState(false);
+  const [lastmes, setLastmes] = useState();
 
   function init() {
     if (dialog.conversation.peer.type == "user") {
@@ -49,7 +51,7 @@ export const DialogInList = ({item, onOpen, dialog}) => {
       if (dialog.conversation.peer.type == "chat") {
         let title_chat = dialog.conversation.chat_settings.title;
         setName(title_chat);
-        setIcon(dialog.conversation.chat_settings.photo.photo_50);
+        // setIcon(dialog.conversation.chat_settings.photo.photo_50);
       } else {
         if (dialog.conversation.peer.type == "group") {
           setName("its group (" + dialog.conversation.peer.local_id + ")");
@@ -58,15 +60,70 @@ export const DialogInList = ({item, onOpen, dialog}) => {
         }
       }
     }
-  }
 
-  useEffect(() => {
-    init();
     if (dialog.conversation.unread_count) {
       setCount(true);
     } else {
       setCount(false);
     }
+
+    function limitStr(str, n) {
+      if (str.length < n) return str;
+      let symb = "...";
+      return str.substr(0, n - symb.length) + symb;
+    }
+    setLastmes(limitStr(dialog.last_message.text, 35));
+    //check vlojenia
+    if (dialog.last_message.text == "") {
+      const last_message_attachments = dialog.last_message.attachments;
+      const last_message_attachment = last_message_attachments[0].type;
+      if (last_message_attachment == "photo") {
+        // last_message_text = "Photo";
+        setLastmes("Photo");
+      }
+      if (last_message_attachment == "video") {
+        // last_message_text = "Video";
+        setLastmes("Video");
+      }
+      if (last_message_attachment == "audio") {
+        // last_message_text = "Audio";
+        setLastmes("Audio");
+      }
+      if (last_message_attachment == "doc") {
+        // last_message_text = "Document";
+        setLastmes("Document");
+      }
+      if (last_message_attachment == "point") {
+        // last_message_text = "Map";
+        setLastmes("Map");
+      }
+      if (last_message_attachment == "gift") {
+        // last_message_text = "Gift";
+        setLastmes("Gift");
+      }
+      if (last_message_attachment == "link") {
+        // last_message_text = "Link";
+        setLastmes("Link");
+      }
+      if (last_message_attachment == "sticker") {
+        // last_message_text = "Sticker";
+        setLastmes("Sticker");
+      }
+      if (last_message_attachment == "wall") {
+        // last_message_text = "Wall post";
+        setLastmes("Wall post");
+      }
+    } else {
+      // last_message_text = "Forwarded messages";
+      // setLastmes("Forwarded messages");
+    }
+  }
+
+  useEffect(() => {
+    init();
+    console.log("update listok");
+    // setTimeout(init, 5000);
+    // setTimeout(console.log, 5000, "update listok");
   });
 
   return (
@@ -80,13 +137,20 @@ export const DialogInList = ({item, onOpen, dialog}) => {
         <View style={styles.text}>
           <View style={styles.line1}>
             <Text style={styles.name}>{name}</Text>
-            <View style={styles.logoMes}>
-              <Text style={styles.logoMesText}>VK</Text>
-            </View>
+            <LinearGradient
+              colors={["#FFDE67", "#FFA467", "#FF6666"]}
+              start={[1.0, 0.2]}
+              end={[0.2, 1.0]}
+              style={styles.logoMes}
+            >
+              <View>
+                <Text style={styles.logoMesText}>VK</Text>
+              </View>
+            </LinearGradient>
           </View>
 
           <View style={styles.line2}>
-            <Text style={styles.lastMes}>{dialog.last_message.text}</Text>
+            <Text style={styles.lastMes}>{lastmes}</Text>
           </View>
         </View>
 
@@ -111,7 +175,7 @@ export const DialogInList = ({item, onOpen, dialog}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#111111",
+    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
     flexDirection: "row",
     justifyContent: "flex-start",
     borderBottomColor: THEME.DIALOG_BORDER_COLOR,
@@ -147,7 +211,8 @@ const styles = StyleSheet.create({
   name: {
     fontStyle: "normal", //не знает шрфиты вообще
     fontSize: 16,
-    color: THEME.DIALOG_NAME_COLOR,
+    color: THEME.DIALOG_NAME_COLOR_BLACK,
+    fontFamily: "roboto_bold",
   },
   logoMes: {
     marginLeft: 10,
@@ -155,19 +220,23 @@ const styles = StyleSheet.create({
     width: 22, //явно задал размеры , думаю тут адаптив не нужен
     height: 16,
     borderRadius: 5,
-    backgroundColor: "#65CAE0",
     alignItems: "center",
   },
   logoMesText: {
-    marginTop: 1,
+    marginTop: 3,
     textAlign: "center",
-    fontSize: 10,
+    fontSize: 8,
+    color: THEME.TEXT_COLOR_BLACK,
+    fontFamily: "roboto_bold",
+    alignItems: "center",
+    justifyContent: "center",
   },
   lastMes: {
     marginBottom: 6,
     //color: 'white'
     fontSize: 14,
-    color: THEME.LASTMES_TEXT_COLOR,
+    color: THEME.LASTMES_TEXT_COLOR_BLACK,
+    fontFamily: "roboto_regular",
   },
 
   //3 часть где время ласт сообщения и кол-вл непрочитанных сообщений
@@ -181,14 +250,14 @@ const styles = StyleSheet.create({
   time: {
     marginTop: 10,
     fontSize: 12,
-    color: THEME.DIALOG_NAME_COLOR,
+    color: THEME.DIALOG_NAME_COLOR_BLACK,
   },
   countUnreadMes: {
     marginTop: 7,
     height: 20,
     width: 20,
     borderRadius: 50,
-    backgroundColor: "#65CAE0",
+    backgroundColor: THEME.BTN_ORANGE_COLOR,
     alignItems: "center",
   },
   countUnreadMesNumeral: {

@@ -1,20 +1,33 @@
 import React from "react";
-import {StyleSheet, Text, View, Image, Button} from "react-native";
-// import App from "../App";
-import {THEME} from "../themes/theme";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
+import {THEME} from "../themes/theme";
+// import App from "../App";
+import { LinearGradient } from 'expo-linear-gradient';
 
-export const Navbar = ({navigation}) => {
+
+
+
+ 
+
+export const NavbarConfig = () => {
   return (
-    <View style={styles.conteiner}>
+    <View style={styles.conteinernav}>
       <View style={styles.button}>
         <AntDesign.Button
           name="filetext1"
           size={38}
           backgroundColor="transparent"
-          onPress={() => {
-            navigation.navigate("Plan");
-          }}
+          color={THEME.TEXT_COLOR_BLACK}
+        
         ></AntDesign.Button>
       </View>
 
@@ -23,31 +36,29 @@ export const Navbar = ({navigation}) => {
           name="message1"
           size={38}
           backgroundColor="transparent"
-          onPress={() => {
-            navigation.navigate("Main");
-          }}
+          color={THEME.TEXT_COLOR_BLACK}
         ></AntDesign.Button>
       </View>
 
       <View style={styles.button}>
+     
         <AntDesign.Button
           name="setting"
           size={38}
           backgroundColor="transparent"
-          onPress={() => {
-            navigation.navigate("Config");
-          }}
-        ></AntDesign.Button>
+          color={THEME.TEXT_COLOR_BLACK}
+        >
+        </AntDesign.Button>
       </View>
     </View>
   );
+  
 };
 
-Navbar.navigationOptions = ({navigation}) => {};
-
 const styles = StyleSheet.create({
-  conteiner: {
-    position: "absolute",
+  conteinernav: {
+   
+    position: "relative",
     //flex: 1,
     flexDirection: "row",
     justifyContent: "space-around",
@@ -55,10 +66,9 @@ const styles = StyleSheet.create({
     height: 60,
     width: "100%",
 
-    borderTopColor: "black",
-    borderTopWidth: 2,
+    borderTopColor: THEME.INPUT_BORDER_COLOR,
+    borderTopWidth: 1,
 
     bottom: 0,
   },
-  button: {},
 });

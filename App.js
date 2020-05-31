@@ -27,8 +27,7 @@ export default function App() {
   //   test: true,
   // });
   async function vk_dialog_list_app() {
-    let token =
-      "641e87ef1bf4531c92d165b454b232e7db1cc69fd3537a0b8203df29bb4ba16ebd8a87e2b7bdb0670c644";
+    let token = "";
     let dialog_list = await fetch(
       "https://api.vk.com/method/messages.getConversations?count=20&v=5.103&access_token=" +
         token

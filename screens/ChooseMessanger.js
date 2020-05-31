@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
+import {THEME} from "../themes/theme";
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 export const ChooseMessangerScreen = ({navigation, visible, onCancel}) => {
   const goToAddChatScreen = () => {
@@ -37,7 +40,12 @@ export const ChooseMessangerScreen = ({navigation, visible, onCancel}) => {
         </View>
 
         <View style={styles.wrap2}>
-          <TouchableOpacity style={styles.button1} onPress={goToAddChatScreen}>
+          <TouchableOpacity onPress={goToAddChatScreen}>
+          <LinearGradient 
+              colors={['#FFDE67', '#FFA467', '#FF6666']}  
+              start={[1.0, 0.2]}
+              end={[0.2,1.0]}
+              style={styles.button1}>
             <Image
               style={styles.imageVk1}
               source={require("../assets/vk.png")}
@@ -47,18 +55,25 @@ export const ChooseMessangerScreen = ({navigation, visible, onCancel}) => {
               style={styles.imageVk2}
               source={require("../assets/vk.png")}
             />
+            </LinearGradient>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button2} onPress={goToAddChatScreen}>
+          <TouchableOpacity onPress={goToAddChatScreen}>
+          <LinearGradient 
+              colors={['#FFDE67', '#FFA467', '#FF6666']}  
+              start={[1.0, 0.2]}
+              end={[0.2,1.0]}
+              style={styles.button2}>
             <Image
               style={styles.imageTelegram1}
               source={require("../assets/telegram.png")}
             />
-            <Text style={styles.label}>TELEGRAM</Text>
+            <Text style={styles.label}>TELEGRAM</Text>           
             <Image
               style={styles.imageTelegram2}
               source={require("../assets/telegram.png")}
             />
+        </LinearGradient>
           </TouchableOpacity>
         </View>
       </View>
@@ -92,7 +107,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 60,
     width: 360,
-    backgroundColor: "#F7F7F7",
+    backgroundColor: THEME.HEADER_BACKGROUND_COLOR_BLACK,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomColor: "#5E5E5E",
@@ -105,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 172,
     width: 360,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     marginLeft: 7,
@@ -115,7 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     justifyContent: "space-around",
     flexDirection: "row",
-    backgroundColor: "#57B8FF",
+    backgroundColor: THEME.BTN_ORANGE_COLOR,
     height: 60,
     width: 328,
     borderRadius: 20,
@@ -126,7 +141,7 @@ const styles = StyleSheet.create({
     marginTop: 26,
     justifyContent: "space-around",
     flexDirection: "row",
-    backgroundColor: "#57B8FF",
+    backgroundColor: THEME.BTN_ORANGE_COLOR,
     height: 60,
     width: 328,
     borderRadius: 20,
@@ -135,13 +150,15 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: "#5E5E5E",
+    color: THEME.HEADER_TEXT_COLOR_BLACK,
     marginTop: 15,
     fontSize: 24,
-    fontWeight: "bold",
+    fontFamily: "nunito_bold",
   },
   label: {
-    color: "white",
+    color: THEME.TEXT_COLOR_BLACK,
+    fontFamily: "nunito_bold",
+    fontSize: 18,
   },
   imageVk1: {
     height: 27,

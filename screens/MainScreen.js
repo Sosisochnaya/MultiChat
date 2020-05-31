@@ -17,8 +17,14 @@ import {AntDesign} from "@expo/vector-icons";
 // import {EditModal} from "../components/EditModal";
 import {DATA} from "../data";
 // import {items} from "../data/listDialogs";
-import {ChooseMessangerScreen} from "../screens/ChooseMessanger";
+import {ChooseMessangerScreen} from "./ChooseMessanger";
 import * as FileSystem from "expo-file-system";
+// import TdClient from "tdweb/dist/tdweb";
+// import TlObject from "tdweb";
+// import {Client} from "tglib/node";
+// import {Airgram, Auth, prompt, toObject} from "airgram";
+// import mtproto from "../messemgers/VK/TG/Client";
+// import config from "../config";
 
 // токен сюда...........................................................................
 const token = "";
@@ -31,8 +37,9 @@ export const MainScreen = ({navigation}) => {
   const [vk_list, setVKlist] = useState([]);
   const [data, setData] = useState([]);
 
-  const openDialogHendler = (dialog) => {
-    navigation.navigate("Dialog", {dialogId: dialog.id});
+  const openDialogHendler = (item) => {
+    // navigation.navigate("Dialog", {dialogId: dialog.id});
+    navigation.navigate("Dialog", {dialog: item});
   };
 
   const goToChooseMessanger = () => {
@@ -49,13 +56,9 @@ export const MainScreen = ({navigation}) => {
       .then((json) => setVKlist(json.response.items))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
-
-    // fetch("https://reactnative.dev/movies.json")
-    //   .then((response) => response.json())
-    //   .then((json) => setData(json.movies))
-    //   .catch((error) => console.error(error))
-    //   .finally(() => setLoading(false));
   }
+
+  function tg_list() {}
 
   useEffect(() => {
     setTimeout(vk_dialog_list_1, 5000);
@@ -85,7 +88,11 @@ export const MainScreen = ({navigation}) => {
             onPress={goToChooseMessanger}
           ></AntDesign.Button>
         </View>
-        <TextInput placeholder="Find message..." style={styles.input} />
+        <TextInput
+          placeholder="Find message..."
+          placeholderTextColor={THEME.TEXT_COLOR_BLACK}
+          style={styles.input}
+        />
       </View>
       {isLoading ? (
         <ActivityIndicator />
@@ -100,20 +107,6 @@ export const MainScreen = ({navigation}) => {
           )}
         />
       )}
-      {/* {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <FlatList
-          data={data}
-          keyExtractor={({id}, index) => id}
-          renderItem={({item}) => (
-            <Text>
-              {item.title}, {item.releaseYear}
-            </Text>
-          )}
-        />
-      )} */}
-
       <Navbar navigation={navigation} />
     </View>
   );
@@ -127,7 +120,7 @@ const styles = StyleSheet.create({
   conteiner: {
     height: "100%",
     width: "100%",
-    backgroundColor: THEME.BACKGROUNG_COLOR,
+    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
     position: "relative",
     paddingBottom: 60,
   },
@@ -138,7 +131,7 @@ const styles = StyleSheet.create({
     height: 110,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: THEME.HEADER_BACKGROUND_COLOR,
+    backgroundColor: THEME.HEADER_BACKGROUND_COLOR_BLACK,
   },
   line1: {
     width: "100%",
@@ -147,27 +140,30 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   input: {
-    paddingLeft: 10,
-    backgroundColor: THEME.BACKGROUNG_COLOR,
+    paddingLeft: 110,
+    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
     height: 30,
     width: "85%",
     borderColor: THEME.INPUT_BORDER_COLOR,
     borderWidth: 1,
     borderRadius: 10,
     color: "white",
-    fontSize: 14,
+    fontSize: 17,
+    fontFamily: "roboto_regular",
   },
   text: {
     color: "white",
     alignItems: "center",
     fontStyle: "normal",
     fontSize: 24,
+    fontFamily: "nunito_bold",
   },
   button: {
     position: "absolute",
     right: 0,
-    top: 3,
+    top: 0,
     paddingTop: 25,
   },
+
   dialog: {},
 });
