@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { AsyncStorage } from "react-native";
 import { DB } from "../Tododb";
+import { LinearGradient } from "expo-linear-gradient";
 import {
   StyleSheet,
   Text,
@@ -12,6 +13,7 @@ import {
   TextInput,
   Switch,
   TouchableOpacity,
+  TouchableHighlight,
   Modal,
   FlatList,
   Alert,
@@ -20,8 +22,11 @@ import { THEME } from "../themes/theme";
 import { Navbar } from "../components/Navbar";
 import { PlanModal } from "../components/PlanModal";
 import { Todo } from "../components/Todo";
-
+import { EditTodo } from "../components/EditTodo";
 export const PlanScreen = ({}) => {
+  const [editmodal, seteditModal] = useState(false);
+  const [editid, seteditid] = useState({});
+
   const [ready, setReady] = useState(false);
   const [todos, setTodos] = useState([]);
   const [modal, setModal] = useState(false);
@@ -31,7 +36,7 @@ export const PlanScreen = ({}) => {
   // DB.insertPosts("Name", "Tite");
   //console.log(DB.getPosts());
 
-  const addTodo = (title, name, status) => {
+  const addTodo = (title, name, status, date, time, datefull) => {
     let nowid = Date.now().toString();
     setTodos((prev) => [
       ...prev,
@@ -40,6 +45,9 @@ export const PlanScreen = ({}) => {
         name,
         status,
         title,
+        date,
+        time,
+        datefull,
       },
     ]);
     console.log("fff");
@@ -51,7 +59,11 @@ export const PlanScreen = ({}) => {
   //   }, 5000);
   //   return () => clearTimeout(timer);
   // }, []);
-
+  const EditTodoPress = (todobuf, id) => {
+    // seteditid(todobuf);
+    // setTodos((prev) => prev.filter((todobuf) => todobuf.id !== id));
+    // seteditModal(true);
+  };
   const removeTodo = (id) => {
     const todo = todos.find((t) => t.id === id);
     Alert.alert(
@@ -81,6 +93,12 @@ export const PlanScreen = ({}) => {
         onCancel={() => setModal(false)}
         Add={addTodo}
       />
+      <EditTodo
+        visible={editmodal}
+        onCancel={() => seteditModal(false)}
+        todo={editid}
+        add={addTodo}
+      />
       <View style={styles.iphonetop}></View>
       <View style={styles.Container}>
         <Text style={styles.text}>Plan</Text>
@@ -90,19 +108,38 @@ export const PlanScreen = ({}) => {
       </View>
       <View style={styles.choose}>
         <TouchableOpacity
-          style={styles.statuscont}
+          style={!status ? styles.statuscont : styles.statuscont1}
           onPress={() => setStatus(true)}
         >
+          <View height={5}></View>
           <Text style={styles.statustext}>In porogress</Text>
+          <LinearGradient
+            colors={
+              !status
+                ? ["#111111", "#111111", "#111111"]
+                : ["#FFDE67", "#FFA467", "#FF6666"]
+            }
+            start={[1.0, 0.2]}
+            end={[0.2, 1.0]}
+            style={styles.line}
+          ></LinearGradient>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.statuscont}
-          onPress={() => {
-            setStatus(false);
-            borderBottomWidth = 0;
-          }}
+          style={status ? styles.statuscont : styles.statuscont1}
+          onPress={() => setStatus(false)}
         >
+          <View height={5}></View>
           <Text style={styles.statustext}>Done</Text>
+          <LinearGradient
+            colors={
+              status
+                ? ["#111111", "#111111", "#111111"]
+                : ["#FFDE67", "#FFA467", "#FF6666"]
+            }
+            start={[1.0, 0.2]}
+            end={[0.2, 1.0]}
+            style={styles.line}
+          ></LinearGradient>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -115,6 +152,7 @@ export const PlanScreen = ({}) => {
             setTodos={setTodos}
             addTodo={addTodo}
             onRemove={removeTodo}
+            EditTodoPress={EditTodoPress}
           />
         )}
       />
@@ -167,11 +205,18 @@ const styles = StyleSheet.create({
   },
 
   statuscont: {
-    borderBottomWidth: 5,
-    borderColor: "#fff",
     width: "50%",
-    height: 55,
-    justifyContent: "center",
+    height: 60,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  statuscont1: {
+    width: "50%",
+    height: 60,
+    flexDirection: "column",
+    justifyContent: "space-between",
     alignItems: "center",
   },
 
@@ -209,5 +254,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: 30.77,
     width: 29,
+  },
+
+  line: {
+    borderRadius: 3,
+    height: 5,
+    width: "100%",
+
+    alignSelf: "flex-end",
   },
 });

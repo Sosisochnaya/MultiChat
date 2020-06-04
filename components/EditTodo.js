@@ -19,11 +19,11 @@ import { TimeModaliOs } from "./TimeModaliOs";
 import { THEME } from "../themes/theme";
 import { Navbar } from "../components/Navbar";
 
-export const PlanModal = ({ visible, onCancel, Add }) => {
+export const EditTodo = ({ visible, onCancel, todo, Add }) => {
   const [modali, setModali] = useState(false);
   const [modala, setModala] = useState(false);
-  const [value, setValue] = useState("s");
-  const [name, setname] = useState("s");
+  const [value, setValue] = useState("");
+  const [name, setname] = useState("");
   const [date, setDate] = useState(new Date());
 
   const onChange = (event, selectedDate) => {
@@ -40,14 +40,13 @@ export const PlanModal = ({ visible, onCancel, Add }) => {
         Add(
           value,
           name,
-          false,
+          todo.status,
           date.getDay().toString() +
             "." +
             date.getMonth().toString() +
             "." +
             date.getFullYear().toString(),
-          date.getHours().toString() + ":" + date.getMinutes().toString(),
-          date
+          date.getHours().toString() + ":" + date.getMinutes().toString()
         );
         setValue("");
         setname("");
@@ -62,12 +61,6 @@ export const PlanModal = ({ visible, onCancel, Add }) => {
       <View style={styles.Container}>
         <View style={styles.line1}>
           <Text style={styles.text}>Add Plan</Text>
-          <TouchableOpacity style={styles.op} onPress={onCancel}>
-            <Image
-              style={styles.image}
-              source={require("../assets/Back.png")}
-            />
-          </TouchableOpacity>
         </View>
         <View style={styles.line2}>
           <View style={styles.input}>
@@ -138,7 +131,7 @@ export const PlanModal = ({ visible, onCancel, Add }) => {
           end={[0.2, 1.0]}
           style={styles.button1}
         >
-          <Text style={styles.add}>Add</Text>
+          <Text style={styles.add}>Save</Text>
         </LinearGradient>
       </TouchableOpacity>
     </Modal>

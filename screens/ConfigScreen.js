@@ -10,12 +10,12 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import {Navbar} from "../components/Navbar";
-import {THEME} from "../themes/theme";
-import {LinearGradient} from "expo-linear-gradient";
-import {AntDesign} from "@expo/vector-icons";
+import { Navbar } from "../components/Navbar";
+import { THEME } from "../themes/theme";
+import { LinearGradient } from "expo-linear-gradient";
+import { AntDesign } from "@expo/vector-icons";
 
-export const ConfigScreen = ({navigation}) => {
+export const ConfigScreen = ({ navigation }) => {
   return (
     <View style={styles.conteiner}>
       <View style={styles.conteiner_header}>
