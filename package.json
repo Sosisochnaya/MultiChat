@@ -10,6 +10,7 @@
   "dependencies": {
     "@expo/vector-icons": "^10.1.0",
     "@mtproto/core": "^3.1.1",
+    "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/datetimepicker": "^2.4.0",
     "@react-native-community/masked-view": "0.1.5",
     "@react-navigation/compat": "^5.1.17",
@@ -17,13 +18,16 @@
     "@react-navigation/stack": "^5.3.1",
     "eslint": "^7.0.0",
     "expo": "^36.0.2",
+    "expo-file-system": "~8.0.0",
     "expo-sqlite": "~8.0.0",
     "install": "^0.13.0",
     "mysql2": "^2.1.0",
+    "native-base": "^2.13.12",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
     "react-native-date-picker": "^2.7.10",
+    "react-native-fs": "git+https://github.com/johanneslumpe/react-native-fs.git",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-reanimated": "~1.4.0",
     "react-native-safe-area-context": "0.6.0",
@@ -34,7 +38,10 @@
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "telegram-api-js": "^1.2.9"
+    "tdweb": "^1.6.0",
+    "telegram-api-js": "^1.2.9",
+    "tglib": "^3.0.5",
+    "write-json-file": "^4.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

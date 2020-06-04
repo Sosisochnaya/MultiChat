@@ -6,13 +6,25 @@ import {
   Image,
   Button,
   ImageBackground,
+  TouchableOpacity,
 } from "react-native";
+import { THEME } from "../themes/theme";
+import { LinearGradient } from 'expo-linear-gradient';
+
 // import App from "../App";
 
 export const NavbarAddChat = () => {
   return (
     <View style={styles.conteiner}>
-      <Button style={styles.button} title="Add" color="white" />
+       <TouchableOpacity>
+      <LinearGradient 
+      colors={['#FFDE67', '#FFA467', '#FF6666']}  
+      start={[1.0, 0.2]}
+      end={[0.2,1.0]}
+      style={styles.conteiner}>
+      <Text style={styles.title}>Add</Text>
+      </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -21,19 +33,25 @@ const styles = StyleSheet.create({
   conteiner: {
     //position: 'absolute',
     //flex: 1,
+   
     flexDirection: "row",
-    justifyContent: "space-around",
-    backgroundColor: "#57B8FF",
+    justifyContent: "center",
+    alignItems: 'center',
+    //backgroundColor: THEME.BTN_ORANGE_COLOR,
     height: 42,
     width: 328,
 
     borderRadius: 10,
     borderTopColor: "black",
     borderTopWidth: 0,
-    bottom: 18,
-    marginLeft: 20,
+    bottom: 8,
+    marginLeft: 15,
 
     //bottom: 0,
   },
-  button: {},
+  title: {
+    fontFamily: "nunito_bold",
+    color: THEME.TEXT_COLOR_BLACK,
+    fontSize: 20,
+  },
 });
