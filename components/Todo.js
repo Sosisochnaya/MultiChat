@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { AsyncStorage } from "react-native";
 import {
   StyleSheet,
   Text,
@@ -16,8 +17,9 @@ export const Todo = ({ todo, status, setTodos, addTodo, onRemove }) => {
 
   const swi = (valswitch, id) => {
     setvalswitch(!valswitch);
-    // setTodos((prev) => prev.filter((todo) => todo.id !== id));
-    // addTodo(todo.id + 100, false);
+    addTodo(todo.title, todo.name, !todo.status);
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+    // AsyncStorage.removeItem(id);
   };
 
   if (todo.status !== status) {
@@ -42,7 +44,7 @@ export const Todo = ({ todo, status, setTodos, addTodo, onRemove }) => {
       </TouchableOpacity>
     );
   } else {
-    return;
+    return <View></View>;
   }
 };
 

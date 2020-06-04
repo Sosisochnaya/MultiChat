@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
+import { AsyncStorage } from "react-native";
+import { DB } from "../Tododb";
 import {
   StyleSheet,
   Text,
@@ -19,14 +22,21 @@ import { PlanModal } from "../components/PlanModal";
 import { Todo } from "../components/Todo";
 
 export const PlanScreen = ({}) => {
+  const [ready, setReady] = useState(false);
   const [todos, setTodos] = useState([]);
   const [modal, setModal] = useState(false);
   const [status, setStatus] = useState(true);
+
+  //console.log("То что мне нужно");
+  // DB.insertPosts("Name", "Tite");
+  //console.log(DB.getPosts());
+
   const addTodo = (title, name, status) => {
+    let nowid = Date.now().toString();
     setTodos((prev) => [
       ...prev,
       {
-        id: Date.now().toString(),
+        id: nowid,
         name,
         status,
         title,
@@ -34,6 +44,13 @@ export const PlanScreen = ({}) => {
     ]);
     console.log("fff");
   };
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     Alert.alert("ГО ДЕЛАТЬ");
+  //   }, 5000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   const removeTodo = (id) => {
     const todo = todos.find((t) => t.id === id);
@@ -78,12 +95,15 @@ export const PlanScreen = ({}) => {
         >
           <Text style={styles.statustext}>In porogress</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={styles.statuscont}
-          onPress={() => setStatus(false)}
+          onPress={() => {
+            setStatus(false);
+            borderBottomWidth = 0;
+          }}
         >
           <Text style={styles.statustext}>Done</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
       <FlatList
         keyExtractor={(item) => item.id.toString()}

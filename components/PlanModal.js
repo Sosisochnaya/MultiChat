@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
+  Platform,
   Image,
   Button,
   Modal,
@@ -17,6 +18,25 @@ import { Navbar } from "../components/Navbar";
 export const PlanModal = ({ visible, onCancel, Add }) => {
   const [value, setValue] = useState("s");
   const [name, setname] = useState("s");
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios");
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+    console.log(date);
+  };
 
   const pressHandler = () => {
     if (!name.trim() || !value.trim()) {
@@ -54,9 +74,22 @@ export const PlanModal = ({ visible, onCancel, Add }) => {
               onChangeText={setname}
             />
           </View>
-          <View style={styles.input}>
-            <TextInput style={styles.inputtext}>Time</TextInput>
-          </View>
+          <TouchableOpacity onPress={showDatepicker}>
+            <View style={styles.input}>
+              {/* <TextInput style={styles.inputtext}>Time</TextInput> */}
+              {show && (
+                <DateTimePicker
+                  testID="date"
+                  timeZoneOffsetInMinutes={0}
+                  display="default"
+                  onChange={onChange}
+                  is24Hour={true}
+                  value={date}
+                  mode={mode}
+                />
+              )}
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.back}>
