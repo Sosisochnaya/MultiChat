@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
-import {StyleSheet, Text, View, MaskedViewBase} from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, MaskedViewBase } from "react-native";
 //import { Provider } from "react-redux";
-import {AppLoading} from "expo";
-import {AppNavigation} from "./navigation/AppNavigation";
+import { AppLoading } from "expo";
+import { AppNavigation } from "./navigation/AppNavigation";
 
 // import {MainScreen} from "./screens/MainScreen";
 // import {PlanScreen} from "./screens/PlanScreen";
@@ -11,7 +11,7 @@ import {AppNavigation} from "./navigation/AppNavigation";
 // import {ChoseMesser} from "./screens/AddDialog1";
 // import {AddChatScreen} from "./screens/AddChatScreen";
 // import {NavbarAddChat} from "./components/NavbarAddChat";
-import {bootstrap} from "./bootstrap";
+import { bootstrap } from "./bootstrap";
 // import {MTProto} from "@mtproto/core";
 import * as FileSystem from "expo-file-system";
 import MainScreen from "./screens/MainScreen";

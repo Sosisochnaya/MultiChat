@@ -16,6 +16,10 @@ import {LinearGradient} from "expo-linear-gradient";
 import {AntDesign} from "@expo/vector-icons";
 
 export const ConfigScreen = ({navigation}) => {
+  const goToAuthVK = () => {
+    // navigation.navigate("Dialog", {dialogId: dialog.id});
+    navigation.navigate("Token");
+  };
   return (
     <View style={styles.conteiner}>
       <View style={styles.conteiner_header}>
@@ -31,7 +35,7 @@ export const ConfigScreen = ({navigation}) => {
       </View>
 
       <View style={styles.wrapvk}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={goToAuthVK}>
           <LinearGradient
             colors={["#FFDE67", "#FFA467", "#FF6666"]}
             start={[1.0, 0.2]}

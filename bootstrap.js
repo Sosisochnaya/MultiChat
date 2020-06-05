@@ -1,4 +1,5 @@
 import * as Font from "expo-font";
+import { DB } from "./Tododb";
 
 export async function bootstrap() {
   await Font.loadAsync({

@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import {LinearGradient} from "expo-linear-gradient";
+import { LinearGradient } from "expo-linear-gradient";
 
 import {
   StyleSheet,
@@ -14,16 +14,16 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import {TimeModaliOs} from "./TimeModaliOs";
+import { TimeModaliOs } from "./TimeModaliOs";
 
-import {THEME} from "../themes/theme";
-import {Navbar} from "../components/Navbar";
+import { THEME } from "../themes/theme";
+import { Navbar } from "../components/Navbar";
 
-export const PlanModal = ({Add, navigation}) => {
+export const EditTodo = ({ visible, onCancel, todo, Add }) => {
   const [modali, setModali] = useState(false);
   const [modala, setModala] = useState(false);
-  const [value, setValue] = useState("s");
-  const [name, setname] = useState("s");
+  const [value, setValue] = useState("");
+  const [name, setname] = useState("");
   const [date, setDate] = useState(new Date());
 
   const onChange = (event, selectedDate) => {
@@ -40,33 +40,27 @@ export const PlanModal = ({Add, navigation}) => {
         Add(
           value,
           name,
-          false,
+          todo.status,
           date.getDay().toString() +
             "." +
             date.getMonth().toString() +
             "." +
             date.getFullYear().toString(),
-          date.getHours().toString() + ":" + date.getMinutes().toString(),
-          date
+          date.getHours().toString() + ":" + date.getMinutes().toString()
         );
         setValue("");
         setname("");
+        onCancel();
       }
     }
   };
 
   return (
-    <View height={"100%"}>
+    <Modal visible={visible}>
       <View style={styles.iphonetop}></View>
       <View style={styles.Container}>
         <View style={styles.line1}>
           <Text style={styles.text}>Add Plan</Text>
-          <TouchableOpacity style={styles.op}>
-            <Image
-              style={styles.image}
-              source={require("../assets/Back.png")}
-            />
-          </TouchableOpacity>
         </View>
         <View style={styles.line2}>
           <View style={styles.input}>
@@ -137,10 +131,10 @@ export const PlanModal = ({Add, navigation}) => {
           end={[0.2, 1.0]}
           style={styles.button1}
         >
-          <Text style={styles.add}>Add</Text>
+          <Text style={styles.add}>Save</Text>
         </LinearGradient>
       </TouchableOpacity>
-    </View>
+    </Modal>
   );
 };
 
