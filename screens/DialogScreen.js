@@ -7,25 +7,58 @@ import {
   TouchableOpacity,
   ImageBackground,
   TextInput,
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
 
 import {THEME} from "../themes/theme";
 import {DialogInList} from "../components/DialogInList";
+import {Message} from "../components/messagers";
 import {Ionicons, AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
 import {DATA} from "../data";
 
-const token = "";
+const token =
+  "d24147844a4e218a89ec037cc9cb01b0117df41029304faccd5f330351d34756d83c5d657e26b3f64052c";
 
+// var _retrieveData = async () => {
+//   try {
+//     token = await AsyncStorage.getItem('vk_token');
+//     if (token !== null) {
+//       console.log(token);
+//     }
+//   } catch (error) {
+//     console.log('error token');
+//   }
+// };
+
+// var token;
 export const DialogScreen = ({navigation}) => {
   // const dialogId = navigation.getParam("dialog");
   const dialog = navigation.getParam("dialog");
   const [name, setName] = useState();
   const [icon, setIcon] = useState();
-  const [id, setId] = useState();
+  const [mess, setMess] = useState();
+  const [vk_mess, setmesslist] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+
+  function vk_mess_history() {
+    // return
+    fetch(
+      "https://api.vk.com/method/messages.getHistory?count=50&peer_id=" +
+        dialog.conversation.peer.id +
+        "&v=5.103&access_token=" +
+        token
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.error == null) {
+          setmesslist(json.response.items);
+          setLoading(false);
+        }
+      });
+  }
 
   function init() {
-    setId(dialog.conversation.peer.id); //special for feduk
-
     let fullname;
 
     if (dialog.conversation.peer.type == "user") {
@@ -37,13 +70,15 @@ export const DialogScreen = ({navigation}) => {
       )
         .then((user) => user.json())
         .then((user) => {
-          let fullnamejson = user.response[0];
-          fullname = fullnamejson.first_name + " " + fullnamejson.last_name;
-          setName(fullname);
-          setIcon(user.response[0].photo_50);
+          if (user.error == null) {
+            let fullnamejson = user.response[0];
+            fullname = fullnamejson.first_name + " " + fullnamejson.last_name;
+            setName(fullname);
+            setIcon(user.response[0].photo_50);
+            setLoading(false);
+          }
         })
-        .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
+        .catch((error) => console.error(error));
     } else {
       if (dialog.conversation.peer.type == "chat") {
         fullname = dialog.conversation.chat_settings.title;
@@ -64,14 +99,62 @@ export const DialogScreen = ({navigation}) => {
       }
       setName(limitStr(fullname, 19));
     }
+    // <FlatList
+    //   data={vk_mess}
+    //   keyExtractor={(mes) => mes.conversation_message_id}
+    //   renderItem={({mes}) => <Text>{mes.text}</Text>}
+    // />;
+    // vk_mess.forEach(function (item) {
+    //   console.log(item.text);
+    // });
+  }
+
+  function sendMessage() {
+    if (dialog.conversation.peer.type == "user") {
+      fetch(
+        "https://api.vk.com/method/messages.send?peer_id=" +
+          dialog.conversation.peer.id +
+          "&message=" +
+          mess +
+          "&v=5.44&access_token=" +
+          token
+      );
+    } else {
+      if (dialog.conversation.peer.type == "chat") {
+        fetch(
+          "https://api.vk.com/method/messages.send?peer_id=" +
+            dialog.conversation.peer.id +
+            "&message=" +
+            mess +
+            "&v=5.44&access_token=" +
+            token
+        );
+      } else {
+        if (dialog.conversation.peer.type == "group") {
+          var tmp = -dialog.conversation.peer.id;
+          fetch(
+            "https://api.vk.com/method/messages.send?peer_id=" +
+              tmp +
+              "&message=" +
+              mess +
+              "&v=5.44&access_token=" +
+              token
+          );
+        }
+      }
+    }
   }
 
   useEffect(() => {
     init();
-    console.log("dialog screen load");
+    vk_mess_history();
+    console.log("update messages");
+    // setTimeout(vk_mess_history, 10000);
+    setTimeout(console.log, 10000, "update messages");
     // setTimeout(init, 5000);
     // setTimeout(console.log, 5000, "dialog screen load");
   });
+
   return (
     <View style={styles.conteiner}>
       <View style={styles.header}>
@@ -102,7 +185,17 @@ export const DialogScreen = ({navigation}) => {
           ></AntDesign.Button>
         </View>
       </View>
-      {/* ////////////////////// //////////////// */}
+      <View style={styles.flat}>
+        <FlatList
+          inverted
+          data={vk_mess}
+          keyExtractor={(mes) => mes.conversation_message_id}
+          renderItem={({item}) => (
+            <Message mes={item} id={dialog.conversation.peer.id} />
+          )}
+        />
+      </View>
+
       <View style={styles.footer}>
         <View style={styles.buttonPlus}>
           <AntDesign.Button
@@ -116,6 +209,7 @@ export const DialogScreen = ({navigation}) => {
           placeholder="Text..."
           placeholderTextColor="#7C7C7C"
           style={styles.input}
+          onChangeText={(text) => setMess(text)}
         />
 
         <View style={styles.buttonSendMes}>
@@ -130,6 +224,7 @@ export const DialogScreen = ({navigation}) => {
             name="rightsquareo"
             size={30}
             backgroundColor="transparent"
+            onPress={sendMessage}
           ></AntDesign.Button>
         </View>
       </View>
@@ -183,6 +278,10 @@ const styles = StyleSheet.create({
     right: 0,
   },
 
+  flat: {
+    paddingBottom: 60,
+  },
+
   footer: {
     position: "absolute",
     flexDirection: "row",
@@ -215,5 +314,12 @@ const styles = StyleSheet.create({
     height: 44,
     //backgroundColor: THEME.BACKGROUNG_COLOR,
     //borderRadius: 50,
+  },
+  text: {
+    color: "white",
+    alignItems: "center",
+    fontStyle: "normal",
+    fontSize: 24,
+    fontFamily: "nunito_bold",
   },
 });

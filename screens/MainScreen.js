@@ -14,28 +14,40 @@ import {DialogInList} from "../components/DialogInList";
 import {Navbar} from "../components/Navbar";
 import {THEME} from "../themes/theme";
 import {AntDesign} from "@expo/vector-icons";
+// import * as AuthSession from "expo-auth-session";
 // import {EditModal} from "../components/EditModal";
 import {DATA} from "../data";
 // import {items} from "../data/listDialogs";
 import {ChooseMessangerScreen} from "./ChooseMessanger";
 import * as FileSystem from "expo-file-system";
-// import TdClient from "tdweb/dist/tdweb";
-// import TlObject from "tdweb";
-// import {Client} from "tglib/node";
-// import {Airgram, Auth, prompt, toObject} from "airgram";
-// import mtproto from "../messemgers/VK/TG/Client";
+// import {MTProto} from "../messemgers/TG/Client";
 // import config from "../config";
 
 // токен сюда...........................................................................
-const token = "";
+const token =
+  "d24147844a4e218a89ec037cc9cb01b0117df41029304faccd5f330351d34756d83c5d657e26b3f64052c";
 
-// var fileString;
+// var _retrieveData = async () => {
+//   try {
+//     token = await AsyncStorage.getItem('vk_token');
+//     if (token !== null) {
+//       console.log(token);
+//     }
+//   } catch (error) {
+//     console.log('error token');
+//   }
+// };
+
+// var token;
 
 export const MainScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [vk_list, setVKlist] = useState([]);
-  const [data, setData] = useState([]);
+  const [isToken, setToken] = useState();
+  const [number, setNumber] = useState();
+  // const vk_token;
+  // const {MTProto} = require("@mtproto/core");
 
   const openDialogHendler = (item) => {
     // navigation.navigate("Dialog", {dialogId: dialog.id});
@@ -58,12 +70,21 @@ export const MainScreen = ({navigation}) => {
       .finally(() => setLoading(false));
   }
 
-  function tg_list() {}
+  function tg_auth() {
+    const mtproto = new MTProto({
+      api_id: "131236",
+      api_hash: "61066cf4e9fe9d8c9704171f38ff40ba",
+      test: true,
+    });
+  }
 
   useEffect(() => {
     setTimeout(vk_dialog_list_1, 5000);
-    setTimeout(console.log, 5000, "update");
+
+    setTimeout(console.log, 1000, "update");
     // vk_dialog_list_1();
+    // console.log(AuthSession.getRedirectUrl());
+    // tg_auth();
   });
 
   return (
@@ -94,12 +115,17 @@ export const MainScreen = ({navigation}) => {
           style={styles.input}
         />
       </View>
+
       {isLoading ? (
-        <ActivityIndicator />
+        <View style={{padding: 20}}>
+          <ActivityIndicator size="large" />
+        </View>
       ) : (
         <FlatList
           data={vk_list}
           keyExtractor={(dialog) => dialog.conversation.peer.id.toString()}
+          // data={vk_list}
+          // keyExtractor={(dialog) => dialog.conversation.peer.id.toString()}
           renderItem={({item}) => (
             // <Text>{item.last_message.text}</Text>
 
@@ -110,10 +136,6 @@ export const MainScreen = ({navigation}) => {
       <Navbar navigation={navigation} />
     </View>
   );
-};
-
-MainScreen.navigationOptions = {
-  //headerShown: false,
 };
 
 const styles = StyleSheet.create({

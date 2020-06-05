@@ -12,14 +12,27 @@ import {THEME} from "../themes/theme";
 import config from "../config";
 import {LinearGradient} from "expo-linear-gradient";
 
-const token = "";
+const token =
+  "d24147844a4e218a89ec037cc9cb01b0117df41029304faccd5f330351d34756d83c5d657e26b3f64052c";
+// var _retrieveData = async () => {
+//   try {
+//     token = await AsyncStorage.getItem("vk_token");
+//     if (token !== null) {
+//       console.log(token);
+//     }
+//   } catch (error) {
+//     console.log("error token");
+//   }
+// };
 
+// var token;
 export const DialogInList = ({item, onOpen, dialog}) => {
   const [isLoading, setLoading] = useState(true);
   const [name, setName] = useState();
   const [icon, setIcon] = useState();
   const [isCount, setCount] = useState(false);
   const [lastmes, setLastmes] = useState();
+  const [date, setDate] = useState();
 
   function init() {
     if (dialog.conversation.peer.type == "user") {
@@ -31,22 +44,14 @@ export const DialogInList = ({item, onOpen, dialog}) => {
       )
         .then((user) => user.json())
         .then((user) => {
-          let fullname = user.response[0];
-          fullname = fullname.first_name + " " + fullname.last_name;
-          setName(fullname);
-          setIcon(user.response[0].photo_50);
-        })
-        .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
-
-      // setName(user.response[0].first_name + user.response.last_name);
-      // setLoading(false);
-
-      // fetch("https://reactnative.dev/movies.json")
-      //   .then((response) => response.json())
-      //   .then((json) => setData(json.movies))
-      //   .catch((error) => console.error(error))
-      //   .finally(() => setLoading(false));
+          if (user.error == null) {
+            let fullname = user.response[0];
+            fullname = fullname.first_name + " " + fullname.last_name;
+            setName(fullname);
+            setIcon(user.response[0].photo_50);
+            setLoading(false);
+          }
+        });
     } else {
       if (dialog.conversation.peer.type == "chat") {
         let title_chat = dialog.conversation.chat_settings.title;
@@ -67,56 +72,73 @@ export const DialogInList = ({item, onOpen, dialog}) => {
       setCount(false);
     }
 
+    // setName(limitStr(name.toString(), 25));
+    ///////////////set date info/////////////////////
+    let d = new Date();
+    d.setTime(dialog.last_message.date + "000");
+    setDate(d.toTimeString());
+    let dn = new Date();
+    let k = (dn - d) / 86400000;
+    if (k > 1) {
+      setDate(Math.floor(k) + " days ago");
+    } else {
+      if (d.getDate().toString() != dn.getDate().toString()) {
+        setDate("yesterday");
+      } else setDate(d.toTimeString().slice(0, 5));
+    }
+
     function limitStr(str, n) {
       if (str.length < n) return str;
       let symb = "...";
       return str.substr(0, n - symb.length) + symb;
     }
     setLastmes(limitStr(dialog.last_message.text, 35));
-    //check vlojenia
-    if (dialog.last_message.text == "") {
-      const last_message_attachments = dialog.last_message.attachments;
-      const last_message_attachment = last_message_attachments[0].type;
-      if (last_message_attachment == "photo") {
-        // last_message_text = "Photo";
-        setLastmes("Photo");
+    function checkAttachments() {
+      if (dialog.last_message.text == "") {
+        const last_message_attachments = dialog.last_message.attachments;
+        const last_message_attachment = last_message_attachments[0].type;
+        if (last_message_attachment == "photo") {
+          // last_message_text = "Photo";
+          setLastmes("Photo");
+        }
+        if (last_message_attachment == "video") {
+          // last_message_text = "Video";
+          setLastmes("Video");
+        }
+        if (last_message_attachment == "audio") {
+          // last_message_text = "Audio";
+          setLastmes("Audio");
+        }
+        if (last_message_attachment == "doc") {
+          // last_message_text = "Document";
+          setLastmes("Document");
+        }
+        if (last_message_attachment == "point") {
+          // last_message_text = "Map";
+          setLastmes("Map");
+        }
+        if (last_message_attachment == "gift") {
+          // last_message_text = "Gift";
+          setLastmes("Gift");
+        }
+        if (last_message_attachment == "link") {
+          // last_message_text = "Link";
+          setLastmes("Link");
+        }
+        if (last_message_attachment == "sticker") {
+          // last_message_text = "Sticker";
+          setLastmes("Sticker");
+        }
+        if (last_message_attachment == "wall") {
+          // last_message_text = "Wall post";
+          setLastmes("Wall post");
+        }
+      } else {
+        // last_message_text = "Forwarded messages";
+        // setLastmes("Forwarded messages");
       }
-      if (last_message_attachment == "video") {
-        // last_message_text = "Video";
-        setLastmes("Video");
-      }
-      if (last_message_attachment == "audio") {
-        // last_message_text = "Audio";
-        setLastmes("Audio");
-      }
-      if (last_message_attachment == "doc") {
-        // last_message_text = "Document";
-        setLastmes("Document");
-      }
-      if (last_message_attachment == "point") {
-        // last_message_text = "Map";
-        setLastmes("Map");
-      }
-      if (last_message_attachment == "gift") {
-        // last_message_text = "Gift";
-        setLastmes("Gift");
-      }
-      if (last_message_attachment == "link") {
-        // last_message_text = "Link";
-        setLastmes("Link");
-      }
-      if (last_message_attachment == "sticker") {
-        // last_message_text = "Sticker";
-        setLastmes("Sticker");
-      }
-      if (last_message_attachment == "wall") {
-        // last_message_text = "Wall post";
-        setLastmes("Wall post");
-      }
-    } else {
-      // last_message_text = "Forwarded messages";
-      // setLastmes("Forwarded messages");
     }
+    // checkAttachments();
   }
 
   useEffect(() => {
@@ -136,7 +158,9 @@ export const DialogInList = ({item, onOpen, dialog}) => {
         />
         <View style={styles.text}>
           <View style={styles.line1}>
-            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
+              {name}
+            </Text>
             <LinearGradient
               colors={["#FFDE67", "#FFA467", "#FF6666"]}
               start={[1.0, 0.2]}
@@ -156,7 +180,7 @@ export const DialogInList = ({item, onOpen, dialog}) => {
 
         <View style={styles.thirdColumn}>
           <View>
-            <Text style={styles.time}>{dialog.last_message.date}</Text>
+            <Text style={styles.time}>{date}</Text>
           </View>
           {isCount ? (
             <View style={styles.countUnreadMes}>
@@ -203,6 +227,7 @@ const styles = StyleSheet.create({
     //alignItems: 'baseline',
     flexDirection: "row",
     //justifyContent: 'flex-start'
+    width: "54%",
   },
   line2: {
     //flexDirection: 'row',
@@ -213,6 +238,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: THEME.DIALOG_NAME_COLOR_BLACK,
     fontFamily: "roboto_bold",
+    // width: "55%",
   },
   logoMes: {
     marginLeft: 10,
