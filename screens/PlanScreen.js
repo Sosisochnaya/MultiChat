@@ -36,7 +36,9 @@ export const PlanScreen = ({navigation}) => {
   //console.log("То что мне нужно");
   // DB.insertPosts("Name", "Tite");
   //console.log(DB.getPosts());
-
+  const goBack = () => {
+    navigation.goBack(null);
+  };
   const addTodo = (title, name, status, date, time, datefull) => {
     let nowid = Date.now().toString();
     setTodos((prev) => [
@@ -108,6 +110,7 @@ export const PlanScreen = ({navigation}) => {
           onPress={() =>
             navigation.navigate("AddPlan", {
               Add: addTodo,
+              goBack: goBack,
             })
           }
         >

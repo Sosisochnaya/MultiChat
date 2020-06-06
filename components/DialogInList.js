@@ -7,25 +7,26 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  AsyncStorage,
 } from "react-native";
 import {THEME} from "../themes/theme";
 import config from "../config";
 import {LinearGradient} from "expo-linear-gradient";
 
-const token =
-  "d24147844a4e218a89ec037cc9cb01b0117df41029304faccd5f330351d34756d83c5d657e26b3f64052c";
-// var _retrieveData = async () => {
-//   try {
-//     token = await AsyncStorage.getItem("vk_token");
-//     if (token !== null) {
-//       console.log(token);
-//     }
-//   } catch (error) {
-//     console.log("error token");
-//   }
-// };
+// const token =
+//   "c500ccffc1e44e680733c0de7ed493d7c48682757d484fd08057fba936daa3e4cd2137df66ad9fe9a111d";
+var _retrieveData = async () => {
+  try {
+    token = await AsyncStorage.getItem("vk_token");
+    if (token !== null) {
+      // console.log(token);
+    }
+  } catch (error) {
+    console.log("error token");
+  }
+};
 
-// var token;
+var token;
 export const DialogInList = ({item, onOpen, dialog}) => {
   const [isLoading, setLoading] = useState(true);
   const [name, setName] = useState();
@@ -56,7 +57,8 @@ export const DialogInList = ({item, onOpen, dialog}) => {
       if (dialog.conversation.peer.type == "chat") {
         let title_chat = dialog.conversation.chat_settings.title;
         setName(title_chat);
-        // setIcon(dialog.conversation.chat_settings.photo.photo_50);
+        let str = dialog.conversation.chat_settings.photo.photo_50;
+        setIcon(str.substr(0, str.length - 6));
       } else {
         if (dialog.conversation.peer.type == "group") {
           setName("its group (" + dialog.conversation.peer.local_id + ")");
@@ -144,6 +146,7 @@ export const DialogInList = ({item, onOpen, dialog}) => {
   useEffect(() => {
     init();
     console.log("update listok");
+    _retrieveData();
     // setTimeout(init, 5000);
     // setTimeout(console.log, 5000, "update listok");
   });

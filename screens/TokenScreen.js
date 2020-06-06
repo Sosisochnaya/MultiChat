@@ -14,6 +14,7 @@ import {LinearGradient} from "expo-linear-gradient";
 var _storeData = async () => {
   try {
     await AsyncStorage.setItem("vk_token", this.token);
+    console.log("set token");
   } catch (error) {
     console.log("error token");
   }
@@ -89,6 +90,7 @@ TokenScreen.navigationOptions = {
 const styles = StyleSheet.create({
   conteiner: {
     height: "100%",
+    width: "100%",
     backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
   },
 
@@ -117,16 +119,17 @@ const styles = StyleSheet.create({
   },
 
   input_wrap: {
-    marginTop: 50,
+    width: "100%",
+    marginTop: 100,
+    alignItems: "center",
   },
 
   input: {
-    marginLeft: 25,
-    marginTop: 80,
-    paddingLeft: 115,
+    paddingLeft: 10,
+    //paddingRight: "25%",
     backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
     height: 30,
-    width: 318,
+    width: "80%",
     borderColor: THEME.INPUT_BORDER_COLOR,
     borderWidth: 1,
     borderRadius: 10,
@@ -137,36 +140,30 @@ const styles = StyleSheet.create({
 
   wrap: {
     alignItems: "center",
-    height: 60,
-    width: 328,
-    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    marginLeft: 7,
-    borderColor: "#5E5E5E",
-    borderWidth: 0.2,
+    width: "100%",
+    marginTop: 10,
   },
 
   button1: {
-    marginTop: 16,
-    marginLeft: 25,
-    justifyContent: "space-around",
+    //marginLeft: "10%",
+    alignItems: "center",
+    width: "80%",
+    //justifyContent: "center",
     flexDirection: "row",
     backgroundColor: THEME.BTN_ORANGE_COLOR,
-    height: 42,
-    width: 318,
+    height: 40,
     borderRadius: 10,
-    alignItems: "center",
   },
 
   label: {
+    paddingLeft: "40%",
+    paddingRight: "40%",
     color: THEME.TEXT_COLOR_BLACK,
     fontFamily: "nunito_bold",
     fontSize: 18,
   },
 
   instructions: {
-    marginTop: 50,
     color: THEME.TEXT_COLOR_BLACK,
     alignItems: "center",
     fontStyle: "normal",
@@ -229,17 +226,13 @@ const styles = StyleSheet.create({
   },
 
   form: {
+    marginTop: 40,
+    width: "100%",
     alignItems: "center",
-    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderColor: "#5E5E5E",
-    borderWidth: 0.2,
   },
 
   form1: {
-    width: 360,
-    borderWidth: 1,
+    width: "90%",
     borderRadius: 10,
   },
 });

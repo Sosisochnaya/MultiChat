@@ -19,7 +19,9 @@ import {TimeModaliOs} from "./TimeModaliOs";
 import {THEME} from "../themes/theme";
 import {Navbar} from "../components/Navbar";
 
-export const PlanModal = ({Add, navigation}) => {
+export const PlanModal = ({navigation}) => {
+  const Add = navigation.getParam("Add");
+  const goBack = navigation.getParam("goBack");
   const [modali, setModali] = useState(false);
   const [modala, setModala] = useState(false);
   const [value, setValue] = useState("s");
@@ -51,6 +53,7 @@ export const PlanModal = ({Add, navigation}) => {
         );
         setValue("");
         setname("");
+        goBack();
       }
     }
   };
@@ -89,7 +92,7 @@ export const PlanModal = ({Add, navigation}) => {
           >
             <View style={styles.input}>
               <Text style={styles.inputtext}>
-                {date.toTimeString()}
+                {date.toTimeString().slice(0, 5)}
                 {/* {" "}
                 {date.getDate().toString()}.{(date.getMonth() + 1).toString()}.
                 {date.getFullYear().toString()}
@@ -174,6 +177,7 @@ const styles = StyleSheet.create({
     width: 155,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
   },
 
   line1: {

@@ -9,6 +9,7 @@ import {
   TextInput,
   FlatList,
   ActivityIndicator,
+  AsyncStorage,
 } from "react-native";
 
 import {THEME} from "../themes/theme";
@@ -17,32 +18,32 @@ import {Message} from "../components/messagers";
 import {Ionicons, AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
 import {DATA} from "../data";
 
-const token =
-  "d24147844a4e218a89ec037cc9cb01b0117df41029304faccd5f330351d34756d83c5d657e26b3f64052c";
+var _retrieveData = async () => {
+  try {
+    token = await AsyncStorage.getItem("vk_token");
+    if (token !== null) {
+      // console.log(token);
+    }
+  } catch (error) {
+    console.log("error token");
+  }
+};
 
-// var _retrieveData = async () => {
-//   try {
-//     token = await AsyncStorage.getItem('vk_token');
-//     if (token !== null) {
-//       console.log(token);
-//     }
-//   } catch (error) {
-//     console.log('error token');
-//   }
-// };
+var token;
 
-// var token;
 export const DialogScreen = ({navigation}) => {
-  // const dialogId = navigation.getParam("dialog");
   const dialog = navigation.getParam("dialog");
   const [name, setName] = useState();
   const [icon, setIcon] = useState();
   const [mess, setMess] = useState();
   const [vk_mess, setmesslist] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const typechat = dialog.conversation.peer.type;
+  const [myid, setMyid] = useState();
 
   function vk_mess_history() {
     // return
+
     fetch(
       "https://api.vk.com/method/messages.getHistory?count=50&peer_id=" +
         dialog.conversation.peer.id +
@@ -59,6 +60,15 @@ export const DialogScreen = ({navigation}) => {
   }
 
   function init() {
+    fetch("https://api.vk.com/method/users.get?v=5.103&access_token=" + token)
+      .then((user) => user.json())
+      .then((user) => {
+        if (user.error == null) {
+          let id = user.response[0].id;
+          console.log(id);
+          setMyid(id);
+        }
+      });
     let fullname;
 
     if (dialog.conversation.peer.type == "user") {
@@ -146,13 +156,10 @@ export const DialogScreen = ({navigation}) => {
   }
 
   useEffect(() => {
+    _retrieveData();
     init();
     vk_mess_history();
     console.log("update messages");
-    // setTimeout(vk_mess_history, 10000);
-    setTimeout(console.log, 10000, "update messages");
-    // setTimeout(init, 5000);
-    // setTimeout(console.log, 5000, "dialog screen load");
   });
 
   return (
@@ -185,13 +192,19 @@ export const DialogScreen = ({navigation}) => {
           ></AntDesign.Button>
         </View>
       </View>
+
       <View style={styles.flat}>
         <FlatList
           inverted
           data={vk_mess}
           keyExtractor={(mes) => mes.conversation_message_id}
           renderItem={({item}) => (
-            <Message mes={item} id={dialog.conversation.peer.id} />
+            <Message
+              mes={item}
+              id={item.from_id}
+              typeChat={typechat}
+              myid={myid}
+            />
           )}
         />
       </View>
@@ -279,7 +292,9 @@ const styles = StyleSheet.create({
   },
 
   flat: {
-    paddingBottom: 60,
+    paddingBottom: 150,
+    // marginBottom: 25,
+    // backgroundColor: "white",
   },
 
   footer: {

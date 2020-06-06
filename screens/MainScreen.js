@@ -23,22 +23,18 @@ import * as FileSystem from "expo-file-system";
 // import {MTProto} from "../messemgers/TG/Client";
 // import config from "../config";
 
-// токен сюда...........................................................................
-const token =
-  "d24147844a4e218a89ec037cc9cb01b0117df41029304faccd5f330351d34756d83c5d657e26b3f64052c";
+var _retrieveData = async () => {
+  try {
+    token = await AsyncStorage.getItem("vk_token");
+    if (token !== null) {
+      // console.log(token);
+    }
+  } catch (error) {
+    console.log("error token");
+  }
+};
 
-// var _retrieveData = async () => {
-//   try {
-//     token = await AsyncStorage.getItem('vk_token');
-//     if (token !== null) {
-//       console.log(token);
-//     }
-//   } catch (error) {
-//     console.log('error token');
-//   }
-// };
-
-// var token;
+var token;
 
 export const MainScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
@@ -65,9 +61,12 @@ export const MainScreen = ({navigation}) => {
         token
     )
       .then((response) => response.json())
-      .then((json) => setVKlist(json.response.items))
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
+      .then((json) => {
+        if (json.error == null) {
+          setVKlist(json.response.items);
+          setLoading(false);
+        }
+      });
   }
 
   function tg_auth() {
@@ -82,6 +81,7 @@ export const MainScreen = ({navigation}) => {
     setTimeout(vk_dialog_list_1, 5000);
 
     setTimeout(console.log, 1000, "update");
+    _retrieveData();
     // vk_dialog_list_1();
     // console.log(AuthSession.getRedirectUrl());
     // tg_auth();
