@@ -13,10 +13,8 @@ import {
 } from "react-native";
 
 import {THEME} from "../themes/theme";
-import {DialogInList} from "../components/DialogInList";
 import {Message} from "../components/messagers";
 import {Ionicons, AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
-import {DATA} from "../data";
 
 var _retrieveData = async () => {
   try {

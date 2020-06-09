@@ -9,12 +9,10 @@ import {ChooseMessangerScreen} from "../screens/ChooseMessanger";
 import {TGAuthScreen} from "../screens/AddDialog1";
 import {TokenScreen} from "../screens/TokenScreen";
 import {PlanModal} from "../components/PlanModal";
-// import {EditModal} from "../components/EditModal";
 
 const Navigation = createStackNavigator(
   {
     Main: MainScreen,
-    //Main2: MainScreen2,
     Dialog: {
       screen: DialogScreen,
     },

@@ -3,8 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
-  Button,
   TextInput,
   FlatList,
   AsyncStorage,
@@ -14,14 +12,7 @@ import {DialogInList} from "../components/DialogInList";
 import {Navbar} from "../components/Navbar";
 import {THEME} from "../themes/theme";
 import {AntDesign} from "@expo/vector-icons";
-// import * as AuthSession from "expo-auth-session";
-// import {EditModal} from "../components/EditModal";
-import {DATA} from "../data";
-// import {items} from "../data/listDialogs";
 import {ChooseMessangerScreen} from "./ChooseMessanger";
-import * as FileSystem from "expo-file-system";
-// import {MTProto} from "../messemgers/TG/Client";
-// import config from "../config";
 
 var _retrieveData = async () => {
   try {
@@ -40,13 +31,8 @@ export const MainScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [vk_list, setVKlist] = useState([]);
-  const [isToken, setToken] = useState();
-  const [number, setNumber] = useState();
-  // const vk_token;
-  // const {MTProto} = require("@mtproto/core");
 
   const openDialogHendler = (item) => {
-    // navigation.navigate("Dialog", {dialogId: dialog.id});
     navigation.navigate("Dialog", {dialog: item});
   };
 
@@ -57,7 +43,7 @@ export const MainScreen = ({navigation}) => {
   function vk_dialog_list_1() {
     // return
     fetch(
-      "https://api.vk.com/method/messages.getConversations?count=10&v=5.103&access_token=" +
+      "https://api.vk.com/method/messages.getConversations?count=15&v=5.103&access_token=" +
         token
     )
       .then((response) => response.json())
@@ -69,22 +55,10 @@ export const MainScreen = ({navigation}) => {
       });
   }
 
-  function tg_auth() {
-    const mtproto = new MTProto({
-      api_id: "131236",
-      api_hash: "61066cf4e9fe9d8c9704171f38ff40ba",
-      test: true,
-    });
-  }
-
   useEffect(() => {
     setTimeout(vk_dialog_list_1, 5000);
-
     setTimeout(console.log, 1000, "update");
     _retrieveData();
-    // vk_dialog_list_1();
-    // console.log(AuthSession.getRedirectUrl());
-    // tg_auth();
   });
 
   return (
@@ -105,7 +79,6 @@ export const MainScreen = ({navigation}) => {
             name="plus"
             size={25}
             backgroundColor="transparent"
-            //onPress={() => setModal(true)}
             onPress={goToChooseMessanger}
           ></AntDesign.Button>
         </View>
@@ -124,11 +97,7 @@ export const MainScreen = ({navigation}) => {
         <FlatList
           data={vk_list}
           keyExtractor={(dialog) => dialog.conversation.peer.id.toString()}
-          // data={vk_list}
-          // keyExtractor={(dialog) => dialog.conversation.peer.id.toString()}
           renderItem={({item}) => (
-            // <Text>{item.last_message.text}</Text>
-
             <DialogInList dialog={item} onOpen={openDialogHendler} />
           )}
         />

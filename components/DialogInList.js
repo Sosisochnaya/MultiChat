@@ -4,17 +4,12 @@ import {
   Text,
   View,
   ImageBackground,
-  Image,
   TouchableOpacity,
-  ActivityIndicator,
   AsyncStorage,
 } from "react-native";
 import {THEME} from "../themes/theme";
-import config from "../config";
 import {LinearGradient} from "expo-linear-gradient";
 
-// const token =
-//   "c500ccffc1e44e680733c0de7ed493d7c48682757d484fd08057fba936daa3e4cd2137df66ad9fe9a111d";
 var _retrieveData = async () => {
   try {
     token = await AsyncStorage.getItem("vk_token");
@@ -28,7 +23,6 @@ var _retrieveData = async () => {
 
 var token;
 export const DialogInList = ({item, onOpen, dialog}) => {
-  const [isLoading, setLoading] = useState(true);
   const [name, setName] = useState();
   const [icon, setIcon] = useState();
   const [isCount, setCount] = useState(false);
@@ -50,7 +44,6 @@ export const DialogInList = ({item, onOpen, dialog}) => {
             fullname = fullname.first_name + " " + fullname.last_name;
             setName(fullname);
             setIcon(user.response[0].photo_50);
-            setLoading(false);
           }
         });
     } else {
@@ -74,7 +67,6 @@ export const DialogInList = ({item, onOpen, dialog}) => {
       setCount(false);
     }
 
-    // setName(limitStr(name.toString(), 25));
     ///////////////set date info/////////////////////
     let d = new Date();
     d.setTime(dialog.last_message.date + "000");
@@ -147,8 +139,6 @@ export const DialogInList = ({item, onOpen, dialog}) => {
     init();
     console.log("update listok");
     _retrieveData();
-    // setTimeout(init, 5000);
-    // setTimeout(console.log, 5000, "update listok");
   });
 
   return (
@@ -206,47 +196,36 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     borderBottomColor: THEME.DIALOG_BORDER_COLOR,
-    //borderBottomWidth: 0.5,
     paddingTop: 1,
     position: "relative",
     marginTop: 2,
   },
   icon: {
-    margin: 10, //отсутп со всех сторон по 10 пикселей
+    margin: 10,
     width: 50,
-    height: 50, // размеры
-    resizeMode: "cover", //чтобы при изменении размера пропорции сохранялись
+    height: 50,
+    resizeMode: "cover",
   },
-
-  //2 часть где тескт с именем и ласт сообщением
   text: {
-    //alignItems:
     justifyContent: "space-around",
     borderBottomColor: THEME.DIALOG_BORDER_COLOR,
     borderBottomWidth: 0.5,
     width: "100%",
   },
   line1: {
-    //alignItems: 'baseline',
     flexDirection: "row",
-    //justifyContent: 'flex-start'
     width: "54%",
   },
-  line2: {
-    //flexDirection: 'row',
-    //justifyContent: 'flex-start'
-  },
   name: {
-    fontStyle: "normal", //не знает шрфиты вообще
+    fontStyle: "normal",
     fontSize: 16,
     color: THEME.DIALOG_NAME_COLOR_BLACK,
     fontFamily: "roboto_bold",
-    // width: "55%",
   },
   logoMes: {
     marginLeft: 10,
     marginTop: 3,
-    width: 22, //явно задал размеры , думаю тут адаптив не нужен
+    width: 22,
     height: 16,
     borderRadius: 5,
     alignItems: "center",
@@ -262,13 +241,10 @@ const styles = StyleSheet.create({
   },
   lastMes: {
     marginBottom: 6,
-    //color: 'white'
     fontSize: 14,
     color: THEME.LASTMES_TEXT_COLOR_BLACK,
     fontFamily: "roboto_regular",
   },
-
-  //3 часть где время ласт сообщения и кол-вл непрочитанных сообщений
   thirdColumn: {
     position: "absolute",
     justifyContent: "space-around",
