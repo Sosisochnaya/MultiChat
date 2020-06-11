@@ -14,23 +14,25 @@ import {THEME} from "../themes/theme";
 import {AntDesign} from "@expo/vector-icons";
 import {ChooseMessangerScreen} from "./ChooseMessanger";
 
-var _retrieveData = async () => {
-  try {
-    token = await AsyncStorage.getItem("vk_token");
-    if (token !== null) {
-      // console.log(token);
-    }
-  } catch (error) {
-    console.log("error token");
-  }
-};
-
-var token;
-
 export const MainScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
+  const [isToken, setToken] = useState(false);
   const [modal, setModal] = useState(false);
   const [vk_list, setVKlist] = useState([]);
+
+  var _retrieveData = async () => {
+    try {
+      token = await AsyncStorage.getItem("vk_token");
+      if (token !== null) {
+        // console.log(token);
+        setToken(false);
+      }
+    } catch (error) {
+      console.log("error token");
+    }
+  };
+
+  var token;
 
   const openDialogHendler = (item) => {
     navigation.navigate("Dialog", {dialog: item});
@@ -56,9 +58,10 @@ export const MainScreen = ({navigation}) => {
   }
 
   useEffect(() => {
-    setTimeout(vk_dialog_list_1, 5000);
-    setTimeout(console.log, 1000, "update");
     _retrieveData();
+    setTimeout(vk_dialog_list_1, 5000);
+    // vk_dialog_list_1();
+    // setTimeout(console.log, 5000, "update");
   });
 
   return (
@@ -89,7 +92,28 @@ export const MainScreen = ({navigation}) => {
         />
       </View>
 
-      {isLoading ? (
+      {isToken ? (
+        <View style={styles.tokenwrap}>
+          <Text style={styles.tokentext}>Enter Token</Text>
+
+          <View style={styles.wrapvk}>
+            <TouchableOpacity onPress={() => navigation.navigate("Token")}>
+              <LinearGradient
+                colors={["#FFDE67", "#FFA467", "#FF6666"]}
+                start={[1.0, 0.2]}
+                end={[0.2, 1.0]}
+                style={styles.button1}
+              >
+                <Text style={styles.label}>Enter VK Token</Text>
+                <Image
+                  style={styles.imageVk}
+                  source={require("../assets/vk.png")}
+                />
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : isLoading ? (
         <View style={{padding: 20}}>
           <ActivityIndicator size="large" />
         </View>
@@ -102,7 +126,8 @@ export const MainScreen = ({navigation}) => {
           )}
         />
       )}
-      <Navbar navigation={navigation} />
+
+      <Navbar navigation={navigation} status={"Chat"} />
     </View>
   );
 };
@@ -116,9 +141,7 @@ const styles = StyleSheet.create({
     paddingBottom: 60,
   },
   header: {
-    //width: "100%",
     paddingTop: 20,
-    //marginTop: 24,
     height: 110,
     justifyContent: "center",
     alignItems: "center",

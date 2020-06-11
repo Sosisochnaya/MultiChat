@@ -22,14 +22,27 @@ var _retrieveData = async () => {
 };
 
 var token;
-export const DialogInList = ({item, onOpen, dialog}) => {
+export const DialogInList = ({onOpen, dialog}) => {
   const [name, setName] = useState();
   const [icon, setIcon] = useState();
   const [isCount, setCount] = useState(false);
-  const [lastmes, setLastmes] = useState();
+  const [lastmes, setLastmes] = useState("");
   const [date, setDate] = useState();
+  const [myid, setMyid] = useState();
 
   function init() {
+    fetch(
+      "https://api.vk.com/method/users.get?&fields=photo_50&v=5.103&access_token=" +
+        token
+    )
+      .then((user) => user.json())
+      .then((user) => {
+        if (user.error == null) {
+          let id = user.response[0].id;
+          setMyid(id);
+        }
+      });
+
     if (dialog.conversation.peer.type == "user") {
       fetch(
         "https://api.vk.com/method/users.get?user_ids=" +
@@ -80,65 +93,62 @@ export const DialogInList = ({item, onOpen, dialog}) => {
         setDate("yesterday");
       } else setDate(d.toTimeString().slice(0, 5));
     }
+    ///////////////set date info/////////////////////
 
+    ///////////////last mes  ////////////////////////
     function limitStr(str, n) {
       if (str.length < n) return str;
       let symb = "...";
       return str.substr(0, n - symb.length) + symb;
     }
     setLastmes(limitStr(dialog.last_message.text, 35));
+    ///////////////last mes  ////////////////////////
+
     function checkAttachments() {
       if (dialog.last_message.text == "") {
-        const last_message_attachments = dialog.last_message.attachments;
-        const last_message_attachment = last_message_attachments[0].type;
+        const last_message_attachment = dialog.last_message.attachments[0].type;
         if (last_message_attachment == "photo") {
-          // last_message_text = "Photo";
           setLastmes("Photo");
         }
         if (last_message_attachment == "video") {
-          // last_message_text = "Video";
           setLastmes("Video");
         }
         if (last_message_attachment == "audio") {
-          // last_message_text = "Audio";
           setLastmes("Audio");
         }
+        if (last_message_attachment == "audio_message") {
+          setLastmes("Voice message");
+        }
         if (last_message_attachment == "doc") {
-          // last_message_text = "Document";
           setLastmes("Document");
         }
         if (last_message_attachment == "point") {
-          // last_message_text = "Map";
           setLastmes("Map");
         }
         if (last_message_attachment == "gift") {
-          // last_message_text = "Gift";
           setLastmes("Gift");
         }
         if (last_message_attachment == "link") {
-          // last_message_text = "Link";
           setLastmes("Link");
         }
         if (last_message_attachment == "sticker") {
-          // last_message_text = "Sticker";
           setLastmes("Sticker");
         }
         if (last_message_attachment == "wall") {
-          // last_message_text = "Wall post";
           setLastmes("Wall post");
         }
       } else {
-        // last_message_text = "Forwarded messages";
+        last_message_text = "Forwarded messages";
         // setLastmes("Forwarded messages");
       }
     }
-    // checkAttachments();
+    checkAttachments();
   }
 
   useEffect(() => {
-    init();
-    console.log("update listok");
     _retrieveData();
+    init();
+    // console.log("update listok");
   });
 
   return (

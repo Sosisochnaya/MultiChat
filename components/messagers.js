@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from "react";
 import {View, Text, StyleSheet, AsyncStorage} from "react-native";
-import {DialogInList} from "./DialogInList";
-
 var token;
 var _retrieveData = async () => {
   try {
@@ -13,50 +11,10 @@ var _retrieveData = async () => {
     console.log("error token");
   }
 };
-
 export const Message = ({mes, id, typeChat, myid}) => {
   const [name, setName] = useState();
-  // const [myid, setMyid] = useState();
 
-  useEffect(() => {
-    _retrieveData();
-  });
-
-  if (typeChat == "user") {
-    // fetch("https://api.vk.com/method/users.get?v=5.103&access_token=" + token)
-    //   .then((user) => user.json())
-    //   .then((user) => {
-    //     if (user.error == null) {
-    //       let id = user.response[0].id;
-    //       console.log(id);
-    //       setMyid(id);
-    //     }
-    //   });
-    if (mes.from_id == myid)
-      return (
-        <View>
-          <Text style={stylesL.text}>{mes.text}</Text>
-        </View>
-      );
-    else
-      return (
-        <View>
-          <Text style={stylesR.text}>{mes.text}</Text>
-        </View>
-      );
-  }
-
-  if (typeChat == "chat") {
-    // fetch("https://api.vk.com/method/users.get?v=5.103&access_token=" + token)
-    //   .then((user) => user.json())
-    //   .then((user) => {
-    //     if (user.error == null) {
-    //       let id = user.response[0].id;
-    //       console.log(id);
-    //       setMyid(id);
-    //     }
-    //   });
-
+  function init_users_chat() {
     fetch(
       "https://api.vk.com/method/users.get?user_ids=" +
         id +
@@ -67,9 +25,52 @@ export const Message = ({mes, id, typeChat, myid}) => {
       .then((user) => {
         if (user.error == null) {
           let fullname = user.response[0];
+          console.log(fullname);
           fullname = fullname.first_name + " " + fullname.last_name;
+          console.log(fullname);
           setName(fullname);
         }
+      });
+  }
+  useEffect(() => {
+    _retrieveData();
+    // init_users_chat();
+    // console.log(id);
+  });
+
+  if (typeChat == "user") {
+    if (mes.from_id == myid)
+      return (
+        <View>
+          <Text style={stylesR.text}>{mes.text}</Text>
+        </View>
+      );
+    else
+      return (
+        <View>
+          <Text style={stylesL.text}>{mes.text}</Text>
+        </View>
+      );
+  }
+
+  if (typeChat == "chat") {
+    let fullname;
+    fetch(
+      "https://api.vk.com/method/users.get?user_ids=" +
+        id +
+        "&v=5.103&access_token=" +
+        token
+    )
+      .then((user) => user.json())
+      .then((user) => {
+        if (user.error == null) {
+          fullname = user.response[0];
+          // console.log(fullname);
+          fullname = fullname.first_name + " " + fullname.last_name;
+          // console.log(fullname);
+          setName(fullname);
+        }
+        // console.log(user);
       });
 
     if (mes.from_id != myid)
@@ -95,7 +96,6 @@ const stylesL = StyleSheet.create({
 
   text: {
     color: "white",
-    //borderWidth: 1,
     fontSize: 14,
     lineHeight: 20,
 

@@ -155,7 +155,7 @@ export const ConfigScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
 
-      <Navbar navigation={navigation} />
+      <Navbar navigation={navigation} status={"Conf"} />
     </View>
   );
 };
@@ -165,6 +165,8 @@ const styles = StyleSheet.create({
     backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
     position: "relative",
     paddingBottom: 60,
+    width: "100%",
+    height: "100%",
   },
 
   conteiner_header: {

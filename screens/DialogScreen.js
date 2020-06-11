@@ -63,7 +63,7 @@ export const DialogScreen = ({navigation}) => {
       .then((user) => {
         if (user.error == null) {
           let id = user.response[0].id;
-          console.log(id);
+          // console.log(id);
           setMyid(id);
         }
       });
@@ -155,8 +155,8 @@ export const DialogScreen = ({navigation}) => {
 
   useEffect(() => {
     _retrieveData();
-    init();
     vk_mess_history();
+    init();
     console.log("update messages");
   });
 
@@ -190,22 +190,27 @@ export const DialogScreen = ({navigation}) => {
           ></AntDesign.Button>
         </View>
       </View>
-
-      <View style={styles.flat}>
-        <FlatList
-          inverted
-          data={vk_mess}
-          keyExtractor={(mes) => mes.conversation_message_id}
-          renderItem={({item}) => (
-            <Message
-              mes={item}
-              id={item.from_id}
-              typeChat={typechat}
-              myid={myid}
-            />
-          )}
-        />
-      </View>
+      {isLoading ? (
+        <View style={{padding: 20}}>
+          <ActivityIndicator size="large" />
+        </View>
+      ) : (
+        <View style={styles.flat}>
+          <FlatList
+            inverted
+            data={vk_mess}
+            keyExtractor={(mes) => mes.conversation_message_id}
+            renderItem={({item}) => (
+              <Message
+                mes={item}
+                id={item.from_id}
+                typeChat={typechat}
+                myid={myid}
+              />
+            )}
+          />
+        </View>
+      )}
 
       <View style={styles.footer}>
         <View style={styles.buttonPlus}>

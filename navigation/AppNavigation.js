@@ -6,7 +6,6 @@ import {AddChatScreen} from "../screens/AddChatScreen";
 import {PlanScreen} from "../screens/PlanScreen";
 import {ConfigScreen} from "../screens/ConfigScreen";
 import {ChooseMessangerScreen} from "../screens/ChooseMessanger";
-import {TGAuthScreen} from "../screens/AddDialog1";
 import {TokenScreen} from "../screens/TokenScreen";
 import {PlanModal} from "../components/PlanModal";
 
@@ -24,7 +23,6 @@ const Navigation = createStackNavigator(
       screen: PlanScreen,
     },
     AddPlan: PlanModal,
-    TGAuth: TGAuthScreen,
   },
   {
     initialRouteName: "Main",

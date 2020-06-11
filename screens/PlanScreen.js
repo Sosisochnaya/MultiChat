@@ -168,7 +168,7 @@ export const PlanScreen = ({navigation}) => {
         )}
       />
 
-      <Navbar navigation={navigation} />
+      <Navbar navigation={navigation} status={"Plan"} />
     </View>
   );
 };
