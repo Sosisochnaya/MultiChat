@@ -7,6 +7,10 @@ import {
   FlatList,
   AsyncStorage,
   ActivityIndicator,
+  TouchableOpacity,
+  LinearGradient,
+  Image,
+  Alert,
 } from "react-native";
 import {DialogInList} from "../components/DialogInList";
 import {Navbar} from "../components/Navbar";
@@ -14,12 +18,25 @@ import {THEME} from "../themes/theme";
 import {AntDesign} from "@expo/vector-icons";
 import {ChooseMessangerScreen} from "./ChooseMessanger";
 
+var token;
+var list = [];
+var last_message_text = "default";
+var your_id;
+var name;
+var photo;
+
 export const MainScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
-  const [isToken, setToken] = useState(false);
+  const [isToken, setToken] = useState(true);
   const [modal, setModal] = useState(false);
   const [vk_list, setVKlist] = useState([]);
+  const [whitelist, setWhitelist] = useState([]);
 
+  // const {MTProto} = require("@mtproto/core");
+
+  const openDialogHendler = (item) => {
+    navigation.navigate("Dialog", {dialog: item});
+  };
   var _retrieveData = async () => {
     try {
       token = await AsyncStorage.getItem("vk_token");
@@ -31,37 +48,166 @@ export const MainScreen = ({navigation}) => {
       console.log("error token");
     }
   };
-
-  var token;
-
-  const openDialogHendler = (item) => {
-    navigation.navigate("Dialog", {dialog: item});
-  };
-
   const goToChooseMessanger = () => {
     setModal(true);
   };
 
-  function vk_dialog_list_1() {
-    // return
-    fetch(
-      "https://api.vk.com/method/messages.getConversations?count=15&v=5.103&access_token=" +
+  async function vk_dialog_list_1() {
+    var _getWhitelist = async () => {
+      AsyncStorage.getItem("whitelist")
+        .then((req) => JSON.parse(req))
+        .then((json) => setWhitelist(json))
+        .catch((error) => console.log("error!"));
+    };
+
+    _getWhitelist();
+
+    await fetch(
+      "https://api.vk.com/method/users.get?v=5.123&access_token=" + token
+    )
+      .then((response) => response.json())
+      .then((json_lol_kek) => {
+        if (json_lol_kek.error == null) {
+          your_id = json_lol_kek.response[0].id;
+        }
+      });
+
+    await fetch(
+      "https://api.vk.com/method/messages.getConversations?count=20&extended=1&v=5.123&access_token=" +
         token
     )
       .then((response) => response.json())
       .then((json) => {
         if (json.error == null) {
-          setVKlist(json.response.items);
-          setLoading(false);
+          json.response.items.forEach((item) => {
+            if (whitelist.includes(item.conversation.peer.id)) {
+              if (item.conversation.peer.type == "user") {
+                if (
+                  item.last_message.text == "" &&
+                  item.last_message.fwd_messages[0] != null
+                ) {
+                  last_message_text = "Forwarded messages";
+                } else if (item.last_message.text == "") {
+                  if (item.last_message.attachments[0].type == "photo") {
+                    last_message_text = "Photo";
+                  }
+                  if (item.last_message.attachments[0].type == "video") {
+                    last_message_text = "Video";
+                  }
+                  if (item.last_message.attachments[0].type == "audio") {
+                    last_message_text = "Audio";
+                  }
+                  if (item.last_message.attachments[0].type == "doc") {
+                    last_message_text = "Document";
+                  }
+                  if (item.last_message.attachments[0].type == "point") {
+                    last_message_text = "Map";
+                  }
+                  if (item.last_message.attachments[0].type == "gift") {
+                    last_message_text = "Gift";
+                  }
+                  if (item.last_message.attachments[0].type == "link") {
+                    last_message_text = "Link";
+                  }
+                  if (item.last_message.attachments[0].type == "sticker") {
+                    last_message_text = "Sticker";
+                  }
+                  if (item.last_message.attachments[0].type == "wall") {
+                    last_message_text = "Wall post";
+                  }
+                  if (
+                    item.last_message.attachments[0].type == "audio_message"
+                  ) {
+                    last_message_text = "Voice message";
+                  }
+                } else last_message_text = item.last_message.text;
+                if (item.last_message.from_id == your_id)
+                  last_message_text = "You: " + last_message_text;
+
+                json.response.profiles.forEach((profile) => {
+                  if (profile.id == item.conversation.peer.id) {
+                    name = profile.first_name + " " + profile.last_name;
+                    photo = profile.photo_50;
+                  }
+                });
+
+                list.push({
+                  id: item.conversation.peer.id,
+                  type: "user",
+                  name: name,
+                  photo: photo,
+                  unread_count: item.conversation.unread_count,
+                  last_message_text: last_message_text,
+                  last_message_from: item.last_message.from_id,
+                  last_message_date: item.last_message.date,
+                });
+              }
+              if (item.conversation.peer.type == "chat") {
+                if (
+                  item.last_message.text == "" &&
+                  item.last_message.fwd_messages[0] != null
+                ) {
+                  last_message_text = "Forwarded messages";
+                } else if (item.last_message.text == "") {
+                  if (item.last_message.attachments[0].type == "photo") {
+                    last_message_text = "Photo";
+                  }
+                  if (item.last_message.attachments[0].type == "video") {
+                    last_message_text = "Video";
+                  }
+                  if (item.last_message.attachments[0].type == "audio") {
+                    last_message_text = "Audio";
+                  }
+                  if (item.last_message.attachments[0].type == "doc") {
+                    last_message_text = "Document";
+                  }
+                  if (item.last_message.attachments[0].type == "point") {
+                    last_message_text = "Map";
+                  }
+                  if (item.last_message.attachments[0].type == "gift") {
+                    last_message_text = "Gift";
+                  }
+                  if (item.last_message.attachments[0].type == "link") {
+                    last_message_text = "Link";
+                  }
+                  if (item.last_message.attachments[0].type == "sticker") {
+                    last_message_text = "Sticker";
+                  }
+                  if (item.last_message.attachments[0].type == "wall") {
+                    last_message_text = "Wall post";
+                  }
+                  if (
+                    item.last_message.attachments[0].type == "audio_message"
+                  ) {
+                    last_message_text = "Voice message";
+                  }
+                } else last_message_text = item.last_message.text;
+                if (item.last_message.from_id == your_id)
+                  last_message_text = "You: " + last_message_text;
+                list.push({
+                  id: item.conversation.peer.id,
+                  type: "chat",
+                  name: item.conversation.chat_settings.title,
+                  photo: item.conversation.chat_settings.photo.photo_50,
+                  unread_count: item.conversation.unread_count,
+                  last_message_text: last_message_text,
+                  last_message_from: item.last_message.from_id,
+                  last_message_date: item.last_message.date,
+                });
+              }
+            }
+          });
         }
       });
+    // console.log(list);
+    if (list != "") setVKlist(list);
+    list = [];
+    setLoading(false);
   }
 
   useEffect(() => {
     _retrieveData();
-    setTimeout(vk_dialog_list_1, 5000);
-    // vk_dialog_list_1();
-    // setTimeout(console.log, 5000, "update");
+    setTimeout(vk_dialog_list_1, 10000);
   });
 
   return (
@@ -93,6 +239,13 @@ export const MainScreen = ({navigation}) => {
       </View>
 
       {isToken ? (
+        Alert.alert(
+          "Hello",
+          "You need to set token",
+          [{text: "OK", onPress: () => navigation.navigate("Token")}],
+          {cancelable: false}
+        )
+      ) : /*
         <View style={styles.tokenwrap}>
           <Text style={styles.tokentext}>Enter Token</Text>
 
@@ -112,21 +265,20 @@ export const MainScreen = ({navigation}) => {
               </LinearGradient>
             </TouchableOpacity>
           </View>
-        </View>
-      ) : isLoading ? (
+        </View>*/
+      isLoading ? (
         <View style={{padding: 20}}>
           <ActivityIndicator size="large" />
         </View>
       ) : (
         <FlatList
           data={vk_list}
-          keyExtractor={(dialog) => dialog.conversation.peer.id.toString()}
+          keyExtractor={(dialog) => dialog.id.toString()}
           renderItem={({item}) => (
             <DialogInList dialog={item} onOpen={openDialogHendler} />
           )}
         />
       )}
-
       <Navbar navigation={navigation} status={"Chat"} />
     </View>
   );
@@ -141,7 +293,9 @@ const styles = StyleSheet.create({
     paddingBottom: 60,
   },
   header: {
+    //width: "100%",
     paddingTop: 20,
+    //marginTop: 24,
     height: 110,
     justifyContent: "center",
     alignItems: "center",

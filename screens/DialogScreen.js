@@ -1,5 +1,4 @@
-import React, {useEffect} from "react";
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   Text,
   View,
@@ -14,7 +13,7 @@ import {
 
 import {THEME} from "../themes/theme";
 import {Message} from "../components/messagers";
-import {Ionicons, AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
+import {Ionicons, AntDesign} from "@expo/vector-icons";
 
 var _retrieveData = async () => {
   try {
@@ -36,7 +35,7 @@ export const DialogScreen = ({navigation}) => {
   const [mess, setMess] = useState();
   const [vk_mess, setmesslist] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const typechat = dialog.conversation.peer.type;
+  const typechat = dialog.type;
   const [myid, setMyid] = useState();
 
   function vk_mess_history() {
@@ -44,7 +43,7 @@ export const DialogScreen = ({navigation}) => {
 
     fetch(
       "https://api.vk.com/method/messages.getHistory?count=50&peer_id=" +
-        dialog.conversation.peer.id +
+        dialog.id +
         "&v=5.103&access_token=" +
         token
     )
@@ -57,106 +56,40 @@ export const DialogScreen = ({navigation}) => {
       });
   }
 
-  function init() {
-    fetch("https://api.vk.com/method/users.get?v=5.103&access_token=" + token)
+  async function init() {
+    await fetch(
+      "https://api.vk.com/method/users.get?v=5.103&access_token=" + token
+    )
       .then((user) => user.json())
       .then((user) => {
-        if (user.error == null) {
-          let id = user.response[0].id;
-          // console.log(id);
-          setMyid(id);
-        }
+        if (user.error == null) setMyid(user.response[0].id);
       });
-    let fullname;
 
-    if (dialog.conversation.peer.type == "user") {
-      fetch(
-        "https://api.vk.com/method/users.get?user_ids=" +
-          dialog.conversation.peer.id +
-          "&fields=photo_50&v=5.103&access_token=" +
-          token
-      )
-        .then((user) => user.json())
-        .then((user) => {
-          if (user.error == null) {
-            let fullnamejson = user.response[0];
-            fullname = fullnamejson.first_name + " " + fullnamejson.last_name;
-            setName(fullname);
-            setIcon(user.response[0].photo_50);
-            setLoading(false);
-          }
-        })
-        .catch((error) => console.error(error));
-    } else {
-      if (dialog.conversation.peer.type == "chat") {
-        fullname = dialog.conversation.chat_settings.title;
-        // setName(fullname);
-        setIcon(dialog.conversation.chat_settings.photo.photo_50);
-      } else {
-        if (dialog.conversation.peer.type == "group") {
-          fullname = "its group (" + dialog.conversation.peer.local_id + ")";
-          // setName(fullname);
-        } else {
-          setName("ti kto(who)?");
-        }
-      }
-      function limitStr(str, n) {
-        if (str.length < n) return str;
-        let symb = "...";
-        return str.substr(0, n - symb.length) + symb;
-      }
-      setName(limitStr(fullname, 19));
+    function limitStr(str, n) {
+      if (str.length < n) return str;
+      let symb = "...";
+      return str.substr(0, n - symb.length) + symb;
     }
-    // <FlatList
-    //   data={vk_mess}
-    //   keyExtractor={(mes) => mes.conversation_message_id}
-    //   renderItem={({mes}) => <Text>{mes.text}</Text>}
-    // />;
-    // vk_mess.forEach(function (item) {
-    //   console.log(item.text);
-    // });
+    setName(limitStr(dialog.name, 19));
   }
 
   function sendMessage() {
-    if (dialog.conversation.peer.type == "user") {
-      fetch(
-        "https://api.vk.com/method/messages.send?peer_id=" +
-          dialog.conversation.peer.id +
-          "&message=" +
-          mess +
-          "&v=5.44&access_token=" +
-          token
-      );
-    } else {
-      if (dialog.conversation.peer.type == "chat") {
-        fetch(
-          "https://api.vk.com/method/messages.send?peer_id=" +
-            dialog.conversation.peer.id +
-            "&message=" +
-            mess +
-            "&v=5.44&access_token=" +
-            token
-        );
-      } else {
-        if (dialog.conversation.peer.type == "group") {
-          var tmp = -dialog.conversation.peer.id;
-          fetch(
-            "https://api.vk.com/method/messages.send?peer_id=" +
-              tmp +
-              "&message=" +
-              mess +
-              "&v=5.44&access_token=" +
-              token
-          );
-        }
-      }
-    }
+    fetch(
+      "https://api.vk.com/method/messages.send?peer_id=" +
+        dialog.id +
+        "&message=" +
+        mess +
+        "&v=5.44&access_token=" +
+        token
+    );
+
+    vk_mess_history();
   }
 
   useEffect(() => {
     _retrieveData();
-    vk_mess_history();
     init();
+    vk_mess_history();
     console.log("update messages");
   });
 
@@ -177,7 +110,7 @@ export const DialogScreen = ({navigation}) => {
           <ImageBackground
             style={styles.icon}
             borderRadius={50}
-            source={{uri: icon}}
+            source={{uri: dialog.photo}}
           />
           <Text style={styles.name}>{name}</Text>
         </View>
@@ -204,7 +137,7 @@ export const DialogScreen = ({navigation}) => {
               <Message
                 mes={item}
                 id={item.from_id}
-                typeChat={typechat}
+                typeChat={dialog.type}
                 myid={myid}
               />
             )}
@@ -229,13 +162,6 @@ export const DialogScreen = ({navigation}) => {
         />
 
         <View style={styles.buttonSendMes}>
-          {/* <Ionicons.Button
-            name="md_send"
-            size={34}
-            color={THEME.DIALOG_NAME_COLOR}
-            backgroundColor="transparent"
-            //onPress={() => navigation.goBack(null)}
-          /> */}
           <AntDesign.Button
             name="rightsquareo"
             size={30}

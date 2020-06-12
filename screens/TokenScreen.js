@@ -7,20 +7,76 @@ import {
   TouchableOpacity,
   TextInput,
   AsyncStorage,
+  Alert,
 } from "react-native";
 import {THEME} from "../themes/theme";
 import {LinearGradient} from "expo-linear-gradient";
 
-var _storeData = async () => {
-  try {
-    await AsyncStorage.setItem("vk_token", this.token);
-    console.log("set token");
-  } catch (error) {
-    console.log("error token");
-  }
-};
+// var _storeData = async () => {
+//   try {
+//     await AsyncStorage.setItem("vk_token", this.token);
+//     console.log("set token");
+//     Alert.alert(
+//       "Nice",
+//       "You set your token",
+//       [{text: "OK", onPress: () => navigation.goBack(null)}],
+//       {cancelable: false}
+//     );
+//   } catch (error) {
+//     console.log("error token");
+//   }
+// };
 
-export const TokenScreen = () => {
+export const TokenScreen = ({navigation}) => {
+  // var navigation = navigation.getParam("Navi");s
+  var token;
+  async function _storeData() {
+    try {
+      let name;
+      if (token.length == 85) {
+        await fetch(
+          "https://api.vk.com/method/users.get?v=5.123&access_token=" + token
+        )
+          .then((response) => response.json())
+          .then((json) => {
+            if (json.error == null) {
+              name =
+                json.response[0].first_name + " " + json.response[0].last_name;
+              //await AsyncStorage.setItem("vk_token", token);
+              console.log("set token");
+              Alert.alert(
+                "Nice",
+                "You logined as: " + name,
+                [
+                  {text: "OK", onPress: () => navigation.navigate("Main")},
+                  {
+                    text: "Choose chats",
+                    onPress: () => navigation.navigate("AddChat"),
+                  },
+                ],
+                {cancelable: false}
+              );
+            } else
+              Alert.alert(
+                "Not Nice",
+                "You set bad token",
+                [{text: "Try again"}],
+                {cancelable: false}
+              );
+          });
+        await AsyncStorage.setItem("vk_token", token);
+      } else
+        Alert.alert("Not Nice", "You set bad token", [{text: "Try again"}], {
+          cancelable: false,
+        });
+    } catch (error) {
+      console.log("error token");
+      Alert.alert("Not Nice", "You set bad token", [{text: "Try again"}], {
+        cancelable: false,
+      });
+    }
+  }
+
   return (
     <View style={styles.conteiner}>
       <View style={styles.header}>
@@ -34,7 +90,7 @@ export const TokenScreen = () => {
           placeholder="Enter token..."
           placeholderTextColor={THEME.TEXT_COLOR_BLACK}
           style={styles.input}
-          onChangeText={(text) => (this.token = text)}
+          onChangeText={(text) => (token = text)}
         />
       </View>
 

@@ -12,6 +12,8 @@ import {
 import { THEME } from "../themes/theme";
 import { LinearGradient } from "expo-linear-gradient";
 
+// const token =
+//   "c500ccffc1e44e680733c0de7ed493d7c48682757d484fd08057fba936daa3e4cd2137df66ad9fe9a111d";
 var _retrieveData = async () => {
   try {
     token = await AsyncStorage.getItem("vk_token");
@@ -36,7 +38,7 @@ export const DialogChoose = ({ item, onOpen, dialog }) => {
       fetch(
         "https://api.vk.com/method/users.get?user_ids=" +
           dialog.conversation.peer.id +
-          "&fields=photo_50&v=5.123&access_token=" +
+          "&fields=photo_50&v=5.103&access_token=" +
           token
       )
         .then((user) => user.json())
@@ -49,11 +51,19 @@ export const DialogChoose = ({ item, onOpen, dialog }) => {
             setLoading(false);
           }
         });
-    } 
-    else if (dialog.conversation.peer.type == "chat") {
-      let title_chat = dialog.conversation.chat_settings.title;
-      setName(title_chat);
-      if(dialog.conversation.chat_settings.photo != undefined) setIcon(dialog.conversation.chat_settings.photo.photo_50);
+    } else {
+      if (dialog.conversation.peer.type == "chat") {
+        let title_chat = dialog.conversation.chat_settings.title;
+        setName(title_chat);
+        // let str = dialog.conversation.chat_settings.photo.photo_50;
+        // setIcon(str.substr(0, str.length - 6));
+      } else {
+        if (dialog.conversation.peer.type == "group") {
+          setName("its group (" + dialog.conversation.peer.local_id + ")");
+        } else {
+          setName("ti kto(who)?");
+        }
+      }
     }
   }
 

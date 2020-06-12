@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from "react";
-import {View, Text, StyleSheet, AsyncStorage} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  AsyncStorage,
+  ImageBackground,
+} from "react-native";
+import {setLightEstimationEnabled} from "expo/build/AR";
+
 var token;
 var _retrieveData = async () => {
   try {
@@ -11,8 +19,11 @@ var _retrieveData = async () => {
     console.log("error token");
   }
 };
+
 export const Message = ({mes, id, typeChat, myid}) => {
   const [name, setName] = useState();
+  const [isPhoto, setPhoto] = useState(false);
+  const [isTextWithPhoto, setText] = useState(false);
 
   function init_users_chat() {
     fetch(
@@ -32,23 +43,58 @@ export const Message = ({mes, id, typeChat, myid}) => {
         }
       });
   }
+  function setstate() {
+    if (typeChat == "user") {
+      if (mes.attachments[0] != undefined) {
+        if (mes.attachments[0].type == "photo") {
+          setPhoto(true);
+          if (mes.text == "") {
+            setText(true);
+            console.log("set text");
+          }
+        }
+      }
+
+      //return <View></View>;
+    }
+  }
+
   useEffect(() => {
-    _retrieveData();
+    //_retrieveData();
     // init_users_chat();
     // console.log(id);
+    setstate();
   });
 
   if (typeChat == "user") {
     if (mes.from_id == myid)
       return (
         <View>
-          <Text style={stylesR.text}>{mes.text}</Text>
+          {isPhoto ? (
+            <View style={stylesR.Vphoto}>
+              <ImageBackground
+                style={stylesR.photo}
+                source={{uri: mes.attachments[0].photo.sizes[2].url}}
+              ></ImageBackground>
+            </View>
+          ) : (
+            <Text style={stylesR.text}>{mes.text}</Text>
+          )}
         </View>
       );
     else
       return (
         <View>
-          <Text style={stylesL.text}>{mes.text}</Text>
+          {isPhoto ? (
+            <View style={stylesL.Vphoto}>
+              <ImageBackground
+                style={stylesL.photo}
+                source={{uri: mes.attachments[0].photo.sizes[2].url}}
+              ></ImageBackground>
+            </View>
+          ) : (
+            <Text style={stylesL.text}>{mes.text}</Text>
+          )}
         </View>
       );
   }
@@ -91,9 +137,32 @@ export const Message = ({mes, id, typeChat, myid}) => {
   }
 };
 
-const stylesL = StyleSheet.create({
-  own: {},
+const styles = StyleSheet.create({
+  photo: {
+    resizeMode: "cover",
+    height: 100,
+    width: 100,
+  },
+});
 
+const stylesL = StyleSheet.create({
+  photo: {
+    resizeMode: "cover",
+    alignSelf: "flex-start",
+    height: 250,
+    width: 250,
+
+    paddingTop: 6,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingBottom: 8,
+
+    backgroundColor: "#467ff2",
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 17,
+    borderTopLeftRadius: 17,
+    borderTopRightRadius: 17,
+  },
   text: {
     color: "white",
     fontSize: 14,
@@ -134,6 +203,13 @@ const stylesL = StyleSheet.create({
 });
 
 const stylesR = StyleSheet.create({
+  photo: {
+    marginTop: 20,
+    resizeMode: "cover",
+    alignSelf: "flex-end",
+    height: 250,
+    width: 250,
+  },
   text: {
     borderWidth: 1,
     alignSelf: "flex-end",

@@ -31,7 +31,9 @@ export const ConfigScreen = ({navigation}) => {
       </View>
 
       <View style={styles.wrapvk}>
-        <TouchableOpacity onPress={() => navigation.navigate("Token")}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Token", (Navi = {navigation}))}
+        >
           <LinearGradient
             colors={["#FFDE67", "#FFA467", "#FF6666"]}
             start={[1.0, 0.2]}

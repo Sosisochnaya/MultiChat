@@ -2,7 +2,7 @@ import {createAppContainer} from "react-navigation";
 import {createStackNavigator} from "react-navigation-stack";
 import {MainScreen} from "../screens/MainScreen";
 import {DialogScreen} from "../screens/DialogScreen";
-import {AddChatScreen} from "../screens/AddChatScreen";
+import {AddChatScreen} from "../screens/AddChatScreen1";
 import {PlanScreen} from "../screens/PlanScreen";
 import {ConfigScreen} from "../screens/ConfigScreen";
 import {ChooseMessangerScreen} from "../screens/ChooseMessanger";

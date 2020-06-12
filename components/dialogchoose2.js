@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -9,8 +9,8 @@ import {
   ActivityIndicator,
   AsyncStorage,
 } from "react-native";
-import { THEME } from "../themes/theme";
-import { LinearGradient } from "expo-linear-gradient";
+import {THEME} from "../themes/theme";
+import {LinearGradient} from "expo-linear-gradient";
 
 var _retrieveData = async () => {
   try {
@@ -24,12 +24,10 @@ var _retrieveData = async () => {
 };
 
 var token;
-export const DialogChoose = ({ item, onOpen, dialog }) => {
+export const DialogChoose = ({item, onOpen, dialog}) => {
   const [isLoading, setLoading] = useState(true);
   const [name, setName] = useState();
   const [icon, setIcon] = useState();
-  const [status, setstatus] = useState(false);
-
   _retrieveData();
   function init() {
     if (dialog.conversation.peer.type == "user") {
@@ -65,17 +63,11 @@ export const DialogChoose = ({ item, onOpen, dialog }) => {
   });
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      onPress={() => {
-        onOpen(dialog);
-        setstatus(!status);
-      }}
-    >
+    <TouchableOpacity activeOpacity={0.7} onPress={() => onOpen(dialog)}>
       <View style={styles.container}>
         <ImageBackground
           style={styles.icon}
-          source={{ uri: icon }}
+          source={{uri: icon}}
           borderRadius={50}
         />
         <View style={styles.text}>
@@ -83,16 +75,17 @@ export const DialogChoose = ({ item, onOpen, dialog }) => {
             <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
               {name}
             </Text>
+          
           </View>
+
+          
         </View>
-        <View style={styles.zone}>
-          <View style={!status ? styles.change : styles.change2}></View>
-        </View>
+
+       
       </View>
     </TouchableOpacity>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
@@ -125,7 +118,7 @@ const styles = StyleSheet.create({
     //justifyContent: 'flex-start'
     width: "64%",
   },
-
+ 
   name: {
     fontStyle: "normal", //не знает шрфиты вообще
     fontSize: 16,
@@ -133,28 +126,5 @@ const styles = StyleSheet.create({
     fontFamily: "roboto_bold",
     // width: "55%",
   },
-
-  zone: {
-    right: 16,
-    marginTop: 13.5,
-    position: "absolute",
-  },
-
-  change: {
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: "#FF6D67",
-
-    height: 25,
-    width: 25,
-  },
-
-  change2: {
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: "#FF6D67",
-    backgroundColor: "#FF6D67",
-    height: 25,
-    width: 25,
-  },
+ 
 });
