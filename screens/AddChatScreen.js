@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -11,9 +11,9 @@ import {
   FlatList,
   AsyncStorage,
 } from "react-native";
-import { THEME } from "../themes/theme";
-import { DialogChoose } from "../components/dialogchoose";
-import { LinearGradient } from "expo-linear-gradient";
+import {THEME} from "../themes/theme";
+import {DialogChoose} from "../components/dialogchoose";
+import {LinearGradient} from "expo-linear-gradient";
 
 var _retrieveData = async () => {
   try {
@@ -113,7 +113,7 @@ export const AddChatScreen = (props, onOpen, navigation) => {
         <FlatList
           data={vk_list}
           keyExtractor={(dialog) => dialog.conversation.peer.id.toString()}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <DialogChoose dialog={item} onOpen={openAddingHandler} />
           )}
         />

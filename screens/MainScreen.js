@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useReducer} from "react";
 import {
   StyleSheet,
   Text,
@@ -7,49 +7,45 @@ import {
   FlatList,
   AsyncStorage,
   ActivityIndicator,
-  TouchableOpacity,
-  LinearGradient,
-  Image,
-  Alert,
 } from "react-native";
 import {DialogInList} from "../components/DialogInList";
 import {Navbar} from "../components/Navbar";
 import {THEME} from "../themes/theme";
 import {AntDesign} from "@expo/vector-icons";
 import {ChooseMessangerScreen} from "./ChooseMessanger";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
-var token;
+var _retrieveData = async () => {
+  try {
+    token = await AsyncStorage.getItem("vk_token");
+    if (token !== null) {
+      // console.log(token);
+    }
+  } catch (error) {
+    console.log("error token");
+  }
+};
+
+var token = _retrieveData();
 var list = [];
 var last_message_text = "default";
 var your_id;
-var name;
-var photo;
-
+var name, photo;
 export const MainScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
-  const [isToken, setToken] = useState(true);
   const [modal, setModal] = useState(false);
   const [vk_list, setVKlist] = useState([]);
   const [whitelist, setWhitelist] = useState([]);
-
-  // const {MTProto} = require("@mtproto/core");
+  const [tojson1, setToJson1] = useState([]);
+  const [tojson2, setToJson2] = useState([]);
 
   const openDialogHendler = (item) => {
     navigation.navigate("Dialog", {dialog: item});
   };
-  var _retrieveData = async () => {
-    try {
-      token = await AsyncStorage.getItem("vk_token");
-      if (token !== null) {
-        // console.log(token);
-        setToken(false);
-      }
-    } catch (error) {
-      console.log("error token");
-    }
-  };
+
   const goToChooseMessanger = () => {
     setModal(true);
+    // navigation.navigate("AddChat");
   };
 
   async function vk_dialog_list_1() {
@@ -61,7 +57,7 @@ export const MainScreen = ({navigation}) => {
     };
 
     _getWhitelist();
-
+    // console.log(whitelist);
     await fetch(
       "https://api.vk.com/method/users.get?v=5.123&access_token=" + token
     )
@@ -73,13 +69,14 @@ export const MainScreen = ({navigation}) => {
       });
 
     await fetch(
-      "https://api.vk.com/method/messages.getConversations?count=20&extended=1&v=5.123&access_token=" +
+      "https://api.vk.com/method/messages.getConversations?count=50&extended=1&v=5.123&access_token=" +
         token
     )
       .then((response) => response.json())
       .then((json) => {
         if (json.error == null) {
           json.response.items.forEach((item) => {
+            // console.log("rer" + item);
             if (whitelist.includes(item.conversation.peer.id)) {
               if (item.conversation.peer.type == "user") {
                 if (
@@ -206,10 +203,10 @@ export const MainScreen = ({navigation}) => {
   }
 
   useEffect(() => {
-    _retrieveData();
-    setTimeout(vk_dialog_list_1, 10000);
+    // _retrieveData();
+    setTimeout(vk_dialog_list_1, 5000);
   });
-
+  console.disableYellowBox = true;
   return (
     <View style={styles.conteiner}>
       <ChooseMessangerScreen
@@ -219,6 +216,14 @@ export const MainScreen = ({navigation}) => {
       />
 
       <View style={styles.header}>
+        <View style={styles.swapmes}>
+          <MaterialCommunityIcons
+            name="telegram"
+            size={30}
+            color="white"
+            onPress={() => navigation.navigate("MainTG")}
+          />
+        </View>
         <View style={styles.line1}>
           <Text style={styles.text}>Chats</Text>
         </View>
@@ -238,35 +243,7 @@ export const MainScreen = ({navigation}) => {
         />
       </View>
 
-      {isToken ? (
-        Alert.alert(
-          "Hello",
-          "You need to set token",
-          [{text: "OK", onPress: () => navigation.navigate("Token")}],
-          {cancelable: false}
-        )
-      ) : /*
-        <View style={styles.tokenwrap}>
-          <Text style={styles.tokentext}>Enter Token</Text>
-
-          <View style={styles.wrapvk}>
-            <TouchableOpacity onPress={() => navigation.navigate("Token")}>
-              <LinearGradient
-                colors={["#FFDE67", "#FFA467", "#FF6666"]}
-                start={[1.0, 0.2]}
-                end={[0.2, 1.0]}
-                style={styles.button1}
-              >
-                <Text style={styles.label}>Enter VK Token</Text>
-                <Image
-                  style={styles.imageVk}
-                  source={require("../assets/vk.png")}
-                />
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-        </View>*/
-      isLoading ? (
+      {isLoading ? (
         <View style={{padding: 20}}>
           <ActivityIndicator size="large" />
         </View>
@@ -333,5 +310,10 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
 
-  dialog: {},
+  swapmes: {
+    position: "absolute",
+    left: 20,
+    top: 0,
+    paddingTop: 30,
+  },
 });

@@ -24,6 +24,7 @@ export const Message = ({mes, id, typeChat, myid}) => {
   const [name, setName] = useState();
   const [isPhoto, setPhoto] = useState(false);
   const [isTextWithPhoto, setText] = useState(false);
+  _retrieveData();
 
   function init_users_chat() {
     fetch(
@@ -100,6 +101,7 @@ export const Message = ({mes, id, typeChat, myid}) => {
   }
 
   if (typeChat == "chat") {
+    if (mes.text == "") return <View></View>;
     let fullname;
     fetch(
       "https://api.vk.com/method/users.get?user_ids=" +
@@ -142,6 +144,10 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: 100,
     width: 100,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
 });
 

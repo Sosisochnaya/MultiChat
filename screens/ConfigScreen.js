@@ -13,7 +13,6 @@ import {
 import {Navbar} from "../components/Navbar";
 import {THEME} from "../themes/theme";
 import {LinearGradient} from "expo-linear-gradient";
-import {AntDesign} from "@expo/vector-icons";
 
 export const ConfigScreen = ({navigation}) => {
   return (
@@ -31,9 +30,7 @@ export const ConfigScreen = ({navigation}) => {
       </View>
 
       <View style={styles.wrapvk}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Token", (Navi = {navigation}))}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("Token")}>
           <LinearGradient
             colors={["#FFDE67", "#FFA467", "#FF6666"]}
             start={[1.0, 0.2]}
@@ -50,14 +47,14 @@ export const ConfigScreen = ({navigation}) => {
       </View>
 
       <View style={styles.wraptg}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Telegram")}>
           <LinearGradient
             colors={["#FFDE67", "#FFA467", "#FF6666"]}
             start={[1.0, 0.2]}
             end={[0.2, 1.0]}
             style={styles.button2}
           >
-            <Text style={styles.label2}>Log in VKONTAKTE</Text>
+            <Text style={styles.label2}>Log in TELEGRAM</Text>
             <Image
               style={styles.imagetg}
               source={require("../assets/telegram.png")}
@@ -66,7 +63,7 @@ export const ConfigScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.notification}>
+      {/* <View style={styles.notification}>
         <Text style={styles.text2}>
           Notification __________________________
         </Text>
@@ -155,7 +152,7 @@ export const ConfigScreen = ({navigation}) => {
             <Text style={styles.labelchange}>CHANGE THEME</Text>
           </LinearGradient>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <Navbar navigation={navigation} status={"Conf"} />
     </View>
@@ -287,7 +284,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     flexDirection: "row",
     height: 45,
-    width: 280,
+    width: 310,
     marginLeft: 16,
     borderRadius: 5,
     alignItems: "center",
@@ -311,7 +308,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#57B8FF",
     height: 45,
-    width: 210,
+    width: 240,
     marginLeft: 16,
     borderRadius: 5,
     alignItems: "center",
