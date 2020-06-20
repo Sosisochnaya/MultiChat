@@ -114,7 +114,7 @@ export const PlanScreen = ({navigation}) => {
             })
           }
         >
-          <Image style={styles.image} source={require("../assets/Plan.png")} />
+          <Image style={styles.image} source={require("../assets/PlanW.png")} />
         </TouchableOpacity>
       </View>
       <View style={styles.choose}>

@@ -310,6 +310,14 @@ export const MainScreen = ({navigation}) => {
       />
 
       <View style={styles.header}>
+        <View style={styles.swapmes}>
+          <MaterialCommunityIcons
+            name="telegram"
+            size={30}
+            color="white"
+            onPress={() => navigation.navigate("MainTG")}
+          />
+        </View>
         <View style={styles.line1}>
           <Text style={styles.text}>Chats</Text>
         </View>
@@ -400,5 +408,10 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
 
-  dialog: {},
+  swapmes: {
+    position: "absolute",
+    left: 20,
+    top: 0,
+    paddingTop: 30,
+  },
 });
