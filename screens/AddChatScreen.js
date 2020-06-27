@@ -3,104 +3,109 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
-  Button,
   TextInput,
-  Image,
   TouchableOpacity,
   FlatList,
   AsyncStorage,
+  ActivityIndicator,
 } from "react-native";
 import {THEME} from "../themes/theme";
 import {DialogChoose} from "../components/dialogchoose";
 import {LinearGradient} from "expo-linear-gradient";
 
-var _retrieveData = async () => {
-  try {
-    token = await AsyncStorage.getItem("vk_token");
-    if (token !== null) {
-      // console.log(token);
-    }
-  } catch (error) {
-    console.log("error token");
-  }
-};
+var whitelistVK = [];
+var whitelistTG = [];
 
-var _setWhitelist = async () => {
-  try {
-    await AsyncStorage.setItem("whitelist", JSON.stringify(whitelist));
-    console.log("set whitelist");
-  } catch (error) {
-    console.log("error whitelist");
-  }
-};
-
-var _removeWhitelist = async () => {
-  try {
-    await AsyncStorage.removeItem("whitelist");
-    console.log("removed whitelist");
-  } catch (error) {
-    console.log("error whitelist");
-  }
-};
-
-const AddHandler = () => {
-  _setWhitelist();
-};
-
-var token;
-
-var whitelist = [];
-
-export const AddChatScreen = (props, onOpen, navigation) => {
-  const [vk_list, setVKlist] = useState([]);
+export const AddChatScreen = ({navigation}) => {
+  const messager = navigation.getParam("messager");
+  const [list, setList] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const handlePress = () => true;
-  //export const AddDialog = ()
 
-  const openAddingHandler = (item) => {
-    if (whitelist.includes(item.conversation.peer.id) == false) {
-      whitelist.push(item.conversation.peer.id);
-    } else {
-      whitelist.splice(whitelist.indexOf(item.conversation.peer.id), 1);
+  const AddHandler = () => {
+    // _removeWhitelist();
+    _setWhitelist();
+    navigation.navigate("Main");
+  };
+
+  var _setWhitelist = async () => {
+    try {
+      if (messager == "VK")
+        await AsyncStorage.setItem("whitelistVK", JSON.stringify(whitelistVK));
+      else
+        await AsyncStorage.setItem("whitelistTG", JSON.stringify(whitelistTG));
+      console.log("set whitelist");
+    } catch (error) {
+      console.log("error whitelist");
     }
   };
 
-  _retrieveData();
+  var _removeWhitelist = async () => {
+    try {
+      if (messager == "VK") await AsyncStorage.removeItem("whitelistVK");
+      else await AsyncStorage.removeItem("whitelistTG");
+      console.log("removed whitelist");
+    } catch (error) {
+      console.log("error whitelist");
+    }
+  };
 
-  function vk_dialog_list_1() {
-    // return
+  const openAddingHandler = (item) => {
+    if (messager == "VK")
+      if (whitelistVK.includes(item.id) == false) whitelistVK.push(item.id);
+      else whitelistVK.splice(whitelistVK.indexOf(item.id), 1);
+    else if (whitelistTG.includes(item.id) == false) whitelistTG.push(item.id);
+    else whitelistTG.splice(whitelistTG.indexOf(item.id), 1);
+  };
+
+  // _retrieveData();
+
+  async function listVK() {
     fetch(
-      "https://api.vk.com/method/messages.getConversations?count=20&v=5.103&access_token=" +
-        token
+      "http://109.227.206.136:5000/get_dialogs_vk?token=" +
+        (await AsyncStorage.getItem("vk_token"))
     )
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.error == null) {
-          setVKlist(json.response.items);
-          setLoading(false);
-        }
+      .catch((error) => console.log(error))
+      .then((list) => list.json())
+      .then((list) => {
+        setList(list);
+        // console.log(vk_list);
+        // console.log(list);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  async function listTG() {
+    fetch(
+      "http://109.227.206.136:5000/get_dialogs_tg?phone=" +
+        (await AsyncStorage.getItem("number"))
+    )
+      .catch((error) => console.log(error))
+      .then((list) => list.json())
+      .then((list) => {
+        setList(list);
+        // console.log(vk_list);
+        // console.log(list);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 
   useEffect(() => {
-    setTimeout(vk_dialog_list_1, 5000);
-    //_removeWhitelist();
-    // vk_dialog_list_1();
-    // tg_auth();
+    // console.log(list);
+    if (messager == "TG") setTimeout(listTG, 2000);
+    else setTimeout(listVK, 2000);
   });
 
   return (
-    // <TouchableOpacity>
-    // onPress={() => onOpen()}
-    // </TouchableOpacity>
-
     <View style={styles.conteiner}>
       <View style={styles.header}>
         <View style={styles.heading}>
           <Text style={styles.text}>Add chat</Text>
         </View>
-
         <TextInput
           placeholder="Find dialog..."
           placeholderTextColor={THEME.TEXT_COLOR_BLACK}
@@ -108,18 +113,19 @@ export const AddChatScreen = (props, onOpen, navigation) => {
         />
       </View>
       {isLoading ? (
-        <View></View>
+        <View style={{padding: 20}}>
+          <ActivityIndicator size="large" />
+        </View>
       ) : (
         <FlatList
-          data={vk_list}
-          keyExtractor={(dialog) => dialog.conversation.peer.id.toString()}
+          data={list}
+          keyExtractor={(dialog) => dialog.id}
           renderItem={({item}) => (
             <DialogChoose dialog={item} onOpen={openAddingHandler} />
           )}
         />
       )}
-
-      <TouchableOpacity style={styles.buttoncont}>
+      <TouchableOpacity style={styles.buttoncont} onPress={AddHandler}>
         <LinearGradient
           colors={["#FFDE67", "#FFA467", "#FF6666"]}
           start={[1.0, 0.2]}
@@ -131,10 +137,6 @@ export const AddChatScreen = (props, onOpen, navigation) => {
       </TouchableOpacity>
     </View>
   );
-};
-
-AddChatScreen.navigationOptions = {
-  headerShown: false,
 };
 
 const styles = StyleSheet.create({
@@ -172,7 +174,8 @@ const styles = StyleSheet.create({
 
   input: {
     marginTop: 10,
-    paddingLeft: 115,
+    // paddingLeft: 115,
+    textAlign: "center",
     backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
     height: 30,
     width: "85%",
@@ -185,21 +188,13 @@ const styles = StyleSheet.create({
   },
 
   conteinernav: {
-    // position: 'relative',
-    // flex: 1,
-
-    //flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    //backgroundColor: THEME.BTN_ORANGE_COLOR,
-    // height: 42,
-    //height: "5%",
     backgroundColor: "transparent",
     height: 57,
     width: "100%",
     bottom: 0,
     top: 3,
-    // left: 30,
   },
   title: {
     fontFamily: "nunito_bold",
@@ -213,23 +208,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: 328,
+    width: "90%",
     borderRadius: 10,
     height: 42,
-
-    // marginLeft: 30,
   },
 
   buttoncont: {
     width: "100%",
-
     position: "absolute",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-
-    bottom: 18,
-
-    // marginLeft: 30,
+    bottom: "2%",
   },
 });

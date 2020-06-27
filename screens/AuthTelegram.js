@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   AsyncStorage,
+  Alert,
 } from "react-native";
 import {THEME} from "../themes/theme";
 import {LinearGradient} from "expo-linear-gradient";
@@ -22,9 +23,15 @@ import {LinearGradient} from "expo-linear-gradient";
 export const AuthTelegram = ({navigation}) => {
   const [number, setNumber] = useState();
   const SendHendler = () => {
-    fetch("http://vtsrrdf.pythonanywhere.com/send_code?phone=" + number);
-    AsyncStorage.setItem("number", number);
-    navigation.navigate("Check", {number: number});
+    if (Math.floor(Math.log10(number)) + 1 != 11) {
+      Alert.alert("Not nice", "You set bad number", [
+        {text: "Try again", onPress: () => console.log("OK Pressed")},
+      ]);
+    } else {
+      fetch("http://109.227.206.136:5000/send_code?phone=" + number);
+      AsyncStorage.setItem("number", number);
+      navigation.navigate("Check", {number: number});
+    }
   };
   return (
     <View style={styles.conteiner}>

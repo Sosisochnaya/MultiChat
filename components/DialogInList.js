@@ -38,7 +38,7 @@ export const DialogInList = ({item, onOpen, dialog}) => {
 
   function init() {
     setName(dialog.name);
-    setIcon(dialog.photo);
+    setIcon(dialog.icon);
     setLoading(false);
 
     if (typeof dialog.unread_count != undefined) {
@@ -95,13 +95,15 @@ export const DialogInList = ({item, onOpen, dialog}) => {
               style={styles.logoMes}
             >
               <View>
-                <Text style={styles.logoMesText}>VK</Text>
+                <Text style={styles.logoMesText}>{dialog.namemes}</Text>
               </View>
             </LinearGradient>
           </View>
 
           <View style={styles.line2}>
-            <Text style={styles.lastMes}>{lastmes}</Text>
+            <Text style={styles.lastMes} numberOfLines={1} ellipsizeMode="tail">
+              {dialog.last_message_text}
+            </Text>
           </View>
         </View>
 
@@ -161,11 +163,13 @@ const styles = StyleSheet.create({
     //alignItems: 'baseline',
     flexDirection: "row",
     //justifyContent: 'flex-start'
-    width: "54%",
+    width: "60%",
   },
   line2: {
     //flexDirection: 'row',
     //justifyContent: 'flex-start'
+    // backgroundColor: "white",
+    width: "70%",
   },
   name: {
     fontStyle: "normal", //не знает шрфиты вообще
@@ -223,5 +227,6 @@ const styles = StyleSheet.create({
   countUnreadMesNumeral: {
     marginTop: 2,
     fontSize: 12,
+    color: "white",
   },
 });

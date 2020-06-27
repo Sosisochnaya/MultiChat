@@ -9,6 +9,7 @@ import {
   FlatList,
   ActivityIndicator,
   AsyncStorage,
+  Image,
 } from "react-native";
 
 import {THEME} from "../themes/theme";
@@ -18,6 +19,7 @@ import {Ionicons, AntDesign} from "@expo/vector-icons";
 var _retrieveData = async () => {
   try {
     token = await AsyncStorage.getItem("vk_token");
+    number = await AsyncStorage.getItem("number");
     if (token !== null) {
       // console.log(token);
     }
@@ -27,100 +29,119 @@ var _retrieveData = async () => {
 };
 
 var token;
-
+var number;
 export const DialogScreen = ({navigation}) => {
   const dialog = navigation.getParam("dialog");
-  const [name, setName] = useState();
-  const [icon, setIcon] = useState();
   const [mess, setMess] = useState();
-  const [vk_mess, setmesslist] = useState([]);
+  const [list_mess, setmesslist] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const typechat = dialog.type;
-  const [myid, setMyid] = useState();
 
-  function vk_mess_history() {
-    // return
-
-    fetch(
-      "https://api.vk.com/method/messages.getHistory?count=50&peer_id=" +
-        dialog.id +
-        "&v=5.103&access_token=" +
-        token
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.error == null) {
-          setmesslist(json.response.items);
+  async function mess_history() {
+    _retrieveData();
+    if (dialog.namemes == "TG")
+      fetch(
+        "http://109.227.206.136:5000/get_messages_tg?id=" +
+          dialog.id +
+          "&phone=" +
+          (await AsyncStorage.getItem("number")) +
+          "&limit=" +
+          100
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          setmesslist(json);
           setLoading(false);
-        }
-      });
+        });
+    else
+      fetch(
+        "http://109.227.206.136:5000/get_messages_vk?id=" +
+          dialog.id +
+          "&token=" +
+          (await AsyncStorage.getItem("vk_token")) +
+          "&type=" +
+          dialog.type
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          setmesslist(json);
+          setLoading(false);
+        });
   }
 
-  async function init() {
-    await fetch(
-      "https://api.vk.com/method/users.get?v=5.103&access_token=" + token
-    )
-      .then((user) => user.json())
-      .then((user) => {
-        if (user.error == null) setMyid(user.response[0].id);
-      });
-
-    function limitStr(str, n) {
-      if (str.length < n) return str;
-      let symb = "...";
-      return str.substr(0, n - symb.length) + symb;
+  async function sendMessage() {
+    if (mess != "") {
+      if (dialog.namemes == "TG")
+        fetch(
+          "http://109.227.206.136:5000/send_message_tg?id=" +
+            dialog.id +
+            "&text=" +
+            mess +
+            "&phone=" +
+            (await AsyncStorage.getItem("number"))
+        );
+      else {
+        let idi = "" + dialog.id + "";
+        idi = idi.slice(0, -1);
+        console.log(idi);
+        fetch(
+          "https://api.vk.com/method/messages.send?peer_id=" +
+            idi +
+            "&message=" +
+            mess +
+            "&random_id=" +
+            Math.random(9223372036854775807) +
+            "&v=5.110&access_token=" +
+            (await AsyncStorage.getItem("vk_token"))
+        )
+          .then((response) => response.json())
+          .then((json) => {
+            if (json.error == null) {
+              setmesslist(json.response.items);
+              setLoading(false);
+            }
+          });
+      }
+      setMess("");
     }
-    setName(limitStr(dialog.name, 19));
-  }
-
-  function sendMessage() {
-    fetch(
-      "https://api.vk.com/method/messages.send?peer_id=" +
-        dialog.id +
-        "&message=" +
-        mess +
-        "&v=5.44&access_token=" +
-        token
-    );
-
-    vk_mess_history();
   }
 
   useEffect(() => {
     _retrieveData();
-    init();
-    vk_mess_history();
-    console.log("update messages");
+    mess_history();
+    // console.log("update messages");
   });
 
   return (
     <View style={styles.conteiner}>
       <View style={styles.header}>
         <View style={styles.buttonBack}>
-          <Ionicons.Button
-            name="ios-arrow-back"
-            size={32}
-            color={THEME.DIALOG_NAME_COLOR}
-            backgroundColor="transparent"
+          <TouchableOpacity
+            style={styles.op}
             onPress={() => navigation.goBack(null)}
-            //TouchableOpacity={}
-          />
+          >
+            <Image
+              style={styles.image}
+              source={require("../assets/backTODO.png")}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.centerBlock}>
           <ImageBackground
             style={styles.icon}
             borderRadius={50}
-            source={{uri: dialog.photo}}
+            source={{uri: dialog.icon}}
           />
-          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
+            {dialog.name}
+          </Text>
         </View>
         <View style={styles.buttonPlan}>
-          <AntDesign.Button
-            name="filetext1"
-            size={35}
-            backgroundColor="transparent"
-            onPress={() => navigation.navigate("Plan")}
-          ></AntDesign.Button>
+          <TouchableOpacity onPress={() => navigation.navigate("Plan")}>
+            <Image
+              style={styles.plan}
+              source={require("../assets/PlanW.png")}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       {isLoading ? (
@@ -131,15 +152,10 @@ export const DialogScreen = ({navigation}) => {
         <View style={styles.flat}>
           <FlatList
             inverted
-            data={vk_mess}
-            keyExtractor={(mes) => mes.conversation_message_id}
+            data={list_mess}
+            keyExtractor={(mes) => mes.id_mes}
             renderItem={({item}) => (
-              <Message
-                mes={item}
-                id={item.from_id}
-                typeChat={dialog.type}
-                myid={myid}
-              />
+              <Message mes={item} typeChat={dialog.type} />
             )}
           />
         </View>
@@ -159,15 +175,21 @@ export const DialogScreen = ({navigation}) => {
           placeholderTextColor="#7C7C7C"
           style={styles.input}
           onChangeText={(text) => setMess(text)}
+          value={mess}
         />
 
         <View style={styles.buttonSendMes}>
-          <AntDesign.Button
-            name="rightsquareo"
-            size={30}
-            backgroundColor="transparent"
-            onPress={sendMessage}
-          ></AntDesign.Button>
+          <TouchableOpacity
+            onPress={() => {
+              sendMessage();
+              setMess("");
+            }}
+          >
+            <Image
+              style={styles.send}
+              source={require("../assets/SendBut.png")}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       {/* <Text>{dialogId}</Text> */}
@@ -177,7 +199,7 @@ export const DialogScreen = ({navigation}) => {
 
 DialogScreen.navigationOptions = ({navigation}) => {};
 
-const styles = StyleSheet.create({
+const styles1 = StyleSheet.create({
   conteiner: {
     backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
     width: "100%",
@@ -194,12 +216,22 @@ const styles = StyleSheet.create({
   },
   buttonBack: {
     position: "absolute",
-    left: 10,
+    left: "6%",
     paddingTop: 32,
+    // top: "50%",
+    // backgroundColor: "red",
+  },
+  image: {
+    top: "50%",
+    // left: "3%",
+    height: 20,
+    width: 12,
   },
   centerBlock: {
     flexDirection: "row",
-    paddingRight: 40,
+    // paddingRight: 40,
+    width: "70%",
+    height: "100%",
   },
   icon: {
     margin: 10,
@@ -213,11 +245,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     paddingTop: 14,
     fontFamily: "nunito_bold",
+    // backgroundColor: "white",
+    width: "80%",
   },
   buttonPlan: {
     position: "absolute",
-    paddingTop: 28,
-    right: 0,
+    // paddingTop: 32,
+    top: "55%",
+    right: "3%",
   },
 
   flat: {
@@ -252,12 +287,14 @@ const styles = StyleSheet.create({
     fontFamily: "roboto_regular",
   },
   buttonSendMes: {
-    marginLeft: 4,
-    marginTop: 4,
+    left: "15%",
+    top: "3%",
+    // marginTop: 4,
     width: "100%",
-    height: 44,
+    //height: 44,
     //backgroundColor: THEME.BACKGROUNG_COLOR,
-    //borderRadius: 50,
+    //borderRadius: 50
+    //backgroundColor: 'red',
   },
   text: {
     color: "white",
@@ -265,5 +302,130 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     fontSize: 24,
     fontFamily: "nunito_bold",
+  },
+  plan: {
+    position: "relative",
+    height: 40,
+    width: 37.63,
+  },
+});
+
+const styles = StyleSheet.create({
+  conteiner: {
+    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
+    width: "100%",
+    height: "100%",
+    position: "relative",
+  },
+  header: {
+    paddingTop: 22,
+    width: "100%",
+    height: 90,
+    backgroundColor: THEME.HEADER_BACKGROUND_COLOR_BLACK,
+    position: "relative",
+    alignItems: "center",
+  },
+  buttonBack: {
+    position: "absolute",
+    left: "6%",
+    // paddingTop: 32,
+    top: "70%",
+    // backgroundColor: "red",
+  },
+  image: {
+    // top: "77%",
+    // left: "3%",
+    height: 20,
+    width: 12,
+  },
+  centerBlock: {
+    flexDirection: "row",
+    // paddingRight: 40,
+    top: "1%",
+    width: "80%",
+    height: "100%",
+    // backgroundColor: 'green',
+  },
+  icon: {
+    margin: 10,
+    width: 45,
+    height: 45,
+    resizeMode: "cover",
+  },
+  name: {
+    color: THEME.HEADER_TEXT_COLOR_BLACK,
+    fontStyle: "normal",
+    fontSize: 24,
+    paddingTop: 14,
+    fontFamily: "nunito_bold",
+    // backgroundColor: "white",
+    width: "70%",
+    // backgroundColor: 'red',
+  },
+  buttonPlan: {
+    position: "absolute",
+    // paddingTop: 32,
+    top: "55%",
+    right: "3%",
+  },
+
+  flat: {
+    paddingBottom: 150,
+    // marginBottom: 25,
+    // backgroundColor: "white",
+  },
+
+  footer: {
+    position: "absolute",
+    flexDirection: "row",
+    height: 55,
+    width: "100%",
+    backgroundColor: THEME.HEADER_BACKGROUND_COLOR_BLACK,
+    bottom: 0,
+  },
+  buttonPlus: {
+    top: "1%",
+    left: "5%",
+  },
+  input: {
+    marginTop: 10,
+    marginLeft: -5,
+    paddingLeft: 10,
+    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
+    height: 35,
+    width: "70%",
+    borderColor: THEME.INPUT_BORDER_COLOR,
+    borderRadius: 20,
+    color: "white",
+    fontSize: 14,
+    fontFamily: "roboto_regular",
+    // backgroundColor: 'green',
+  },
+  buttonSendMes: {
+    left: "15%",
+    top: "3%",
+    // marginTop: 4,
+    width: "100%",
+    //height: 44,
+    //backgroundColor: THEME.BACKGROUNG_COLOR,
+    //borderRadius: 50
+    //backgroundColor: 'red',
+  },
+  text: {
+    color: "white",
+    alignItems: "center",
+    fontStyle: "normal",
+    fontSize: 24,
+    fontFamily: "nunito_bold",
+  },
+  plan: {
+    position: "relative",
+    height: 40,
+    width: 37.63,
+  },
+
+  send: {
+    width: 34,
+    height: 34,
   },
 });

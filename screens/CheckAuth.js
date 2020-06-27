@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   AsyncStorage,
+  Alert,
 } from "react-native";
 import {THEME} from "../themes/theme";
 import {LinearGradient} from "expo-linear-gradient";
@@ -22,14 +23,17 @@ import {LinearGradient} from "expo-linear-gradient";
 export const CheckAuth = ({navigation}) => {
   const [code, setCode] = useState();
   const hendlerSend = () => {
-    const number = navigation.getParam("number");
-    fetch(
-      "http://vtsrrdf.pythonanywhere.com/sign_in?phone=" +
-        number +
-        "&code=" +
-        code
-    );
-    navigation.navigate("Main");
+    if (Math.floor(Math.log10(code)) == 4) {
+      const number = navigation.getParam("number");
+      fetch(
+        "http://109.227.206.136:5000/sign_in?phone=" + number + "&code=" + code
+      );
+      navigation.navigate("AddChat", {messager: "TG"});
+    } else {
+      Alert.alert("Not nice", "You set bad code", [
+        {text: "Try again", onPress: () => console.log("OK Pressed")},
+      ]);
+    }
   };
   return (
     <View style={styles.conteiner}>
@@ -157,5 +161,6 @@ const styles = StyleSheet.create({
 
   h1: {
     color: "white",
+    textAlign: "center",
   },
 });

@@ -51,7 +51,8 @@ export const TokenScreen = ({navigation}) => {
                   {text: "OK", onPress: () => navigation.navigate("Main")},
                   {
                     text: "Choose chats",
-                    onPress: () => navigation.navigate("AddChat"),
+                    onPress: () =>
+                      navigation.navigate("AddChat", {messager: "VK"}),
                   },
                 ],
                 {cancelable: false}

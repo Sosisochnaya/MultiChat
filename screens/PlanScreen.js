@@ -28,18 +28,37 @@ export const PlanScreen = ({navigation}) => {
   const [editmodal, seteditModal] = useState(false);
   const [editid, seteditid] = useState({});
 
+  //const [i, seti] = useState(0);
+  const [res, setres] = useState();
+
   const [ready, setReady] = useState(false);
   const [todos, setTodos] = useState([]);
   const [modal, setModal] = useState(false);
   const [status, setStatus] = useState(true);
-
+  var r = {todo: todos};
   //console.log("То что мне нужно");
   // DB.insertPosts("Name", "Tite");
   //console.log(DB.getPosts());
+  // if (!ready) {
+  //   AsyncStorage.getItem("todos", (err, result) => {
+  //     if (result != null) {
+  //       r = JSON.parse(result);
+  //       console.log("asds", r);
+  //     }
+  //   });
+  //   r.todo.forEach((el) => {
+  //     setTodos(el);
+  //     console.log("DDDDDDDDD", el);
+  //   });
+
+  //   setReady(true);
+  // }
+
   const goBack = () => {
     navigation.goBack(null);
   };
   const addTodo = (title, name, status, date, time, datefull) => {
+    r = {todo: todos};
     let nowid = Date.now().toString();
     setTodos((prev) => [
       ...prev,
@@ -54,19 +73,57 @@ export const PlanScreen = ({navigation}) => {
       },
     ]);
     console.log("fff");
-  };
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     Alert.alert("ГО ДЕЛАТЬ");
-  //   }, 5000);
-  //   return () => clearTimeout(timer);
-  // }, []);
+    // let j;
+    // var buf;
+    // // AsyncStorage.multiRemove(r, (err) => {
+    // //   // keys k1 & k2 removed, if they existed
+    // //   // do most stuff after removal (if you want)
+    // // });
+
+    // AsyncStorage.getItem("todos", (err, result) => {
+    //   console.log(result);
+    //   console.log(todos);
+    //   if (result == null) {
+    //     AsyncStorage.setItem("todos", JSON.stringify(r), () => {});
+    //   } else {
+    //     AsyncStorage.removeItem("todos", (err) => {});
+    //     AsyncStorage.setItem("todos", JSON.stringify(r), () => {});
+    //   }
+    // });
+
+    // AsyncStorage.getAllKeys((err, keys) => {
+    //   console.log(keys);
+    // });
+
+    // let nowid = "todo" + Date.now().toString();
+    // let object = {
+    //   id: Date.now().toString(),
+    //   name,
+    //   status,
+    //   title,
+    //   date,
+    //   time,
+    //   datefull,
+    // };
+
+    // let v = parseFloat(buf);
+    // AsyncStorage.setItem(r.todo.toString(), JSON.stringify(object), () => {});
+
+    // // for (let i = 1; i < r.todo; i++) {
+    AsyncStorage.getItem("todos", (err, result) => {
+      console.log(result);
+    });
+    // //   });
+    // // }
+    // console.log("tod = ", r.todo);
+  };
   const EditTodoPress = (todobuf, id) => {
     // seteditid(todobuf);
     // setTodos((prev) => prev.filter((todobuf) => todobuf.id !== id));
     // seteditModal(true);
   };
+
   const removeTodo = (id) => {
     const todo = todos.find((t) => t.id === id);
     Alert.alert(
@@ -82,6 +139,27 @@ export const PlanScreen = ({navigation}) => {
           style: "destructive",
           onPress: () => {
             setTodos((prev) => prev.filter((todo) => todo.id !== id));
+          },
+        },
+      ],
+      {cancelable: false}
+    );
+  };
+
+  const TapClear = () => {
+    Alert.alert(
+      "Удаление элементов",
+      `Вы уверены, что хотите удалить все эти элементы?`,
+      [
+        {
+          text: "Отмена",
+          style: "cancel",
+        },
+        {
+          text: "Удалить",
+          style: "destructive",
+          onPress: () => {
+            setTodos((prev) => prev.filter((todo) => todo.status !== true));
           },
         },
       ],
@@ -123,7 +201,7 @@ export const PlanScreen = ({navigation}) => {
           onPress={() => setStatus(true)}
         >
           <View height={5}></View>
-          <Text style={styles.statustext}>In porogress</Text>
+          <Text style={styles.statustext}>In progress</Text>
           <LinearGradient
             colors={
               !status
@@ -167,7 +245,23 @@ export const PlanScreen = ({navigation}) => {
           />
         )}
       />
-
+      {!status && (
+        <LinearGradient
+          colors={["#FF6666", "#FF4047", "#FF1A27"]}
+          start={[1.0, 0.2]}
+          end={[0.2, 1.0]}
+          style={styles.clear}
+        >
+          <Text
+            style={styles.cleartext}
+            onPress={() => {
+              TapClear();
+            }}
+          >
+            Clear
+          </Text>
+        </LinearGradient>
+      )}
       <Navbar navigation={navigation} status={"Plan"} />
     </View>
   );
@@ -176,6 +270,17 @@ export const PlanScreen = ({navigation}) => {
 PlanScreen.navigationOptions = ({navigation}) => {};
 
 const styles = StyleSheet.create({
+  clear: {
+    alignSelf: "center",
+    borderWidth: 1,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    position: "absolute",
+    bottom: 66,
+    height: 42,
+    width: 328,
+  },
+
   screen: {
     height: "100%",
     flexDirection: "column",
@@ -232,6 +337,17 @@ const styles = StyleSheet.create({
   statustext: {
     fontSize: 16,
     fontWeight: "500",
+    color: "#fff",
+  },
+
+  cleartext: {
+    height: "100%",
+    width: "100%",
+    fontSize: 20,
+    fontFamily: "nunito_bold",
+    textAlign: "center",
+    top: 6,
+    fontWeight: "bold",
     color: "#fff",
   },
 

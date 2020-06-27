@@ -24,12 +24,12 @@ export const PlanModal = ({navigation}) => {
   const goBack = navigation.getParam("goBack");
   const [modali, setModali] = useState(false);
   const [modala, setModala] = useState(false);
-  const [value, setValue] = useState("s");
+  const [value, setValue] = useState("");
   const [name, setname] = useState("s");
   const [date, setDate] = useState(new Date());
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
+    const currentDate = selectedDate || date;
     setModala(false);
     setDate(currentDate);
   };
@@ -63,20 +63,23 @@ export const PlanModal = ({navigation}) => {
       <View style={styles.iphonetop}></View>
       <View style={styles.Container}>
         <View style={styles.line1}>
-          <Text style={styles.text}>Add Plan</Text>
-          <TouchableOpacity style={styles.op}>
+          <TouchableOpacity
+            style={styles.op}
+            onPress={() => navigation.goBack(null)}
+          >
             <Image
               style={styles.image}
-              source={require("../assets/Back.png")}
+              source={require("../assets/backTODO.png")}
             />
           </TouchableOpacity>
+          <Text style={styles.text}>Add Plan</Text>
         </View>
         <View style={styles.line2}>
           <View style={styles.input}>
             <TextInput
               style={styles.inputtext}
               placeholder={"Name"}
-              placeholderTextColor="#5e5e5e"
+              placeholderTextColor="white"
               name={name}
               onChangeText={setname}
             />
@@ -106,7 +109,7 @@ export const PlanModal = ({navigation}) => {
       <View style={styles.back}>
         <TextInput
           placeholderTextColor="#5e5e5e"
-          placeholder={"Text.."}
+          placeholder={"Enter text.."}
           style={styles.plan}
           value={value}
           onChangeText={setValue}
@@ -166,6 +169,7 @@ const styles = StyleSheet.create({
     width: 10,
     alignSelf: "flex-start",
     marginLeft: 25,
+    top: "25%",
   },
 
   input: {
@@ -188,12 +192,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-around",
-    marginTop: 19,
   },
   Container: {
     borderBottomWidth: 0.4,
     borderColor: "#fff",
-    height: 90,
+    height: 95,
     width: "100%",
     backgroundColor: "#272727",
     flexDirection: "column",
@@ -202,12 +205,13 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    position: "absolute",
+    position: "relative",
     fontSize: 23,
     fontWeight: "500",
     color: "#fff",
     alignSelf: "center",
     alignItems: "center",
+    bottom: "25%",
   },
 
   iphonetop: {
@@ -237,10 +241,9 @@ const styles = StyleSheet.create({
   button1: {
     justifyContent: "space-around",
     flexDirection: "row",
-
     height: 42,
-    width: "95%",
-    marginLeft: 16,
+    width: "90%",
+    marginLeft: "5%",
     borderRadius: 10,
     alignItems: "center",
   },

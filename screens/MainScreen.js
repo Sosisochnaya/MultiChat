@@ -14,216 +14,152 @@ import {THEME} from "../themes/theme";
 import {AntDesign} from "@expo/vector-icons";
 import {ChooseMessangerScreen} from "./ChooseMessanger";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {SearchResult} from "./SearchResult";
 
-var _retrieveData = async () => {
+async function _retrieveData() {
   try {
     token = await AsyncStorage.getItem("vk_token");
+    number = AsyncStorage.getItem("number");
     if (token !== null) {
       // console.log(token);
     }
   } catch (error) {
     console.log("error token");
   }
-};
+}
 
-var token = _retrieveData();
-var list = [];
-var last_message_text = "default";
-var your_id;
-var name, photo;
+var token;
+var number;
+
 export const MainScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
-  const [modal, setModal] = useState(false);
-  const [vk_list, setVKlist] = useState([]);
-  const [whitelist, setWhitelist] = useState([]);
-  const [tojson1, setToJson1] = useState([]);
-  const [tojson2, setToJson2] = useState([]);
+  const [modalChoseMes, setModalCS] = useState(false);
+  const [modalSearch, setModalSearch] = useState(false);
+  const [list, setList] = useState([]);
+  const [listSearch, setListSearch] = useState([]);
+  const [seacrhtext, setSearch] = useState();
 
   const openDialogHendler = (item) => {
+    // setModalSearch(false);
     navigation.navigate("Dialog", {dialog: item});
+    setSearch("");
   };
 
   const goToChooseMessanger = () => {
-    setModal(true);
+    setModalCS(true);
     // navigation.navigate("AddChat");
   };
 
-  async function vk_dialog_list_1() {
-    var _getWhitelist = async () => {
-      AsyncStorage.getItem("whitelist")
-        .then((req) => JSON.parse(req))
-        .then((json) => setWhitelist(json))
-        .catch((error) => console.log("error!"));
-    };
+  _retrieveData();
 
-    _getWhitelist();
-    // console.log(whitelist);
-    await fetch(
-      "https://api.vk.com/method/users.get?v=5.123&access_token=" + token
-    )
-      .then((response) => response.json())
-      .then((json_lol_kek) => {
-        if (json_lol_kek.error == null) {
-          your_id = json_lol_kek.response[0].id;
-        }
-      });
+  async function all_gialogs() {
+    // _retrieveData();
+    ids = [
+      {
+        id: 3592830872,
+      },
+      {
+        id: 20000000652,
+      },
+      {
+        id: 12450412591,
+      },
+      {
+        id: 10611717871,
+      },
+      {
+        id: 1407408602,
+      },
+    ];
+    // var wl_json = "[";
+    var wl_json = [];
 
-    await fetch(
-      "https://api.vk.com/method/messages.getConversations?count=50&extended=1&v=5.123&access_token=" +
-        token
-    )
-      .then((response) => response.json())
+    await AsyncStorage.getItem("whitelistVK")
+      .then((req) => JSON.parse(req))
       .then((json) => {
-        if (json.error == null) {
-          json.response.items.forEach((item) => {
-            // console.log("rer" + item);
-            if (whitelist.includes(item.conversation.peer.id)) {
-              if (item.conversation.peer.type == "user") {
-                if (
-                  item.last_message.text == "" &&
-                  item.last_message.fwd_messages[0] != null
-                ) {
-                  last_message_text = "Forwarded messages";
-                } else if (item.last_message.text == "") {
-                  if (item.last_message.attachments[0].type == "photo") {
-                    last_message_text = "Photo";
-                  }
-                  if (item.last_message.attachments[0].type == "video") {
-                    last_message_text = "Video";
-                  }
-                  if (item.last_message.attachments[0].type == "audio") {
-                    last_message_text = "Audio";
-                  }
-                  if (item.last_message.attachments[0].type == "doc") {
-                    last_message_text = "Document";
-                  }
-                  if (item.last_message.attachments[0].type == "point") {
-                    last_message_text = "Map";
-                  }
-                  if (item.last_message.attachments[0].type == "gift") {
-                    last_message_text = "Gift";
-                  }
-                  if (item.last_message.attachments[0].type == "link") {
-                    last_message_text = "Link";
-                  }
-                  if (item.last_message.attachments[0].type == "sticker") {
-                    last_message_text = "Sticker";
-                  }
-                  if (item.last_message.attachments[0].type == "wall") {
-                    last_message_text = "Wall post";
-                  }
-                  if (
-                    item.last_message.attachments[0].type == "audio_message"
-                  ) {
-                    last_message_text = "Voice message";
-                  }
-                } else last_message_text = item.last_message.text;
-                if (item.last_message.from_id == your_id)
-                  last_message_text = "You: " + last_message_text;
-
-                json.response.profiles.forEach((profile) => {
-                  if (profile.id == item.conversation.peer.id) {
-                    name = profile.first_name + " " + profile.last_name;
-                    photo = profile.photo_50;
-                  }
-                });
-
-                list.push({
-                  id: item.conversation.peer.id,
-                  type: "user",
-                  name: name,
-                  photo: photo,
-                  unread_count: item.conversation.unread_count,
-                  last_message_text: last_message_text,
-                  last_message_from: item.last_message.from_id,
-                  last_message_date: item.last_message.date,
-                });
-              }
-              if (item.conversation.peer.type == "chat") {
-                if (
-                  item.last_message.text == "" &&
-                  item.last_message.fwd_messages[0] != null
-                ) {
-                  last_message_text = "Forwarded messages";
-                } else if (item.last_message.text == "") {
-                  if (item.last_message.attachments[0].type == "photo") {
-                    last_message_text = "Photo";
-                  }
-                  if (item.last_message.attachments[0].type == "video") {
-                    last_message_text = "Video";
-                  }
-                  if (item.last_message.attachments[0].type == "audio") {
-                    last_message_text = "Audio";
-                  }
-                  if (item.last_message.attachments[0].type == "doc") {
-                    last_message_text = "Document";
-                  }
-                  if (item.last_message.attachments[0].type == "point") {
-                    last_message_text = "Map";
-                  }
-                  if (item.last_message.attachments[0].type == "gift") {
-                    last_message_text = "Gift";
-                  }
-                  if (item.last_message.attachments[0].type == "link") {
-                    last_message_text = "Link";
-                  }
-                  if (item.last_message.attachments[0].type == "sticker") {
-                    last_message_text = "Sticker";
-                  }
-                  if (item.last_message.attachments[0].type == "wall") {
-                    last_message_text = "Wall post";
-                  }
-                  if (
-                    item.last_message.attachments[0].type == "audio_message"
-                  ) {
-                    last_message_text = "Voice message";
-                  }
-                } else last_message_text = item.last_message.text;
-                if (item.last_message.from_id == your_id)
-                  last_message_text = "You: " + last_message_text;
-                list.push({
-                  id: item.conversation.peer.id,
-                  type: "chat",
-                  name: item.conversation.chat_settings.title,
-                  photo: item.conversation.chat_settings.photo.photo_50,
-                  unread_count: item.conversation.unread_count,
-                  last_message_text: last_message_text,
-                  last_message_from: item.last_message.from_id,
-                  last_message_date: item.last_message.date,
-                });
-              }
-            }
+        if (json != [])
+          json.forEach((item) => {
+            wl_json.push({id: parseInt(item, 10)});
           });
+      })
+      .catch((error) => console.log("error vk wl"));
+
+    await AsyncStorage.getItem("whitelistTG")
+      .then((req) => JSON.parse(req))
+      .then((json) => {
+        if (json != [])
+          json.forEach((item) => {
+            wl_json.push({id: parseInt(item, 10)});
+          });
+      })
+      .catch((error) => console.log("error tg wl"));
+    // console.log(wl_json);
+    if (wl_json != []) {
+      fetch(
+        "http://109.227.206.136:5000/get_dialogs?phone=" +
+          (await AsyncStorage.getItem("number")) +
+          "&token=" +
+          (await AsyncStorage.getItem("vk_token")),
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(wl_json),
+        }
+      )
+        .catch((error) => console.log(error))
+        .then((list) => list.json())
+        .then((list) => {
+          setList(list);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }
+
+  function search_name() {
+    let list2 = [];
+    if (seacrhtext != "" && list != []) {
+      list.forEach((item) => {
+        if (item.name.toLowerCase().indexOf(seacrhtext.toLowerCase()) + 1) {
+          list2.push(item);
         }
       });
-    // console.log(list);
-    if (list != "") setVKlist(list);
-    list = [];
-    setLoading(false);
+      setListSearch(list2);
+      setModalSearch(true);
+    }
   }
 
   useEffect(() => {
-    // _retrieveData();
-    setTimeout(vk_dialog_list_1, 5000);
+    setTimeout(all_gialogs, 2000);
+    // all_gialogs();
   });
+
   console.disableYellowBox = true;
+
   return (
     <View style={styles.conteiner}>
       <ChooseMessangerScreen
         navigation={navigation}
-        visible={modal}
-        onCancel={() => setModal(false)}
+        visible={modalChoseMes}
+        onCancel={() => {
+          setModalCS(false);
+        }}
+      />
+      <SearchResult
+        navigation={navigation}
+        visible={modalSearch}
+        onCancel={() => {
+          setModalSearch(false);
+          setSearch("");
+        }}
+        list={listSearch}
       />
 
       <View style={styles.header}>
-        <View style={styles.swapmes}>
-          <MaterialCommunityIcons
-            name="telegram"
-            size={30}
-            color="white"
-            onPress={() => navigation.navigate("MainTG")}
-          />
-        </View>
         <View style={styles.line1}>
           <Text style={styles.text}>Chats</Text>
         </View>
@@ -240,6 +176,9 @@ export const MainScreen = ({navigation}) => {
           placeholder="Find message..."
           placeholderTextColor={THEME.TEXT_COLOR_BLACK}
           style={styles.input}
+          onChangeText={(text) => setSearch(text)}
+          value={seacrhtext}
+          onSubmitEditing={search_name}
         />
       </View>
 
@@ -249,7 +188,7 @@ export const MainScreen = ({navigation}) => {
         </View>
       ) : (
         <FlatList
-          data={vk_list}
+          data={list}
           keyExtractor={(dialog) => dialog.id.toString()}
           renderItem={({item}) => (
             <DialogInList dialog={item} onOpen={openDialogHendler} />
@@ -285,7 +224,8 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   input: {
-    paddingLeft: 110,
+    // paddingLeft: 110,
+    textAlign: "center",
     backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
     height: 30,
     width: "85%",

@@ -9,14 +9,18 @@ import {
   Platform,
 } from "react-native";
 import {THEME} from "../themes/theme";
-import { LinearGradient } from 'expo-linear-gradient';
-
+import {LinearGradient} from "expo-linear-gradient";
 
 export const ChooseMessangerScreen = ({navigation, visible, onCancel}) => {
-  const goToAddChatScreen = () => {
+  const goToAddChatScreenVK = () => {
     // onCancel;
     onCancel();
-    navigation.navigate("AddChat");
+    navigation.navigate("AddChat", {messager: "VK"});
+  };
+  const goToAddChatScreenTG = () => {
+    // onCancel;
+    onCancel();
+    navigation.navigate("AddChat", {messager: "TG"});
   };
   const goBackHendler = () => {
     onCancel();
@@ -40,40 +44,42 @@ export const ChooseMessangerScreen = ({navigation, visible, onCancel}) => {
         </View>
 
         <View style={styles.wrap2}>
-          <TouchableOpacity onPress={goToAddChatScreen}>
-          <LinearGradient 
-              colors={['#FFDE67', '#FFA467', '#FF6666']}  
+          <TouchableOpacity onPress={goToAddChatScreenVK}>
+            <LinearGradient
+              colors={["#FFDE67", "#FFA467", "#FF6666"]}
               start={[1.0, 0.2]}
-              end={[0.2,1.0]}
-              style={styles.button1}>
-            <Image
-              style={styles.imageVk1}
-              source={require("../assets/vk.png")}
-            />
-            <Text style={styles.label}>VKONTAKTE</Text>
-            <Image
-              style={styles.imageVk2}
-              source={require("../assets/vk.png")}
-            />
+              end={[0.2, 1.0]}
+              style={styles.button1}
+            >
+              <Image
+                style={styles.imageVk1}
+                source={require("../assets/vk.png")}
+              />
+              <Text style={styles.label}>VKONTAKTE</Text>
+              <Image
+                style={styles.imageVk2}
+                source={require("../assets/vk.png")}
+              />
             </LinearGradient>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={goToAddChatScreen}>
-          <LinearGradient 
-              colors={['#FFDE67', '#FFA467', '#FF6666']}  
+          <TouchableOpacity onPress={goToAddChatScreenTG}>
+            <LinearGradient
+              colors={["#FFDE67", "#FFA467", "#FF6666"]}
               start={[1.0, 0.2]}
-              end={[0.2,1.0]}
-              style={styles.button2}>
-            <Image
-              style={styles.imageTelegram1}
-              source={require("../assets/telegram.png")}
-            />
-            <Text style={styles.label}>TELEGRAM</Text>           
-            <Image
-              style={styles.imageTelegram2}
-              source={require("../assets/telegram.png")}
-            />
-        </LinearGradient>
+              end={[0.2, 1.0]}
+              style={styles.button2}
+            >
+              <Image
+                style={styles.imageTelegram1}
+                source={require("../assets/telegram.png")}
+              />
+              <Text style={styles.label}>TELEGRAM</Text>
+              <Image
+                style={styles.imageTelegram2}
+                source={require("../assets/telegram.png")}
+              />
+            </LinearGradient>
           </TouchableOpacity>
         </View>
       </View>
@@ -96,7 +102,7 @@ const styles = StyleSheet.create({
   },
 
   TouchHeader: {
-    height: 210,
+    height: "30%",
   },
 
   TouchFooter: {
@@ -106,24 +112,28 @@ const styles = StyleSheet.create({
   wrap1: {
     alignItems: "center",
     height: 60,
-    width: 360,
+    width: "90%",
     backgroundColor: THEME.HEADER_BACKGROUND_COLOR_BLACK,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomColor: "#5E5E5E",
-    borderBottomWidth: 0.5,
-    marginTop: 0,
-    marginLeft: 7,
+    // borderBottomWidth: 0.5,
+    // marginTop: 0,
+    // marginLeft: 7,
   },
 
   wrap2: {
     alignItems: "center",
     height: 172,
-    width: 360,
+    width: "90%",
     backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
-    marginLeft: 7,
+    borderLeftWidth: 0.5,
+    borderRightWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderColor: "#5E5E5E",
+    // marginLeft: 7,
   },
 
   button1: {
@@ -132,7 +142,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: THEME.BTN_ORANGE_COLOR,
     height: 60,
-    width: 328,
+    width: "90%",
     borderRadius: 20,
     alignItems: "center",
   },
@@ -143,7 +153,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: THEME.BTN_ORANGE_COLOR,
     height: 60,
-    width: 328,
+    width: "90%",
     borderRadius: 20,
     bottom: 10,
     alignItems: "center",
