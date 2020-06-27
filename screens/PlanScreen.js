@@ -1,8 +1,8 @@
-import React, {useState} from "react";
-import {useEffect} from "react";
-import {AsyncStorage} from "react-native";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { AsyncStorage } from "react-native";
 // import {DB} from "../Tododb";
-import {LinearGradient} from "expo-linear-gradient";
+import { LinearGradient } from "expo-linear-gradient";
 import {
   StyleSheet,
   Text,
@@ -18,13 +18,13 @@ import {
   FlatList,
   Alert,
 } from "react-native";
-import {THEME} from "../themes/theme";
-import {Navbar} from "../components/Navbar";
-import {PlanModal} from "../components/PlanModal";
-import {Todo} from "../components/Todo";
-import {EditTodo} from "../components/EditTodo";
+import { THEME } from "../themes/theme";
+import { Navbar } from "../components/Navbar";
+import { PlanModal } from "../components/PlanModal";
+import { Todo } from "../components/Todo";
+import { EditTodo } from "../components/EditTodo";
 
-export const PlanScreen = ({navigation}) => {
+export const PlanScreen = ({ navigation }) => {
   const [editmodal, seteditModal] = useState(false);
   const [editid, seteditid] = useState({});
 
@@ -142,7 +142,7 @@ export const PlanScreen = ({navigation}) => {
           },
         },
       ],
-      {cancelable: false}
+      { cancelable: false }
     );
   };
 
@@ -234,7 +234,7 @@ export const PlanScreen = ({navigation}) => {
       <FlatList
         keyExtractor={(item) => item.id.toString()}
         data={todos}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <Todo
             todo={item}
             status={status}
@@ -267,7 +267,7 @@ export const PlanScreen = ({navigation}) => {
   );
 };
 
-PlanScreen.navigationOptions = ({navigation}) => {};
+PlanScreen.navigationOptions = ({ navigation }) => {};
 
 const styles = StyleSheet.create({
   clear: {
