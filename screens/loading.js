@@ -29,7 +29,7 @@ let black = {
   namesuname: "#fff",
   textmess: "#C6C6C6",
 
-  headertroke: "#5E5E5E",
+  headerstroke: "#5E5E5E",
   background: "#111111",
   greyext: '"#7C7C7C"',
   GcolorL: "#FF6666",
@@ -39,6 +39,7 @@ let black = {
   clearL: "#FF1A27",
   clearS: "#FF4047",
   clearR: "#FF6666",
+  white: "#fff",
 };
 
 let white = {
@@ -61,6 +62,7 @@ let white = {
   clearL: "#FF1A27",
   clearS: "#FF4047",
   clearR: "#FF6666",
+  white: "#fff",
 };
 
 export const loading = ({ navigation }) => {

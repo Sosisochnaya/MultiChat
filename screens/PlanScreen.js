@@ -25,6 +25,7 @@ import { Todo } from "../components/Todo";
 import { EditTodo } from "../components/EditTodo";
 
 export const PlanScreen = ({ navigation }) => {
+  const theme = navigation.getParam("theme");
   const [editmodal, seteditModal] = useState(false);
   const [editid, seteditid] = useState({});
 
@@ -167,8 +168,126 @@ export const PlanScreen = ({ navigation }) => {
     );
   };
 
+  const styles = StyleSheet.create({
+    clear: {
+      alignSelf: "center",
+      //borderWidth: 1,
+      //backgroundColor: "#fff",
+      borderRadius: 10,
+      position: "absolute",
+      bottom: 66,
+      height: 42,
+      width: 328,
+    },
+
+    screen: {
+      height: "100%",
+      flexDirection: "column",
+      backgroundColor: theme.background,
+    },
+
+    image: {
+      height: 30.77,
+      width: 29,
+    },
+
+    modal1: {
+      marginTop: 135,
+      borderWidth: 4,
+      height: "100%",
+      width: "100%",
+    },
+    modal2: {
+      marginTop: 135,
+      borderWidth: 4,
+      borderColor: "#fff",
+      height: "100%",
+      width: "100%",
+    },
+
+    op: {
+      position: "relative",
+      height: 30.77,
+      width: 29,
+      alignSelf: "flex-end",
+      marginRight: 25,
+    },
+
+    choose: {
+      flexDirection: "row",
+    },
+
+    statuscont: {
+      width: "50%",
+      height: 60,
+      flexDirection: "column",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+
+    statuscont1: {
+      width: "50%",
+      height: 60,
+      flexDirection: "column",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+
+    statustext: {
+      fontSize: 16,
+      fontWeight: "500",
+      color: theme.headertext,
+    },
+
+    cleartext: {
+      fontSize: 20,
+      fontFamily: "nunito_bold",
+      textAlign: "center",
+      top: 6,
+      fontWeight: "bold",
+      color: "#fff",
+    },
+
+    Container: {
+      borderBottomWidth: 0.5,
+      borderColor: theme.headerstroke,
+      height: 60,
+      width: "100%",
+      backgroundColor: theme.headermenu,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    text: {
+      position: "absolute",
+      fontSize: 23,
+      fontWeight: "500",
+      color: theme.headertext,
+      alignSelf: "center",
+      alignItems: "center",
+    },
+
+    iphonetop: {
+      height: 20,
+    },
+
+    button: {
+      position: "absolute",
+      height: 30.77,
+      width: 29,
+    },
+
+    line: {
+      borderRadius: 3,
+      height: 5,
+      width: "100%",
+
+      alignSelf: "flex-end",
+    },
+  });
+
   return (
-    <View style={styles.screen}>
+    <View backgroundColor={theme.background} style={styles.screen}>
       {/* <PlanModal
         visible={modal}
         onCancel={() => setModal(false)}
@@ -181,12 +300,15 @@ export const PlanScreen = ({ navigation }) => {
         add={addTodo}
       />
       <View style={styles.iphonetop}></View>
-      <View style={styles.Container}>
-        <Text style={styles.text}>Plan</Text>
+      <View backgroundColor={theme.headermenu} style={styles.Container}>
+        <Text color={theme.headertext} style={styles.text}>
+          Plan
+        </Text>
         <TouchableOpacity
           style={styles.op}
           onPress={() =>
             navigation.navigate("AddPlan", {
+              theme: theme,
               Add: addTodo,
               goBack: goBack,
             })
@@ -201,12 +323,14 @@ export const PlanScreen = ({ navigation }) => {
           onPress={() => setStatus(true)}
         >
           <View height={5}></View>
-          <Text style={styles.statustext}>In progress</Text>
+          <Text color={theme.headertext} style={styles.statustext}>
+            In progress
+          </Text>
           <LinearGradient
             colors={
               !status
-                ? ["#111111", "#111111", "#111111"]
-                : ["#FFDE67", "#FFA467", "#FF6666"]
+                ? [theme.background, theme.background, theme.background]
+                : [theme.GcolorR, theme.GcolorS, theme.GcolorL]
             }
             start={[1.0, 0.2]}
             end={[0.2, 1.0]}
@@ -218,12 +342,14 @@ export const PlanScreen = ({ navigation }) => {
           onPress={() => setStatus(false)}
         >
           <View height={5}></View>
-          <Text style={styles.statustext}>Done</Text>
+          <Text color={theme.headertext} style={styles.statustext}>
+            Done
+          </Text>
           <LinearGradient
             colors={
               status
-                ? ["#111111", "#111111", "#111111"]
-                : ["#FFDE67", "#FFA467", "#FF6666"]
+                ? [theme.background, theme.background, theme.background]
+                : [theme.GcolorR, theme.GcolorS, theme.GcolorL]
             }
             start={[1.0, 0.2]}
             end={[0.2, 1.0]}
@@ -242,6 +368,7 @@ export const PlanScreen = ({ navigation }) => {
             addTodo={addTodo}
             onRemove={removeTodo}
             EditTodoPress={EditTodoPress}
+            theme={theme}
           />
         )}
       />
@@ -253,6 +380,7 @@ export const PlanScreen = ({ navigation }) => {
           style={styles.clear}
         >
           <Text
+            color={theme.white}
             style={styles.cleartext}
             onPress={() => {
               TapClear();
@@ -262,130 +390,9 @@ export const PlanScreen = ({ navigation }) => {
           </Text>
         </LinearGradient>
       )}
-      <Navbar navigation={navigation} status={"Plan"} />
+      <Navbar navigation={navigation} status={"Plan"} theme={theme} />
     </View>
   );
 };
 
 PlanScreen.navigationOptions = ({ navigation }) => {};
-
-const styles = StyleSheet.create({
-  clear: {
-    alignSelf: "center",
-    borderWidth: 1,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    position: "absolute",
-    bottom: 66,
-    height: 42,
-    width: 328,
-  },
-
-  screen: {
-    height: "100%",
-    flexDirection: "column",
-    backgroundColor: "#111111",
-  },
-
-  image: {
-    height: 30.77,
-    width: 29,
-  },
-
-  modal1: {
-    marginTop: 135,
-    borderWidth: 4,
-    height: "100%",
-    width: "100%",
-  },
-  modal2: {
-    marginTop: 135,
-    borderWidth: 4,
-    borderColor: "#fff",
-    height: "100%",
-    width: "100%",
-  },
-
-  op: {
-    position: "relative",
-    height: 30.77,
-    width: 29,
-    alignSelf: "flex-end",
-    marginRight: 25,
-  },
-
-  choose: {
-    flexDirection: "row",
-  },
-
-  statuscont: {
-    width: "50%",
-    height: 60,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  statuscont1: {
-    width: "50%",
-    height: 60,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  statustext: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#fff",
-  },
-
-  cleartext: {
-    height: "100%",
-    width: "100%",
-    fontSize: 20,
-    fontFamily: "nunito_bold",
-    textAlign: "center",
-    top: 6,
-    fontWeight: "bold",
-    color: "#fff",
-  },
-
-  Container: {
-    borderBottomWidth: 0.5,
-    borderColor: "#fff",
-    height: 60,
-    width: "100%",
-    backgroundColor: "#272727",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  text: {
-    position: "absolute",
-    fontSize: 23,
-    fontWeight: "500",
-    color: "#fff",
-    alignSelf: "center",
-    alignItems: "center",
-  },
-
-  iphonetop: {
-    height: 20,
-    backgroundColor: "#272727",
-  },
-
-  button: {
-    position: "absolute",
-    height: 30.77,
-    width: 29,
-  },
-
-  line: {
-    borderRadius: 3,
-    height: 5,
-    width: "100%",
-
-    alignSelf: "flex-end",
-  },
-});

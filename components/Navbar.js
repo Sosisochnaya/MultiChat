@@ -5,20 +5,26 @@ import { THEME } from "../themes/theme";
 import { AntDesign } from "@expo/vector-icons";
 import Svg, { Path } from "react-native-svg";
 
-export const Navbar = ({ navigation, status }) => {
+export const Navbar = ({ navigation, status, theme }) => {
   const [config, setconfig] = useState(false);
   const [chat, setchat] = useState(true);
   const [plan, setplan] = useState(false);
 
   return (
-    <View style={styles.conteiner}>
+    <View
+      backgroundColor={theme.headermenu}
+      borderTopColor={theme.headerstroke}
+      style={styles.conteiner}
+    >
       <View style={styles.button}>
         <TouchableOpacity
           onPress={() => {
             setconfig(false);
             setchat(false);
             setplan(true);
-            navigation.navigate("Plan");
+            navigation.navigate("Plan", {
+              theme: theme,
+            });
           }}
         >
           {"Plan" != status && (
@@ -41,7 +47,9 @@ export const Navbar = ({ navigation, status }) => {
             setconfig(false);
             setchat(true);
             setplan(false);
-            navigation.navigate("Main");
+            navigation.navigate("Main", {
+              theme: theme,
+            });
           }}
         >
           {"Chat" != status && (
@@ -64,7 +72,9 @@ export const Navbar = ({ navigation, status }) => {
             setconfig(true);
             setchat(false);
             setplan(false);
-            navigation.navigate("Config");
+            navigation.navigate("Config", {
+              theme: theme,
+            });
           }}
         >
           {"Conf" != status && (
@@ -94,12 +104,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: THEME.NAVBAR_BACKGROUND_COLOR_BLACK,
+
     height: 60,
     width: "100%",
 
-    borderTopColor: "black",
-    borderTopWidth: 2,
+    borderTopWidth: 0.5,
 
     bottom: 0,
   },

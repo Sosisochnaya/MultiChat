@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import {LinearGradient} from "expo-linear-gradient";
+import { LinearGradient } from "expo-linear-gradient";
 
 import {
   StyleSheet,
@@ -14,12 +14,13 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import {TimeModaliOs} from "./TimeModaliOs";
+import { TimeModaliOs } from "./TimeModaliOs";
 
-import {THEME} from "../themes/theme";
-import {Navbar} from "../components/Navbar";
+import { THEME } from "../themes/theme";
+import { Navbar } from "../components/Navbar";
 
-export const PlanModal = ({navigation}) => {
+export const PlanModal = ({ navigation }) => {
+  const theme = navigation.getParam("theme");
   const Add = navigation.getParam("Add");
   const goBack = navigation.getParam("goBack");
   const [modali, setModali] = useState(false);
@@ -58,6 +59,117 @@ export const PlanModal = ({navigation}) => {
     }
   };
 
+  const styles = StyleSheet.create({
+    back: {
+      height: "100%",
+      backgroundColor: theme.background,
+    },
+    image: {
+      height: 20,
+      width: 10,
+    },
+    inputtext: {
+      color: theme.textmess,
+      marginLeft: 10,
+    },
+    op: {
+      position: "relative",
+      height: 20,
+      width: 10,
+      alignSelf: "flex-start",
+      marginLeft: 25,
+      top: "25%",
+    },
+
+    input: {
+      borderWidth: 0.5,
+      borderRadius: 10,
+      borderColor: theme.headerstroke,
+      backgroundColor: theme.background,
+      height: 26,
+      width: 155,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    line1: {
+      width: "100%",
+      alignItems: "center",
+    },
+    line2: {
+      flexDirection: "row",
+      width: "100%",
+      justifyContent: "space-around",
+    },
+    Container: {
+      borderBottomWidth: 0.4,
+      borderColor: theme.headerstroke,
+      height: 95,
+      width: "100%",
+      backgroundColor: theme.headermenu,
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    text: {
+      position: "relative",
+      fontSize: 23,
+      fontWeight: "500",
+      color: theme.headertext,
+      alignSelf: "center",
+      alignItems: "center",
+      bottom: "25%",
+    },
+
+    iphonetop: {
+      height: 20,
+      //backgroundColor: "#272727",
+    },
+
+    nav: {
+      bottom: 0,
+    },
+
+    plan: {
+      marginLeft: 21,
+      marginTop: 24,
+      fontSize: 24,
+      //color: "#fff",
+    },
+    button: {
+      bottom: 18,
+      alignSelf: "center",
+      position: "absolute",
+
+      height: 42,
+      width: 328,
+    },
+
+    button1: {
+      justifyContent: "space-around",
+      flexDirection: "row",
+      height: 42,
+      width: "90%",
+      marginLeft: "5%",
+      borderRadius: 10,
+      alignItems: "center",
+    },
+
+    add: {
+      fontSize: 20,
+      color: "#fff",
+      fontFamily: "nunito_bold",
+      fontWeight: "700",
+    },
+
+    TimeModal: {
+      alignSelf: "center",
+      justifyContent: "center",
+    },
+  });
+
   return (
     <View height={"100%"}>
       <View style={styles.iphonetop}></View>
@@ -79,7 +191,7 @@ export const PlanModal = ({navigation}) => {
             <TextInput
               style={styles.inputtext}
               placeholder={"Name"}
-              placeholderTextColor="white"
+              placeholderTextColor={theme.textmess}
               name={name}
               onChangeText={setname}
             />
@@ -108,7 +220,7 @@ export const PlanModal = ({navigation}) => {
       </View>
       <View style={styles.back}>
         <TextInput
-          placeholderTextColor="#5e5e5e"
+          placeholderTextColor={theme.textmess}
           placeholder={"Enter text.."}
           style={styles.plan}
           value={value}
@@ -138,7 +250,7 @@ export const PlanModal = ({navigation}) => {
       </View>
       <TouchableOpacity style={styles.button} onPress={pressHandler}>
         <LinearGradient
-          colors={["#FFDE67", "#FFA467", "#FF6666"]}
+          colors={[theme.GcolorR, theme.GcolorS, theme.GcolorL]}
           start={[1.0, 0.2]}
           end={[0.2, 1.0]}
           style={styles.button1}
@@ -149,114 +261,3 @@ export const PlanModal = ({navigation}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  back: {
-    height: "100%",
-    backgroundColor: "#111111",
-  },
-  image: {
-    height: 20,
-    width: 10,
-  },
-  inputtext: {
-    color: "#fff",
-    marginLeft: 10,
-  },
-  op: {
-    position: "relative",
-    height: 20,
-    width: 10,
-    alignSelf: "flex-start",
-    marginLeft: 25,
-    top: "25%",
-  },
-
-  input: {
-    borderWidth: 0.5,
-    borderRadius: 10,
-    borderColor: "#fff",
-    backgroundColor: "#111111",
-    height: 26,
-    width: 155,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  line1: {
-    width: "100%",
-    alignItems: "center",
-  },
-  line2: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-around",
-  },
-  Container: {
-    borderBottomWidth: 0.4,
-    borderColor: "#fff",
-    height: 95,
-    width: "100%",
-    backgroundColor: "#272727",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  text: {
-    position: "relative",
-    fontSize: 23,
-    fontWeight: "500",
-    color: "#fff",
-    alignSelf: "center",
-    alignItems: "center",
-    bottom: "25%",
-  },
-
-  iphonetop: {
-    height: 20,
-    backgroundColor: "#272727",
-  },
-
-  nav: {
-    bottom: 0,
-  },
-
-  plan: {
-    marginLeft: 21,
-    marginTop: 24,
-    fontSize: 24,
-    color: "#fff",
-  },
-  button: {
-    bottom: 18,
-    alignSelf: "center",
-    position: "absolute",
-
-    height: 42,
-    width: 328,
-  },
-
-  button1: {
-    justifyContent: "space-around",
-    flexDirection: "row",
-    height: 42,
-    width: "90%",
-    marginLeft: "5%",
-    borderRadius: 10,
-    alignItems: "center",
-  },
-
-  add: {
-    fontSize: 20,
-    color: "#fff",
-    fontFamily: "nunito_bold",
-    fontWeight: "700",
-  },
-
-  TimeModal: {
-    alignSelf: "center",
-    justifyContent: "center",
-  },
-});

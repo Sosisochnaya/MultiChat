@@ -20,6 +20,7 @@ export const Todo = ({
   addTodo,
   onRemove,
   EditTodoPress,
+  theme,
 }) => {
   const [valswitch, setvalswitch] = useState(false);
   const [stat, setstat] = useState(false);
@@ -37,6 +38,73 @@ export const Todo = ({
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
     // AsyncStorage.removeItem(id);
   };
+
+  const styles = StyleSheet.create({
+    center: {
+      // borderWidth: 1,
+      width: 100,
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+
+    todo: {
+      height: 54,
+      borderBottomWidth: 0.5,
+      borderColor: theme.headerstroke,
+      justifyContent: "space-between",
+      flexDirection: "row",
+      alignItems: "center",
+    },
+
+    text: {
+      //borderWidth: 1,
+      fontFamily: "nunito_bold",
+      width: 100,
+      marginLeft: 15,
+      fontSize: 24,
+      color: theme.headertext,
+    },
+
+    text2: {
+      fontFamily: "nunito_bold",
+      fontSize: 12,
+      color: theme.headertext,
+    },
+
+    switch: {
+      height: "100%",
+      width: 69,
+      // borderWidth: 1,
+      paddingRight: 15,
+      flexDirection: "row",
+      alignSelf: "flex-end",
+      alignItems: "center",
+      justifyContent: "flex-end",
+    },
+
+    zone: {
+      width: 115,
+    },
+
+    change: {
+      borderWidth: 2,
+      borderRadius: 10,
+      borderColor: theme.chekbox,
+
+      height: 25,
+      width: 25,
+    },
+
+    change2: {
+      borderWidth: 2,
+      borderRadius: 10,
+      borderColor: theme.chekbox,
+      backgroundColor: theme.chekbox,
+      height: 25,
+      width: 25,
+    },
+  });
 
   if (todo.status !== status) {
     return (
@@ -75,70 +143,3 @@ export const Todo = ({
     return <View></View>;
   }
 };
-
-const styles = StyleSheet.create({
-  center: {
-    // borderWidth: 1,
-    width: 100,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  todo: {
-    height: 54,
-    borderBottomWidth: 0.5,
-    borderColor: "#AAAAAA",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  text: {
-    //borderWidth: 1,
-    fontFamily: "nunito_bold",
-    width: 100,
-    marginLeft: 15,
-    fontSize: 24,
-    color: "#fff",
-  },
-
-  text2: {
-    fontFamily: "nunito_bold",
-    fontSize: 12,
-    color: "#fff",
-  },
-
-  switch: {
-    height: "100%",
-    width: 69,
-    // borderWidth: 1,
-    paddingRight: 15,
-    flexDirection: "row",
-    alignSelf: "flex-end",
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-
-  zone: {
-    width: 115,
-  },
-
-  change: {
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: "#FF6D67",
-
-    height: 25,
-    width: 25,
-  },
-
-  change2: {
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: "#FF6D67",
-    backgroundColor: "#FF6D67",
-    height: 25,
-    width: 25,
-  },
-});

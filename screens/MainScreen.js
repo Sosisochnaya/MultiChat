@@ -149,6 +149,64 @@ export const MainScreen = ({ navigation }) => {
 
   console.disableYellowBox = true;
 
+  const styles = StyleSheet.create({
+    conteiner: {
+      height: "100%",
+      width: "100%",
+
+      position: "relative",
+      paddingBottom: 60,
+    },
+    header: {
+      //width: "100%",
+      paddingTop: 20,
+      //marginTop: 24,
+      height: 110,
+      justifyContent: "center",
+      alignItems: "center",
+      borderBottomWidth: 0.5,
+    },
+    line1: {
+      width: "100%",
+      position: "relative",
+      alignItems: "center",
+      paddingBottom: 10,
+    },
+    input: {
+      // paddingLeft: 110,
+      textAlign: "center",
+
+      height: 30,
+      width: "85%",
+
+      borderWidth: 0.5,
+      borderRadius: 10,
+
+      fontSize: 17,
+      fontFamily: "roboto_regular",
+    },
+    text: {
+      alignItems: "center",
+      fontStyle: "normal",
+      fontSize: 24,
+      fontFamily: "nunito_bold",
+      color: theme.headertext,
+    },
+    button: {
+      position: "absolute",
+      right: 0,
+      top: 0,
+      paddingTop: 25,
+    },
+
+    swapmes: {
+      position: "absolute",
+      left: 20,
+      top: 0,
+      paddingTop: 30,
+    },
+  });
+
   return (
     <View backgroundColor={theme.background} style={styles.conteiner}>
       <ChooseMessangerScreen
@@ -174,25 +232,24 @@ export const MainScreen = ({ navigation }) => {
         style={styles.header}
       >
         <View style={styles.line1}>
-          <Text color={theme.headertext} style={styles.text}>
-            Chats
-          </Text>
+          <Text style={styles.text}>Chats</Text>
         </View>
 
         <View style={styles.button}>
           <AntDesign.Button
             name="plus"
             size={25}
+            color={theme.headertext}
             backgroundColor="transparent"
             onPress={goToChooseMessanger}
           ></AntDesign.Button>
         </View>
         <TextInput
           placeholder="Find message..."
-          placeholderTextColor={theme.color}
+          placeholderTextColor={theme.textmess}
           backgroundColor={theme.background}
           style={styles.input}
-          borderColor={theme.navbarstroke}
+          borderColor={theme.headerstroke}
           onChangeText={(text) => setSearch(text)}
           value={seacrhtext}
           onSubmitEditing={search_name}
@@ -212,64 +269,7 @@ export const MainScreen = ({ navigation }) => {
           )}
         />
       )}
-      <Navbar navigation={navigation} status={"Chat"} />
+      <Navbar navigation={navigation} status={"Chat"} theme={theme} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  conteiner: {
-    height: "100%",
-    width: "100%",
-
-    position: "relative",
-    paddingBottom: 60,
-  },
-  header: {
-    //width: "100%",
-    paddingTop: 20,
-    //marginTop: 24,
-    height: 110,
-    justifyContent: "center",
-    alignItems: "center",
-    borderBottomWidth: 0.5,
-  },
-  line1: {
-    width: "100%",
-    position: "relative",
-    alignItems: "center",
-    paddingBottom: 10,
-  },
-  input: {
-    // paddingLeft: 110,
-    textAlign: "center",
-
-    height: 30,
-    width: "85%",
-
-    borderWidth: 1,
-    borderRadius: 10,
-
-    fontSize: 17,
-    fontFamily: "roboto_regular",
-  },
-  text: {
-    alignItems: "center",
-    fontStyle: "normal",
-    fontSize: 24,
-    fontFamily: "nunito_bold",
-  },
-  button: {
-    position: "absolute",
-    right: 0,
-    top: 0,
-    paddingTop: 25,
-  },
-
-  swapmes: {
-    position: "absolute",
-    left: 20,
-    top: 0,
-    paddingTop: 30,
-  },
-});

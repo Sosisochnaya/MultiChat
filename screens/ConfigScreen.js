@@ -18,6 +18,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 
 export const ConfigScreen = ({ navigation }) => {
+  const theme = navigation.getParam("theme");
   const Change = () => {
     Alert.alert(
       "Смена темы",
@@ -147,7 +148,7 @@ export const ConfigScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <Navbar navigation={navigation} status={"Conf"} />
+      <Navbar navigation={navigation} status={"Conf"} theme={theme} />
     </View>
   );
 };
