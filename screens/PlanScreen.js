@@ -36,7 +36,16 @@ export const PlanScreen = ({ navigation }) => {
   const [todos, setTodos] = useState([]);
   const [modal, setModal] = useState(false);
   const [status, setStatus] = useState(true);
-  var r = { todo: todos };
+  const [color, setColor] = useState(false);
+  const [r, setR] = useState(false);
+  if (!r) {
+    if (theme.buf == "W") {
+      setColor(false);
+    } else {
+      setColor(true);
+    }
+    setR(true);
+  }
   //console.log("То что мне нужно");
   // DB.insertPosts("Name", "Tite");
   //console.log(DB.getPosts());
@@ -251,7 +260,7 @@ export const PlanScreen = ({ navigation }) => {
     Container: {
       borderBottomWidth: 0.5,
       borderColor: theme.headerstroke,
-      height: 60,
+      height: 64,
       width: "100%",
       backgroundColor: theme.headermenu,
       alignItems: "center",
@@ -268,7 +277,8 @@ export const PlanScreen = ({ navigation }) => {
     },
 
     iphonetop: {
-      height: 20,
+      height: 24,
+      backgroundColor: theme.headermenu,
     },
 
     button: {
@@ -314,7 +324,14 @@ export const PlanScreen = ({ navigation }) => {
             })
           }
         >
-          <Image style={styles.image} source={require("../assets/PlanW.png")} />
+          <Image
+            style={styles.image}
+            source={
+              color
+                ? require("../assets/BPlanW.png")
+                : require("../assets/WPlanW.png")
+            }
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.choose}>

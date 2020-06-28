@@ -8,7 +8,17 @@ import Svg, { Path } from "react-native-svg";
 export const Navbar = ({ navigation, status, theme }) => {
   const [config, setconfig] = useState(false);
   const [chat, setchat] = useState(true);
-  const [plan, setplan] = useState(false);
+  const [plan, setplan] = useState(true);
+  const [color, setColor] = useState(false);
+  const [r, setR] = useState(false);
+  if (!r) {
+    if (theme.buf == "W") {
+      setColor(false);
+    } else {
+      setColor(true);
+    }
+    setR(true);
+  }
 
   return (
     <View
@@ -30,13 +40,21 @@ export const Navbar = ({ navigation, status, theme }) => {
           {"Plan" != status && (
             <Image
               style={styles.plan}
-              source={require("../assets/PlanW.png")}
+              source={
+                color
+                  ? require("../assets/BPlanW.png")
+                  : require("../assets/WPlanW.png")
+              }
             />
           )}
           {"Plan" === status && (
             <Image
               style={styles.plan}
-              source={require("../assets/PlanK.png")}
+              source={
+                color
+                  ? require("../assets/BPlanK.png")
+                  : require("../assets/WPlanK.png")
+              }
             />
           )}
         </TouchableOpacity>
@@ -55,13 +73,21 @@ export const Navbar = ({ navigation, status, theme }) => {
           {"Chat" != status && (
             <Image
               style={styles.chat}
-              source={require("../assets/ChatW.png")}
+              source={
+                color
+                  ? require("../assets/BChatW.png")
+                  : require("../assets/WChatW.png")
+              }
             />
           )}
           {"Chat" === status && (
             <Image
               style={styles.chat}
-              source={require("../assets/ChatK.png")}
+              source={
+                color
+                  ? require("../assets/BChatK.png")
+                  : require("../assets/WChatK.png")
+              }
             />
           )}
         </TouchableOpacity>
@@ -80,13 +106,21 @@ export const Navbar = ({ navigation, status, theme }) => {
           {"Conf" != status && (
             <Image
               style={styles.conf}
-              source={require("../assets/ConfW.png")}
+              source={
+                color
+                  ? require("../assets/BConfW.png")
+                  : require("../assets/WConfW.png")
+              }
             />
           )}
           {"Conf" === status && (
             <Image
               style={styles.conf}
-              source={require("../assets/ConfK.png")}
+              source={
+                color
+                  ? require("../assets/BConfK.png")
+                  : require("../assets/WConfK.png")
+              }
             />
           )}
         </TouchableOpacity>

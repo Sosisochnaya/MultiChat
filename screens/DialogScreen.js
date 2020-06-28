@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -12,9 +12,9 @@ import {
   Image,
 } from "react-native";
 
-import {THEME} from "../themes/theme";
-import {Message} from "../components/messagers";
-import {Ionicons, AntDesign} from "@expo/vector-icons";
+import { THEME } from "../themes/theme";
+import { Message } from "../components/messagers";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 
 var _retrieveData = async () => {
   try {
@@ -30,7 +30,7 @@ var _retrieveData = async () => {
 
 var token;
 var number;
-export const DialogScreen = ({navigation}) => {
+export const DialogScreen = ({ navigation }) => {
   const dialog = navigation.getParam("dialog");
   const [mess, setMess] = useState();
   const [list_mess, setmesslist] = useState([]);
@@ -121,7 +121,11 @@ export const DialogScreen = ({navigation}) => {
           >
             <Image
               style={styles.image}
-              source={require("../assets/backTODO.png")}
+              source={
+                color
+                  ? require("../assets/BbackTODO.png")
+                  : require("../assets/WbackTODO.png")
+              }
             />
           </TouchableOpacity>
         </View>
@@ -129,7 +133,7 @@ export const DialogScreen = ({navigation}) => {
           <ImageBackground
             style={styles.icon}
             borderRadius={50}
-            source={{uri: dialog.icon}}
+            source={{ uri: dialog.icon }}
           />
           <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
             {dialog.name}
@@ -139,13 +143,13 @@ export const DialogScreen = ({navigation}) => {
           <TouchableOpacity onPress={() => navigation.navigate("Plan")}>
             <Image
               style={styles.plan}
-              source={require("../assets/PlanW.png")}
+              source={require("../assets/BPlanW.png")}
             />
           </TouchableOpacity>
         </View>
       </View>
       {isLoading ? (
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           <ActivityIndicator size="large" />
         </View>
       ) : (
@@ -154,7 +158,7 @@ export const DialogScreen = ({navigation}) => {
             inverted
             data={list_mess}
             keyExtractor={(mes) => mes.id_mes}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <Message mes={item} typeChat={dialog.type} />
             )}
           />
@@ -197,7 +201,7 @@ export const DialogScreen = ({navigation}) => {
   );
 };
 
-DialogScreen.navigationOptions = ({navigation}) => {};
+DialogScreen.navigationOptions = ({ navigation }) => {};
 
 const styles1 = StyleSheet.create({
   conteiner: {

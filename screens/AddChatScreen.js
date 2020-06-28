@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,14 +9,15 @@ import {
   AsyncStorage,
   ActivityIndicator,
 } from "react-native";
-import {THEME} from "../themes/theme";
-import {DialogChoose} from "../components/dialogchoose";
-import {LinearGradient} from "expo-linear-gradient";
+import { THEME } from "../themes/theme";
+import { DialogChoose } from "../components/dialogchoose";
+import { LinearGradient } from "expo-linear-gradient";
 
 var whitelistVK = [];
 var whitelistTG = [];
 
-export const AddChatScreen = ({navigation}) => {
+export const AddChatScreen = ({ navigation }) => {
+  const theme = navigation.getParam("theme");
   const messager = navigation.getParam("messager");
   const [list, setList] = useState([]);
   const [isLoading, setLoading] = useState(true);
@@ -100,6 +101,90 @@ export const AddChatScreen = ({navigation}) => {
     else setTimeout(listVK, 2000);
   });
 
+  const styles = StyleSheet.create({
+    conteiner: {
+      height: "100%",
+      backgroundColor: theme.background,
+    },
+    header: {
+      paddingTop: 20,
+      height: 110,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: theme.headermenu,
+      borderBottomColor: theme.headerstroke,
+      borderBottomWidth: 0.5,
+    },
+    heading: {
+      width: "100%",
+      position: "relative",
+      alignItems: "center",
+    },
+
+    text: {
+      color: theme.headertext,
+      alignItems: "center",
+      fontStyle: "normal",
+      fontSize: 24,
+      fontFamily: "nunito_bold",
+    },
+
+    imageLoupe: {
+      marginRight: 4,
+      marginTop: 4,
+    },
+
+    input: {
+      marginTop: 10,
+      // paddingLeft: 115,
+      textAlign: "center",
+      backgroundColor: theme.background,
+      height: 30,
+      width: "85%",
+      borderColor: theme.headerstroke,
+      borderWidth: 1,
+      borderRadius: 10,
+      color: "white",
+      fontSize: 17,
+      fontFamily: "roboto_regular",
+    },
+
+    conteinernav: {
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "transparent",
+      height: 57,
+      width: "100%",
+      bottom: 0,
+      top: 3,
+    },
+    title: {
+      fontFamily: "nunito_bold",
+      color: theme.white,
+      fontSize: 20,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    button: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "90%",
+      borderRadius: 10,
+      height: 42,
+    },
+
+    buttoncont: {
+      width: "100%",
+      position: "absolute",
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      bottom: "2%",
+    },
+  });
+
   return (
     <View style={styles.conteiner}>
       <View style={styles.header}>
@@ -108,26 +193,30 @@ export const AddChatScreen = ({navigation}) => {
         </View>
         <TextInput
           placeholder="Find dialog..."
-          placeholderTextColor={THEME.TEXT_COLOR_BLACK}
+          placeholderTextColor={theme.textmess}
           style={styles.input}
         />
       </View>
       {isLoading ? (
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           <ActivityIndicator size="large" />
         </View>
       ) : (
         <FlatList
           data={list}
           keyExtractor={(dialog) => dialog.id}
-          renderItem={({item}) => (
-            <DialogChoose dialog={item} onOpen={openAddingHandler} />
+          renderItem={({ item }) => (
+            <DialogChoose
+              dialog={item}
+              onOpen={openAddingHandler}
+              theme={theme}
+            />
           )}
         />
       )}
       <TouchableOpacity style={styles.buttoncont} onPress={AddHandler}>
         <LinearGradient
-          colors={["#FFDE67", "#FFA467", "#FF6666"]}
+          colors={[theme.GcolorR, theme.GcolorS, theme.GcolorL]}
           start={[1.0, 0.2]}
           end={[0.2, 1.0]}
           style={styles.button}
@@ -138,87 +227,3 @@ export const AddChatScreen = ({navigation}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  conteiner: {
-    height: "100%",
-    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
-  },
-  header: {
-    paddingTop: 20,
-    height: 110,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: THEME.HEADER_BACKGROUND_COLOR_BLACK,
-    borderBottomColor: THEME.INPUT_BORDER_COLOR,
-    borderBottomWidth: 1,
-  },
-  heading: {
-    width: "100%",
-    position: "relative",
-    alignItems: "center",
-  },
-
-  text: {
-    color: THEME.TEXT_COLOR_BLACK,
-    alignItems: "center",
-    fontStyle: "normal",
-    fontSize: 24,
-    fontFamily: "nunito_bold",
-  },
-
-  imageLoupe: {
-    marginRight: 4,
-    marginTop: 4,
-  },
-
-  input: {
-    marginTop: 10,
-    // paddingLeft: 115,
-    textAlign: "center",
-    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
-    height: 30,
-    width: "85%",
-    borderColor: THEME.INPUT_BORDER_COLOR,
-    borderWidth: 1,
-    borderRadius: 10,
-    color: "white",
-    fontSize: 17,
-    fontFamily: "roboto_regular",
-  },
-
-  conteinernav: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "transparent",
-    height: 57,
-    width: "100%",
-    bottom: 0,
-    top: 3,
-  },
-  title: {
-    fontFamily: "nunito_bold",
-    color: THEME.TEXT_COLOR_BLACK,
-    fontSize: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  button: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "90%",
-    borderRadius: 10,
-    height: 42,
-  },
-
-  buttoncont: {
-    width: "100%",
-    position: "absolute",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    bottom: "2%",
-  },
-});

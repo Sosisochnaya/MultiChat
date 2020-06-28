@@ -40,6 +40,7 @@ let black = {
   clearS: "#FF4047",
   clearR: "#FF6666",
   white: "#fff",
+  buf: "B",
 };
 
 let white = {
@@ -63,6 +64,7 @@ let white = {
   clearS: "#FF4047",
   clearR: "#FF6666",
   white: "#fff",
+  buf: "W",
 };
 
 export const loading = ({ navigation }) => {

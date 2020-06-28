@@ -215,6 +215,7 @@ export const MainScreen = ({ navigation }) => {
         onCancel={() => {
           setModalCS(false);
         }}
+        theme={theme}
       />
       <SearchResult
         navigation={navigation}

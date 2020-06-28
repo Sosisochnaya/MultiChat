@@ -28,6 +28,16 @@ export const PlanModal = ({ navigation }) => {
   const [value, setValue] = useState("");
   const [name, setname] = useState("s");
   const [date, setDate] = useState(new Date());
+  const [color, setColor] = useState(false);
+  const [r, setR] = useState(false);
+  if (!r) {
+    if (theme.buf == "W") {
+      setColor(false);
+    } else {
+      setColor(true);
+    }
+    setR(true);
+  }
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -124,8 +134,7 @@ export const PlanModal = ({ navigation }) => {
     },
 
     iphonetop: {
-      height: 20,
-      //backgroundColor: "#272727",
+      height: 24,
     },
 
     nav: {
@@ -136,7 +145,7 @@ export const PlanModal = ({ navigation }) => {
       marginLeft: 21,
       marginTop: 24,
       fontSize: 24,
-      //color: "#fff",
+      color: theme.headertext,
     },
     button: {
       bottom: 18,
@@ -181,7 +190,11 @@ export const PlanModal = ({ navigation }) => {
           >
             <Image
               style={styles.image}
-              source={require("../assets/backTODO.png")}
+              source={
+                color
+                  ? require("../assets/BbackTODO.png")
+                  : require("../assets/WbackTODO.png")
+              }
             />
           </TouchableOpacity>
           <Text style={styles.text}>Add Plan</Text>
