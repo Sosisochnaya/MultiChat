@@ -1,26 +1,10 @@
 {
   "devToolsPort": 19002,
-<<<<<<< HEAD
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 12804,
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
   "ngrokPid": null,
   "webpackServerPort": null
-=======
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-<<<<<<< HEAD
-  "packagerPid": 16924,
-  "expoServerNgrokUrl": "https://26-9ri.wizstale.multichat.exp.direct",
-  "packagerNgrokUrl": "https://packager.26-9ri.wizstale.multichat.exp.direct",
-  "ngrokPid": 3520
-=======
-  "packagerPid": 7288,
-  "expoServerNgrokUrl": "https://26-9ri.anonymous.multichat.exp.direct",
-  "packagerNgrokUrl": "https://packager.26-9ri.anonymous.multichat.exp.direct",
-  "ngrokPid": 15744
->>>>>>> 7f18da40306fd78280a8dd896676410f7e7972d9
->>>>>>> 2c29b62345978ad9044310313682d916e9411622
 }

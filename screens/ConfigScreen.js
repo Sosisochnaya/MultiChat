@@ -8,14 +8,66 @@ import {
   TextInput,
   Image,
   ImageBackground,
+  AsyncStorage,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import {Navbar} from "../components/Navbar";
-import {THEME} from "../themes/theme";
-import {LinearGradient} from "expo-linear-gradient";
-import {AntDesign} from "@expo/vector-icons";
+import { Navbar } from "../components/Navbar";
+import { THEME } from "../themes/theme";
+import { LinearGradient } from "expo-linear-gradient";
+import { AntDesign } from "@expo/vector-icons";
 
-export const ConfigScreen = ({navigation}) => {
+export const ConfigScreen = ({ navigation }) => {
+  const Change = () => {
+    Alert.alert(
+      "Смена темы",
+      `Для смены темы перезапустите приложение`,
+      [
+        {
+          text: "Отмена",
+          style: "cancel",
+        },
+        {
+          text: "Сменить",
+          style: "destructive",
+          onPress: () => {
+            AsyncStorage.getItem("choose", (err, result) => {
+              let buf = JSON.parse(result);
+              if (buf["theme"] == "black") {
+                let choose = {
+                  theme: "white",
+                };
+                //AsyncStorage.removeItem("choose", (err) => {});
+                AsyncStorage.mergeItem(
+                  "choose",
+                  JSON.stringify(choose),
+                  () => {}
+                );
+              }
+              if (buf["theme"] == "white") {
+                let choose = {
+                  theme: "black",
+                };
+                // AsyncStorage.removeItem("choose", (err) => {});
+                AsyncStorage.mergeItem(
+                  "choose",
+                  JSON.stringify(choose),
+                  () => {}
+                );
+              }
+              AsyncStorage.getItem("choose", (err, result) => {
+                console.log("Conf = ", result);
+              });
+            });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+
+    //navigation.navigate("loading");
+  };
+
   return (
     <View style={styles.conteiner}>
       <View style={styles.header}>
@@ -67,97 +119,6 @@ export const ConfigScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.wrapnotif}>
-        <View style={styles.not}>
-          <View style={styles.notif}>
-            <Text style={styles.text}>Notification</Text>
-          </View>
-          <View style={styles.border2}>
-            <Text></Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.remindtime}>
-        <View style={styles.btn_1}>
-          <TouchableOpacity>
-            <LinearGradient
-              colors={["#FFDE67", "#FFA467", "#FF6666"]}
-              start={[1.0, 0.2]}
-              end={[0.2, 1.0]}
-              style={styles.btn1}
-            >
-              <Text style={styles.label3}>REMIND TIME</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.btn_2}>
-          <TouchableOpacity style={styles.btn2}>
-            <Text style={styles.label4}>3</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.remindfor}>
-        <View style={styles.btn_3}>
-          <TouchableOpacity>
-            <LinearGradient
-              colors={["#FFDE67", "#FFA467", "#FF6666"]}
-              start={[1.0, 0.2]}
-              end={[0.2, 1.0]}
-              style={styles.btn3}
-            >
-              <Text style={styles.label3}>REMIND FOR</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.btn_4}>
-          <TouchableOpacity style={styles.btn4}>
-            <Text style={styles.label4}>6h</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.remindfor2}>
-        <View style={styles.btn_5}>
-          <TouchableOpacity>
-            <LinearGradient
-              colors={["#FFDE67", "#FFA467", "#FF6666"]}
-              start={[1.0, 0.2]}
-              end={[0.2, 1.0]}
-              style={styles.btn5}
-            >
-              <Text style={styles.label3}>REMIND FOR</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.btn_6}>
-          <TouchableOpacity style={styles.btn6}>
-            <Text style={styles.label4}>12h</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.remindfor3}>
-        <View style={styles.btn_5}>
-          <TouchableOpacity>
-            <LinearGradient
-              colors={["#FFDE67", "#FFA467", "#FF6666"]}
-              start={[1.0, 0.2]}
-              end={[0.2, 1.0]}
-              style={styles.btn5}
-            >
-              <Text style={styles.label3}>REMIND FOR</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.btn_6}>
-          <TouchableOpacity style={styles.btn6}>
-            <Text style={styles.label4}>12h</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
       <View style={styles.wrapview}>
         <View style={styles.vi}>
           <View style={styles.view}>
@@ -170,7 +131,11 @@ export const ConfigScreen = ({navigation}) => {
       </View>
 
       <View style={styles.changetheme}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            Change();
+          }}
+        >
           <LinearGradient
             colors={["#FFDE67", "#FFA467", "#FF6666"]}
             start={[1.0, 0.2]}

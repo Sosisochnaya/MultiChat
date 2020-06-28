@@ -35,7 +35,7 @@ export const PlanScreen = ({ navigation }) => {
   const [todos, setTodos] = useState([]);
   const [modal, setModal] = useState(false);
   const [status, setStatus] = useState(true);
-  var r = {todo: todos};
+  var r = { todo: todos };
   //console.log("То что мне нужно");
   // DB.insertPosts("Name", "Tite");
   //console.log(DB.getPosts());
@@ -58,7 +58,7 @@ export const PlanScreen = ({ navigation }) => {
     navigation.goBack(null);
   };
   const addTodo = (title, name, status, date, time, datefull) => {
-    r = {todo: todos};
+    r = { todo: todos };
     let nowid = Date.now().toString();
     setTodos((prev) => [
       ...prev,
@@ -163,7 +163,7 @@ export const PlanScreen = ({ navigation }) => {
           },
         },
       ],
-      {cancelable: false}
+      { cancelable: false }
     );
   };
 

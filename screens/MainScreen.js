@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useReducer} from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,13 +8,13 @@ import {
   AsyncStorage,
   ActivityIndicator,
 } from "react-native";
-import {DialogInList} from "../components/DialogInList";
-import {Navbar} from "../components/Navbar";
-import {THEME} from "../themes/theme";
-import {AntDesign} from "@expo/vector-icons";
-import {ChooseMessangerScreen} from "./ChooseMessanger";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
-import {SearchResult} from "./SearchResult";
+import { DialogInList } from "../components/DialogInList";
+import { Navbar } from "../components/Navbar";
+import { THEME } from "../themes/theme";
+import { AntDesign } from "@expo/vector-icons";
+import { ChooseMessangerScreen } from "./ChooseMessanger";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { SearchResult } from "./SearchResult";
 
 async function _retrieveData() {
   try {
@@ -28,10 +28,19 @@ async function _retrieveData() {
   }
 }
 
+AsyncStorage.getAllKeys((err, keys) => {
+  console.log(keys);
+});
+AsyncStorage.getItem("choose", (err, result) => {
+  console.log("color = ", result);
+});
+
 var token;
 var number;
 
-export const MainScreen = ({navigation}) => {
+export const MainScreen = ({ navigation }) => {
+  const theme = navigation.getParam("theme");
+  console.log(theme);
   const [isLoading, setLoading] = useState(true);
   const [modalChoseMes, setModalCS] = useState(false);
   const [modalSearch, setModalSearch] = useState(false);
@@ -41,7 +50,7 @@ export const MainScreen = ({navigation}) => {
 
   const openDialogHendler = (item) => {
     // setModalSearch(false);
-    navigation.navigate("Dialog", {dialog: item});
+    navigation.navigate("Dialog", { dialog: item });
     setSearch("");
   };
 
@@ -79,7 +88,7 @@ export const MainScreen = ({navigation}) => {
       .then((json) => {
         if (json != [])
           json.forEach((item) => {
-            wl_json.push({id: parseInt(item, 10)});
+            wl_json.push({ id: parseInt(item, 10) });
           });
       })
       .catch((error) => console.log("error vk wl"));
@@ -89,7 +98,7 @@ export const MainScreen = ({navigation}) => {
       .then((json) => {
         if (json != [])
           json.forEach((item) => {
-            wl_json.push({id: parseInt(item, 10)});
+            wl_json.push({ id: parseInt(item, 10) });
           });
       })
       .catch((error) => console.log("error tg wl"));
@@ -141,7 +150,7 @@ export const MainScreen = ({navigation}) => {
   console.disableYellowBox = true;
 
   return (
-    <View style={styles.conteiner}>
+    <View backgroundColor={theme.background} style={styles.conteiner}>
       <ChooseMessangerScreen
         navigation={navigation}
         visible={modalChoseMes}
@@ -159,9 +168,15 @@ export const MainScreen = ({navigation}) => {
         list={listSearch}
       />
 
-      <View style={styles.header}>
+      <View
+        backgroundColor={theme.headermenu}
+        borderColor={theme.headerstroke}
+        style={styles.header}
+      >
         <View style={styles.line1}>
-          <Text style={styles.text}>Chats</Text>
+          <Text color={theme.headertext} style={styles.text}>
+            Chats
+          </Text>
         </View>
 
         <View style={styles.button}>
@@ -174,8 +189,10 @@ export const MainScreen = ({navigation}) => {
         </View>
         <TextInput
           placeholder="Find message..."
-          placeholderTextColor={THEME.TEXT_COLOR_BLACK}
+          placeholderTextColor={theme.color}
+          backgroundColor={theme.background}
           style={styles.input}
+          borderColor={theme.navbarstroke}
           onChangeText={(text) => setSearch(text)}
           value={seacrhtext}
           onSubmitEditing={search_name}
@@ -183,14 +200,14 @@ export const MainScreen = ({navigation}) => {
       </View>
 
       {isLoading ? (
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           <ActivityIndicator size="large" />
         </View>
       ) : (
         <FlatList
           data={list}
           keyExtractor={(dialog) => dialog.id.toString()}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <DialogInList dialog={item} onOpen={openDialogHendler} />
           )}
         />
@@ -204,7 +221,7 @@ const styles = StyleSheet.create({
   conteiner: {
     height: "100%",
     width: "100%",
-    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
+
     position: "relative",
     paddingBottom: 60,
   },
@@ -215,7 +232,7 @@ const styles = StyleSheet.create({
     height: 110,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: THEME.HEADER_BACKGROUND_COLOR_BLACK,
+    borderBottomWidth: 0.5,
   },
   line1: {
     width: "100%",
@@ -226,18 +243,17 @@ const styles = StyleSheet.create({
   input: {
     // paddingLeft: 110,
     textAlign: "center",
-    backgroundColor: THEME.BACKGROUNG_COLOR_BLACK,
+
     height: 30,
     width: "85%",
-    borderColor: THEME.INPUT_BORDER_COLOR,
+
     borderWidth: 1,
     borderRadius: 10,
-    color: "white",
+
     fontSize: 17,
     fontFamily: "roboto_regular",
   },
   text: {
-    color: "white",
     alignItems: "center",
     fontStyle: "normal",
     fontSize: 24,

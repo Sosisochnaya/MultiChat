@@ -1,7 +1,8 @@
-import React, {useState} from "react";
-import {AppLoading} from "expo";
-import {AppNavigation} from "./navigation/AppNavigation";
-import {bootstrap} from "./bootstrap";
+import React, { useState } from "react";
+import { AppLoading } from "expo";
+import { AsyncStorage } from "react-native";
+import { AppNavigation } from "./navigation/AppNavigation";
+import { bootstrap } from "./bootstrap";
 
 export default function App() {
   const [isReedy, setIsReady] = useState(false);
